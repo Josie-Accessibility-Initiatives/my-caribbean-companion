@@ -1,0 +1,14 @@
+[
+  { "id": 1, "code": "agricultural_worker", "label": "Agricultural Worker", "description": null },
+  { "id": 2, "code": "artisan", "label": "Artisan", "description": null },
+  { "id": 3, "code": "artiste", "label": "Artiste", "description": null },
+  { "id": 4, "code": "associate_degree", "label": "Holder of Associate Degree", "description": null },
+  { "id": 5, "code": "domestic_worker", "label": "Domestic Worker", "description": null },
+  { "id": 6, "code": "media_worker", "label": "Media Worker", "description": null },
+  { "id": 7, "code": "musician", "label": "Musician", "description": null },
+  { "id": 8, "code": "nurse", "label": "Nurse", "description": null },
+  { "id": 9, "code": "private_security_officer", "label": "Private Security Officer", "description": null },
+  { "id": 10, "code": "sportsperson", "label": "Sportsperson", "description": null },
+  { "id": 11, "code": "teacher", "label": "Teacher", "description": null },
+  { "id": 12, "code": "university_graduate", "label": "University Graduate", "description": null }
+]

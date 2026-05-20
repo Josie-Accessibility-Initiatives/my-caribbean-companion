@@ -1,0 +1,14 @@
+[
+  { "id": 1, "code": "AG", "name": "Antigua and Barbuda", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 2, "code": "BB", "name": "Barbados", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 3, "code": "BZ", "name": "Belize", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 4, "code": "DM", "name": "Dominica", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 5, "code": "GD", "name": "Grenada", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 6, "code": "GY", "name": "Guyana", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 7, "code": "JM", "name": "Jamaica", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 8, "code": "KN", "name": "St. Kitts and Nevis", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 9, "code": "LC", "name": "Saint Lucia", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 10, "code": "SR", "name": "Suriname", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 11, "code": "TT", "name": "Trinidad and Tobago", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null },
+  { "id": 12, "code": "VC", "name": "St. Vincent and the Grenadines", "immigrationUrl": null, "competentAuthorityUrl": null, "formsUrl": null, "notes": null }
+]
