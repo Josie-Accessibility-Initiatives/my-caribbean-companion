@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/components/auth/AuthProvider";
+import SavePlanBanner from "@/components/dashboard/SavePlanBanner";
+import { exportPlanToPDF } from "@/lib/pdfExport";
 
 type ChecklistItem = {
   id: string;
@@ -40,9 +44,9 @@ type StoredPlan = {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [stored, setStored] = useState<StoredPlan | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     const raw = localStorage.getItem("mcc_plan");
@@ -72,12 +76,6 @@ export default function DashboardPage() {
   }, [router]);
 
   useEffect(() => {
-    if (!toastMessage) return;
-    const timer = window.setTimeout(() => setToastMessage(""), 3000);
-    return () => window.clearTimeout(timer);
-  }, [toastMessage]);
-
-  useEffect(() => {
     if (!stored) return;
     const stateKey = `mcc_checklist_${stored.plan.planId}`;
     localStorage.setItem(stateKey, JSON.stringify(checked));
@@ -99,6 +97,10 @@ export default function DashboardPage() {
 
   const toggle = (id: string) =>
     setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const handleExportPDF = () => {
+    exportPlanToPDF(plan, input, checked, !!user);
+  };
 
   return (
     <div className="page page-dashboard">
@@ -131,18 +133,26 @@ export default function DashboardPage() {
               <a href="#links">Official Links</a>
             </nav>
 
-            <button
-              type="button"
-              onClick={() => setToastMessage("Sign up to save your progress")}
-              className="btn-primary full-width"
-              style={{ marginTop: "1.5rem" }}
-            >
-              Save My Plan
-            </button>
+            {!loading && !user && (
+              <Link
+                href="/signup?redirect=/dashboard"
+                className="btn-primary full-width"
+                style={{
+                  marginTop: "1.5rem",
+                  display: "inline-block",
+                  textAlign: "center",
+                  textDecoration: "none",
+                }}
+              >
+                Save My Plan
+              </Link>
+            )}
           </div>
         </aside>
 
         <main>
+          <SavePlanBanner />
+
           <section id="overview" className="dashboard-section">
             <h2 className="section-title">Overview</h2>
             <p style={{ color: "#4b5563", marginTop: "0.5rem" }}>
@@ -216,7 +226,7 @@ export default function DashboardPage() {
           </section>
 
           <section id="links" className="dashboard-section">
-            <h2 className="section-title">Official Links</h2>
+            <h2 className="section-title">Official Links &amp; Next Steps</h2>
             {plan.officialLinks.immigration ||
             plan.officialLinks.competentAuthority ||
             plan.officialLinks.forms ? (
@@ -228,7 +238,7 @@ export default function DashboardPage() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Immigration website
+                      Immigration website (destination country)
                     </a>
                   </li>
                 )}
@@ -239,7 +249,7 @@ export default function DashboardPage() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Competent Authority
+                      Competent Authority for Skills Certificates
                     </a>
                   </li>
                 )}
@@ -261,11 +271,22 @@ export default function DashboardPage() {
                 available yet.
               </p>
             )}
+
+            <div className="plan-actions">
+              <Link href="/onboarding" className="btn-secondary">
+                Try Another Country or Category
+              </Link>
+              <button
+                type="button"
+                onClick={handleExportPDF}
+                className="btn-secondary"
+              >
+                Export as PDF
+              </button>
+            </div>
           </section>
         </main>
       </div>
-
-      {toastMessage ? <div className="toast">{toastMessage}</div> : null}
     </div>
   );
 }

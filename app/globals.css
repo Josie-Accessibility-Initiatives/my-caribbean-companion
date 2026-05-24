@@ -152,10 +152,10 @@ body {
 
   background:
     linear-gradient(
-      rgba(0, 0, 0, 0.45),
-      rgba(0, 0, 0, 0.45)
+      rgba(0, 0, 0, 0.35),
+      rgba(0, 0, 0, 0.35)
     ),
-    #111827;
+    url('/assets/Home-page-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -277,12 +277,12 @@ body {
 .banner {
   position: relative;
   margin-bottom: 2rem;
-  background:
+  background-image:
     linear-gradient(
       rgba(0, 0, 0, 0.45),
       rgba(0, 0, 0, 0.45)
     ),
-    #111827;
+    url('/assets/About-page-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -291,6 +291,15 @@ body {
   align-items: center;
   justify-content: center;
   padding: 3rem 2rem;
+}
+
+.page-csme .banner {
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url('/assets/Home-page-background.jpg');
 }
 
 .banner-content {
@@ -310,7 +319,7 @@ body {
   width: 100%;
   min-height: 320px;
   background-image: url('/assets/Logo-removebg.png');
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 16px;
@@ -319,6 +328,7 @@ body {
 .about-csme-card {
   width: 100%;
   min-height: 320px;
+  background-image: url('/assets/csme-project.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -328,6 +338,7 @@ body {
 .about-image2-card {
   width: 100%;
   min-height: 320px;
+  background-image: url('/assets/About-page-image.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -788,6 +799,32 @@ body {
   .dashboard-sidebar {
     position: static;
   }
+}
+
+/* =========================
+   Plan actions (dashboard footer buttons)
+   ========================= */
+
+.plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* =========================
+   External / Inline Links
+   ========================= */
+
+.external-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.external-link:hover {
+  color: #178a61;
 }
 
 /* =========================

@@ -5,16 +5,14 @@ export default function Home() {
     <div className="page page-home">
       <section className="hero">
         <div className="hero-content">
-          <h1 className="hero-title">My Caribbean Companion</h1>
-          <p className="hero-subtitle">
-            Your guide to working anywhere in the Caribbean.
-          </p>
+          <h1 className="hero-title">Inter Regional Movement Planner</h1>
+          <p className="hero-subtitle">Bridging Islands, Building Futures.</p>
 
           <div className="hero-actions">
             <Link href="/onboarding" className="btn-primary">
               Start My Move Plan
             </Link>
-            <Link href="/about" className="btn-secondary">
+            <Link href="/csme-basics" className="btn-secondary">
               Learn About CSME
             </Link>
           </div>
@@ -24,22 +22,22 @@ export default function Home() {
       <section className="section section-about-main">
         <div className="about-two-column">
           <div>
-            <h2>What is My Caribbean Companion?</h2>
+            <h2>What is the Inter Regional Movement Planner?</h2>
             <p>
-              My Caribbean Companion helps CARICOM citizens understand and
-              navigate the process of legally moving to another Caribbean
-              country for work under the CSME Free Movement of Skills
-              framework.
+              A digital platform that helps Caribbean nationals understand how
+              to work legally in other CARICOM countries under CSME. The
+              Movement Planner is designed to make CSME free movement easier,
+              clearer, and more accessible for every Caribbean national.
             </p>
             <p>It provides:</p>
             <ul>
-              <li>Readiness Score</li>
-              <li>Step-by-Step Checklist</li>
-              <li>Country Comparison</li>
-              <li>AI Companion</li>
-              <li>Cost Estimator</li>
-              <li>Document Hub</li>
-              <li>Community Stories</li>
+              <li>Personalized move plans</li>
+              <li>Document checklists</li>
+              <li>Estimated timelines</li>
+              <li>Official government links</li>
+              <li>Competent Authority details</li>
+              <li>Country-specific requirements</li>
+              <li>Tools to track progress and save plans (for logged-in users)</li>
             </ul>
           </div>
           <div className="about-image-card" />
@@ -54,10 +52,10 @@ export default function Home() {
 
         <div className="steps-list">
           <div className="step-card">
-            <h3>Step 1 — Tell Us About Your Move</h3>
+            <h3>Step 1 — Tell Us Your Migration Details</h3>
             <p>
-              Share your home country, destination, and professional
-              category so we can tailor your plan:
+              Select your home country, destination country, and professional
+              category:
             </p>
             <ul>
               <li>Choose where you&apos;re coming from</li>
@@ -69,40 +67,38 @@ export default function Home() {
           </div>
 
           <div className="step-card">
-            <h3>Step 2 — Get Your Readiness Score</h3>
+            <h3>Step 2 — Generate Your Personalized Migration Plan</h3>
             <p>
-              See exactly how prepared you are with a personalized readiness
-              score based on:
+              Get a customized guide based on your exact country-to-country
+              path, including:
             </p>
             <ul>
-              <li>Eligibility under CSME</li>
-              <li>Documents you already have</li>
+              <li>Eligibility summary</li>
               <li>Country-specific requirements</li>
-              <li>Verification steps still needed</li>
+              <li>Category-specific documents</li>
+              <li>Verification steps</li>
             </ul>
           </div>
 
           <div className="step-card">
-            <h3>Step 3 — Follow Your Personalized Plan</h3>
-            <p>Work through a clear, actionable checklist:</p>
+            <h3>Step 3 — Complete Your Interactive Checklist</h3>
+            <p>Track everything you need with clear, actionable tasks:</p>
             <ul>
               <li>Document checklist with explanations</li>
               <li>Sample templates &amp; document hints</li>
               <li>Status tracking with checkmarks</li>
-              <li>Estimated timelines for each step</li>
+              <li>&ldquo;Add to calendar&rdquo; suggestions (future feature)</li>
             </ul>
           </div>
 
           <div className="step-card">
-            <h3>Step 4 — Move with Confidence</h3>
-            <p>
-              Use verified resources and official links to take action:
-            </p>
+            <h3>Step 4 — Explore Resources &amp; Take Action</h3>
+            <p>Access official websites, competent authorities, and links:</p>
             <ul>
               <li>Visit immigration websites</li>
               <li>Find competent authorities</li>
-              <li>Compare cost of living and jobs by country</li>
-              <li>Read community stories from people who&apos;ve moved</li>
+              <li>Download forms</li>
+              <li>Read country-specific tips</li>
             </ul>
           </div>
         </div>
