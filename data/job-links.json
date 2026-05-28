@@ -1,0 +1,173 @@
+{
+  "caribbean_wide": [
+    {
+      "name": "Caribbean Jobs",
+      "url": "https://www.caribbeanjobs.com",
+      "description": "Largest regional job board covering all CARICOM countries",
+      "categories": ["all"]
+    },
+    {
+      "name": "CARICOM Jobs",
+      "url": "https://jobs.caricom.org",
+      "description": "Official CARICOM job opportunities",
+      "categories": ["all"]
+    },
+    {
+      "name": "Caribbean HR Solutions",
+      "url": "https://www.caribbeanhrjobs.com",
+      "description": "HR and professional roles across the Caribbean",
+      "categories": ["professional"]
+    }
+  ],
+  "by_country": {
+    "TT": [
+      {
+        "name": "Jobs TT",
+        "url": "https://www.jobstt.com",
+        "description": "Leading job board for Trinidad and Tobago",
+        "categories": ["all"]
+      },
+      {
+        "name": "Got Trinidad Jobs",
+        "url": "https://www.gotrinidadjobs.com",
+        "description": "Trinidad focused job listings",
+        "categories": ["all"]
+      },
+      {
+        "name": "Caribbean Jobs TT",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=12",
+        "description": "Caribbean Jobs filtered for Trinidad",
+        "categories": ["all"]
+      }
+    ],
+    "BB": [
+      {
+        "name": "Barbados Jobs Search",
+        "url": "https://www.barbadosjobsearch.com",
+        "description": "Primary job board for Barbados",
+        "categories": ["all"]
+      },
+      {
+        "name": "Caribbean Jobs Barbados",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=1",
+        "description": "Caribbean Jobs filtered for Barbados",
+        "categories": ["all"]
+      }
+    ],
+    "JM": [
+      {
+        "name": "Go Jamaica Jobs",
+        "url": "https://www.gojamaicanow.com/jobs",
+        "description": "Jamaica focused job listings",
+        "categories": ["all"]
+      },
+      {
+        "name": "Caribbean Jobs Jamaica",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=6",
+        "description": "Caribbean Jobs filtered for Jamaica",
+        "categories": ["all"]
+      }
+    ],
+    "GY": [
+      {
+        "name": "Guyana Jobs",
+        "url": "https://www.guyanajobs.com",
+        "description": "Job listings for Guyana",
+        "categories": ["all"]
+      },
+      {
+        "name": "Caribbean Jobs Guyana",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=5",
+        "description": "Caribbean Jobs filtered for Guyana",
+        "categories": ["all"]
+      }
+    ],
+    "LC": [
+      {
+        "name": "Caribbean Jobs Saint Lucia",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=9",
+        "description": "Job listings for Saint Lucia",
+        "categories": ["all"]
+      }
+    ],
+    "GD": [
+      {
+        "name": "Caribbean Jobs Grenada",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=4",
+        "description": "Job listings for Grenada",
+        "categories": ["all"]
+      }
+    ],
+    "DM": [
+      {
+        "name": "Caribbean Jobs Dominica",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=3",
+        "description": "Job listings for Dominica",
+        "categories": ["all"]
+      }
+    ],
+    "VC": [
+      {
+        "name": "Caribbean Jobs St Vincent",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=11",
+        "description": "Job listings for St Vincent",
+        "categories": ["all"]
+      }
+    ],
+    "KN": [
+      {
+        "name": "Caribbean Jobs St Kitts",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=8",
+        "description": "Job listings for St Kitts and Nevis",
+        "categories": ["all"]
+      }
+    ],
+    "AG": [
+      {
+        "name": "Caribbean Jobs Antigua",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=&CountryId=1",
+        "description": "Job listings for Antigua and Barbuda",
+        "categories": ["all"]
+      }
+    ],
+    "SR": [
+      {
+        "name": "Jobs in Suriname",
+        "url": "https://sr.linkedin.com/jobs",
+        "description": "LinkedIn jobs filtered for Suriname",
+        "categories": ["all"]
+      }
+    ],
+    "BZ": [
+      {
+        "name": "Belize Jobs",
+        "url": "https://www.belizejobs.com",
+        "description": "Job listings for Belize",
+        "categories": ["all"]
+      }
+    ]
+  },
+  "by_profession": {
+    "Nurse": [
+      {
+        "name": "Caribbean Health Careers",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=nurse",
+        "description": "Nursing jobs across the Caribbean"
+      }
+    ],
+    "Teacher": [
+      {
+        "name": "Caribbean Teaching Jobs",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=teacher",
+        "description": "Teaching positions across the Caribbean"
+      }
+    ],
+    "Engineer": [
+      {
+        "name": "Caribbean Engineering Jobs",
+        "url": "https://www.caribbeanjobs.com/SearchResults.aspx?Keywords=engineer",
+        "description": "Engineering roles across the Caribbean"
+      }
+    ]
+  }
+}
