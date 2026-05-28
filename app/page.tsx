@@ -5,7 +5,7 @@ export default function Home() {
     <div className="page page-home">
       <section className="hero">
         <div className="hero-content">
-          <h1 className="hero-title">Inter Regional Movement Planner</h1>
+          <h1 className="hero-title">My Caribbean Companion</h1>
           <p className="hero-subtitle">Bridging Islands, Building Futures.</p>
 
           <div className="hero-actions">
@@ -22,7 +22,7 @@ export default function Home() {
       <section className="section section-about-main">
         <div className="about-two-column">
           <div>
-            <h2>What is the Inter Regional Movement Planner?</h2>
+            <h2>What is My Caribbean Companion?</h2>
             <p>
               A digital platform that helps Caribbean nationals understand how
               to work legally in other CARICOM countries under CSME. The

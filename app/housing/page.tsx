@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Lightbulb } from 'lucide-react'
 import { COUNTRY_META } from '@/data/countryMeta'
 import { getOnboarding } from '@/lib/persistence'
@@ -87,6 +88,7 @@ function SkeletonBlock({ height = 120 }: { height?: number }) {
 // ── Page ───────────────────────────────────────────────────────────
 
 export default function HousingPage() {
+  const searchParams = useSearchParams()
   const [selectedCountry, setSelectedCountry] = useState('')
   const [housingData, setHousingData] = useState<HousingApiResponse | null>(null)
   const [loading, setLoading] = useState(false)
@@ -114,6 +116,15 @@ export default function HousingPage() {
   }, [])
 
   useEffect(() => {
+    // URL param (?country=BB) takes priority over localStorage
+    const urlCountry = searchParams.get('country')
+    if (urlCountry && COUNTRY_META[urlCountry]) {
+      setSelectedCountry(urlCountry)
+      fetchHousing(urlCountry)
+      return
+    }
+
+    // Fall back to onboarding localStorage
     const onb = getOnboarding()
     if (!onb) return
 
@@ -128,7 +139,7 @@ export default function HousingPage() {
     setOnboardingCtx({ targetCountry: name })
     setSelectedCountry(code)
     fetchHousing(code)
-  }, [fetchHousing])
+  }, [fetchHousing, searchParams])
 
   const handleSearch = () => {
     setHousingData(null)
