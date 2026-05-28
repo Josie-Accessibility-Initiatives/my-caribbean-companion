@@ -1,0 +1,134 @@
+{
+  "TT": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 4, "max": 12 },
+    "competentAuthority": "Ministry of National Security",
+    "skillsCertificateRequired": true,
+    "notes": "Well-established CSME process. Online application available.",
+    "inDemandProfessions": [
+      "Nurse", "Teacher", "Engineer",
+      "IT Professional", "Accountant"
+    ]
+  },
+  "BB": {
+    "complexity": "easy",
+    "processingWeeks": { "min": 2, "max": 8 },
+    "competentAuthority": "Ministry of Home Affairs",
+    "skillsCertificateRequired": true,
+    "notes": "One of the most efficient CSME processors in the region.",
+    "inDemandProfessions": [
+      "Nurse", "Teacher", "Tourism Professional",
+      "Financial Services", "Construction"
+    ]
+  },
+  "JM": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 6, "max": 16 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Processing times can vary. In-person visits may be required.",
+    "inDemandProfessions": [
+      "Nurse", "Teacher", "Engineer",
+      "Tourism Professional", "IT Professional"
+    ]
+  },
+  "GY": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 4, "max": 12 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Growing economy with increasing demand for skilled workers.",
+    "inDemandProfessions": [
+      "Engineer", "IT Professional", "Nurse",
+      "Accountant", "Construction"
+    ]
+  },
+  "LC": {
+    "complexity": "easy",
+    "processingWeeks": { "min": 2, "max": 6 },
+    "competentAuthority": "Ministry of Commerce",
+    "skillsCertificateRequired": true,
+    "notes": "Small administration — faster processing times.",
+    "inDemandProfessions": [
+      "Nurse", "Teacher", "Tourism Professional",
+      "Construction", "Agriculture"
+    ]
+  },
+  "GD": {
+    "complexity": "easy",
+    "processingWeeks": { "min": 2, "max": 8 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Welcoming to CSME applicants. Tourism sector has strong demand.",
+    "inDemandProfessions": [
+      "Tourism Professional", "Nurse", "Teacher",
+      "Construction", "Agriculture"
+    ]
+  },
+  "DM": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 4, "max": 10 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Rebuilding post-hurricane — high demand for construction and trades.",
+    "inDemandProfessions": [
+      "Construction", "Artisan", "Nurse",
+      "Teacher", "Agriculture"
+    ]
+  },
+  "VC": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 4, "max": 12 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Agriculture and tourism are primary sectors.",
+    "inDemandProfessions": [
+      "Agriculture", "Tourism Professional",
+      "Nurse", "Teacher", "Construction"
+    ]
+  },
+  "KN": {
+    "complexity": "easy",
+    "processingWeeks": { "min": 2, "max": 8 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Small island, responsive administration.",
+    "inDemandProfessions": [
+      "Tourism Professional", "Nurse",
+      "Teacher", "Financial Services"
+    ]
+  },
+  "AG": {
+    "complexity": "easy",
+    "processingWeeks": { "min": 2, "max": 8 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Strong tourism economy. Efficient CSME processing.",
+    "inDemandProfessions": [
+      "Tourism Professional", "Nurse",
+      "Teacher", "Construction"
+    ]
+  },
+  "SR": {
+    "complexity": "hard",
+    "processingWeeks": { "min": 8, "max": 24 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Dutch-speaking country. Language barrier may add complexity. Longer processing times.",
+    "inDemandProfessions": [
+      "Engineer", "IT Professional",
+      "Mining Professional", "Nurse"
+    ]
+  },
+  "BZ": {
+    "complexity": "moderate",
+    "processingWeeks": { "min": 4, "max": 16 },
+    "competentAuthority": "Ministry of Labour",
+    "skillsCertificateRequired": true,
+    "notes": "Spanish and English speaking. Growing economy with diverse opportunities.",
+    "inDemandProfessions": [
+      "Agriculture", "Tourism Professional",
+      "Teacher", "Nurse", "Construction"
+    ]
+  }
+}
