@@ -50,8 +50,8 @@ export default function ResourcesPage() {
     <div className="section">
       <h1 className="section-title">Resources</h1>
       <p className="section-subtitle">
-        Search a country to view stats, industries, maps, job boards, and
-        housing.
+        Search a country to explore stats, industries, jobs, housing, cost
+        estimates, and country comparisons.
       </p>
 
       <input
@@ -86,7 +86,7 @@ export default function ResourcesPage() {
             </h2>
 
             <p style={{ color: "#4b5563", marginTop: 0 }}>
-              Click to view country details, map, jobs, and housing.
+              Click to explore jobs, housing, costs, and country details.
             </p>
 
             <ul style={{ marginBottom: 0 }}>

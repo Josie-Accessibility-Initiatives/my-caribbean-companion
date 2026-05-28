@@ -1,9 +1,7 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-// import { useEffect } from 'react'        // pre-fill
-// import Link from 'next/link'              // pre-fill
-// import { getOnboarding } from '@/lib/persistence' // pre-fill
+import { useState, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { COUNTRY_META } from '@/data/countryMeta'
 import JobCard from '@/components/jobs/JobCard'
 import CuratedJobLinks from '@/components/jobs/CuratedJobLinks'
@@ -95,34 +93,21 @@ function SkeletonCard() {
 // ── Main page ──────────────────────────────────────────────────────
 
 export default function JobsPage() {
+  const searchParams = useSearchParams()
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedProfession, setSelectedProfession] = useState('')
   const [result, setResult] = useState<JobsApiResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [page, setPage] = useState(1)
-  // const [onboardingCtx, setOnboardingCtx] = useState<{ homeCountry: string; targetCountry: string; category: string } | null>(null)
 
-  // // Pre-fill from onboarding on mount
-  // useEffect(() => {
-  //   const onb = getOnboarding()
-  //   if (!onb) return
-  //   setOnboardingCtx(onb)
-  //   const isCode = onb.targetCountry.length === 2 && COUNTRY_META[onb.targetCountry]
-  //   const countryCode = isCode
-  //     ? onb.targetCountry
-  //     : (Object.entries(COUNTRY_META).find(([, m]) => m.name === onb.targetCountry)?.[0] ?? '')
-  //   if (countryCode) setSelectedCountry(countryCode)
-  //   if (onb.category) setSelectedProfession(onb.category)
-  // }, [])
-
-  // // Auto-search once both fields are pre-filled from onboarding
-  // useEffect(() => {
-  //   if (selectedCountry && selectedProfession && !result && !loading) {
-  //     doSearch(selectedCountry, selectedProfession, 1)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedCountry, selectedProfession])
+  // Pre-fill country from ?country= URL param
+  useEffect(() => {
+    const urlCountry = searchParams.get('country')
+    if (urlCountry && COUNTRY_META[urlCountry]) {
+      setSelectedCountry(urlCountry)
+    }
+  }, [searchParams])
 
   const doSearch = useCallback(async (country: string, profession: string, pg: number) => {
     if (!country || !profession) return
@@ -242,45 +227,6 @@ export default function JobsPage() {
               </button>
             </div>
 
-            {/* Onboarding context card — pre-fill disabled
-            {onboardingCtx && (
-              <div
-                style={{
-                  background: '#f0fdf4',
-                  border: '1px solid #bbf7d0',
-                  borderRadius: '0.75rem',
-                  padding: '1rem 1.1rem',
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.15em',
-                    color: '#1D9E75',
-                    margin: '0 0 0.6rem',
-                  }}
-                >
-                  Your move context
-                </p>
-                <p style={{ fontSize: '0.875rem', color: '#374151', margin: '0 0 0.25rem' }}>
-                  <span style={{ color: '#6b7280' }}>Moving to: </span>
-                  <strong>{onboardingCtx.targetCountry}</strong>
-                </p>
-                <p style={{ fontSize: '0.875rem', color: '#374151', margin: '0 0 0.75rem' }}>
-                  <span style={{ color: '#6b7280' }}>As a: </span>
-                  <strong>{onboardingCtx.category}</strong>
-                </p>
-                <Link
-                  href="/onboarding"
-                  style={{ fontSize: '0.8rem', color: '#1D9E75', fontWeight: 600, textDecoration: 'none' }}
-                >
-                  Update plan →
-                </Link>
-              </div>
-            )}
-            */}
           </div>
 
           {/* ── RIGHT COLUMN ── */}

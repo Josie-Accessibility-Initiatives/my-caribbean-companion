@@ -1215,3 +1215,56 @@ body {
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
 }
+
+/* =========================
+   AI Companion floating bubble
+   ========================= */
+
+@keyframes companionPulse {
+  0%   { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 0   rgba(29,158,117,0.4); }
+  70%  { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 10px rgba(29,158,117,0);   }
+  100% { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0 0   rgba(29,158,117,0);   }
+}
+
+.ai-companion-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1D9E75;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 50;
+  transition: transform 0.2s ease, background 0.2s ease;
+  animation: companionPulse 2s infinite;
+}
+
+.ai-companion-bubble:hover {
+  background: #178a65;
+  transform: scale(1.05);
+}
+
+.ai-companion-bubble-tooltip {
+  position: absolute;
+  bottom: 64px;
+  right: 0;
+  background: #111827;
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.ai-companion-bubble:hover .ai-companion-bubble-tooltip {
+  opacity: 1;
+}

@@ -3,11 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  COUNTRY_META,
-  REGIONAL_HOUSING,
-  REGIONAL_JOB_BOARDS,
-} from "@/data/countryMeta";
+import { Briefcase, Home, Calculator, BarChart2, ExternalLink } from "lucide-react";
+import { COUNTRY_META } from "@/data/countryMeta";
 
 type Country = {
   id: number;
@@ -19,7 +16,14 @@ type Country = {
   notes: string | null;
 };
 
-const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+// Labels to filter from country-specific lists
+const JOB_BOARD_EXCLUDE = ["linkedin", "caricom", "indeed"];
+const HOUSING_EXCLUDE = ["airbnb", "vrbo", "facebook"];
+
+function isExcluded(label: string, list: string[]): boolean {
+  const l = label.toLowerCase();
+  return list.some((term) => l.includes(term));
+}
 
 export default function CountryDetailPage() {
   const params = useParams<{ code: string }>();
@@ -53,16 +57,18 @@ export default function CountryDetailPage() {
     () =>
       resources.find(
         (c) => String(c.code || "").toUpperCase() === countryCode,
-      ) || null,
+      ) ?? null,
     [resources, countryCode],
   );
 
-  const meta = COUNTRY_META[countryCode] || null;
-  const coords = meta?.stats?.coordinates;
-  const mapSrc =
-    coords && GMAPS_KEY
-      ? `https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(GMAPS_KEY)}&q=${coords.lat},${coords.lng}&zoom=8`
-      : null;
+  const meta = COUNTRY_META[countryCode] ?? null;
+
+  const filteredJobBoards = (meta?.jobBoards ?? []).filter(
+    (j) => !isExcluded(j.label, JOB_BOARD_EXCLUDE),
+  );
+  const filteredHousing = (meta?.housing ?? []).filter(
+    (h) => !isExcluded(h.label, HOUSING_EXCLUDE),
+  );
 
   if (loading) {
     return (
@@ -91,6 +97,12 @@ export default function CountryDetailPage() {
     );
   }
 
+  const officialLinks = [
+    { label: "Immigration Department",     url: dbCountry.immigrationUrl },
+    { label: "Competent Authority (CSME)", url: dbCountry.competentAuthorityUrl },
+    { label: "Application Forms",          url: dbCountry.formsUrl },
+  ].filter((l): l is { label: string; url: string } => !!l.url);
+
   return (
     <div className="section">
       <Link href="/resources">← Back to Resources</Link>
@@ -100,175 +112,188 @@ export default function CountryDetailPage() {
         <span style={{ color: "#6b7280" }}>({dbCountry.code})</span>
       </h1>
 
+      {/* 1. Quick Actions */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+          gap: "0.6rem",
+          margin: "1.25rem 0",
+        }}
+      >
+        {[
+          { label: "Find Jobs",         href: `/jobs?country=${countryCode}`,          Icon: Briefcase },
+          { label: "View Housing",      href: `/housing?country=${countryCode}`,       Icon: Home },
+          { label: "Cost Estimate",     href: `/cost-estimate?country=${countryCode}`, Icon: Calculator },
+          { label: "Compare Countries", href: `/compare?highlight=${countryCode}`,     Icon: BarChart2 },
+        ].map(({ label, href, Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.4rem",
+              background: "#ffffff",
+              border: "1px solid #1D9E75",
+              color: "#1D9E75",
+              borderRadius: "0.5rem",
+              padding: "0.75rem 1rem",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              textDecoration: "none",
+              transition: "background 0.15s ease, color 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "#1D9E75";
+              (e.currentTarget as HTMLAnchorElement).style.color = "#ffffff";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff";
+              (e.currentTarget as HTMLAnchorElement).style.color = "#1D9E75";
+            }}
+          >
+            <Icon size={15} />
+            {label}
+          </Link>
+        ))}
+      </div>
+
+      {/* 2. Official CSME Resources */}
       <div className="planner-card" style={{ marginBottom: "1rem" }}>
-        <h2 style={{ marginTop: 0 }}>Official Resources</h2>
-        {dbCountry.immigrationUrl ||
-        dbCountry.competentAuthorityUrl ||
-        dbCountry.formsUrl ? (
-          <ul>
-            {dbCountry.immigrationUrl && (
-              <li>
-                <a
-                  href={dbCountry.immigrationUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Immigration website
-                </a>
-              </li>
-            )}
-            {dbCountry.competentAuthorityUrl && (
-              <li>
-                <a
-                  href={dbCountry.competentAuthorityUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Competent Authority
-                </a>
-              </li>
-            )}
-            {dbCountry.formsUrl && (
-              <li>
-                <a href={dbCountry.formsUrl} target="_blank" rel="noreferrer">
-                  Forms / Online services
-                </a>
-              </li>
-            )}
-          </ul>
+        <h2 style={{ marginTop: 0, marginBottom: "0.85rem" }}>
+          Official CSME Resources
+        </h2>
+
+        {officialLinks.length > 0 ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {officialLinks.map(({ label, url }) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
+                  borderLeft: "3px solid #1D9E75",
+                  borderRadius: "0.5rem",
+                  padding: "0.75rem 1rem",
+                  textDecoration: "none",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                      color: "#111827",
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#9ca3af",
+                      marginTop: "0.15rem",
+                    }}
+                  >
+                    Last verified: January 2025
+                  </div>
+                </div>
+                <ExternalLink size={15} color="#1D9E75" style={{ flexShrink: 0 }} />
+              </a>
+            ))}
+          </div>
         ) : (
           <p style={{ color: "#6b7280", margin: 0 }}>
-            Official links for {dbCountry.name} aren&apos;t available yet.
+            Official resource links coming soon. Check back or contact the
+            competent authority directly.
           </p>
-        )}
-        {dbCountry.notes && (
-          <p style={{ color: "#4b5563" }}>{dbCountry.notes}</p>
         )}
       </div>
 
-      <div className="planner-card" style={{ marginBottom: "1rem" }}>
-        <h2 style={{ marginTop: 0 }}>Country Snapshot</h2>
-
-        {meta?.stats ? (
-          <ul>
-            <li>
-              <strong>Capital:</strong> {meta.stats.capital}
-            </li>
-            <li>
-              <strong>Population:</strong> {meta.stats.population}
-            </li>
-            <li>
-              <strong>Currency:</strong> {meta.stats.currency}
-            </li>
-            <li>
-              <strong>Languages:</strong> {meta.stats.languages.join(", ")}
-            </li>
-          </ul>
-        ) : (
-          <p style={{ color: "#6b7280" }}>
-            Stats coming soon for {countryCode}.
-          </p>
-        )}
-
-        <h3>Emerging Industries</h3>
-        {meta?.industries?.length ? (
-          <ul>
-            {meta.industries.map((x) => (
-              <li key={x}>{x}</li>
+      {/* 3. Country Snapshot — stat grid */}
+      {meta?.stats && (
+        <div className="planner-card" style={{ marginBottom: "1rem" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+              gap: "0.6rem",
+            }}
+          >
+            {[
+              { label: "Capital",     value: meta.stats.capital },
+              { label: "Population",  value: meta.stats.population },
+              { label: "Currency",    value: meta.stats.currency },
+              { label: "Languages",   value: meta.stats.languages.join(", ") },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                style={{
+                  background: "#f9fafb",
+                  borderRadius: "0.5rem",
+                  padding: "0.75rem 1rem",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#9ca3af",
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  {label}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    color: "#111827",
+                  }}
+                >
+                  {value}
+                </div>
+              </div>
             ))}
-          </ul>
-        ) : (
-          <p style={{ color: "#6b7280" }}>
-            Industries coming soon for {countryCode}.
-          </p>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
 
-      <div className="planner-card" style={{ marginBottom: "1rem" }}>
-        <h2 style={{ marginTop: 0 }}>Map</h2>
-        {mapSrc ? (
-          <iframe
-            title={`${dbCountry.name} map`}
-            width="100%"
-            height={350}
-            style={{ border: 0, borderRadius: 12 }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-            src={mapSrc}
-          />
-        ) : (
-          <p style={{ color: "#6b7280" }}>
-            Map preview unavailable. Set{" "}
-            <code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> in{" "}
-            <code>.env.local</code> to enable embedded maps.
-          </p>
-        )}
-      </div>
-
-      <div className="planner-card" style={{ marginBottom: "1rem" }}>
-        <h2 style={{ marginTop: 0 }}>Job Boards</h2>
-
-        <h3>Country-specific</h3>
-        {meta?.jobBoards?.length ? (
-          <ul>
-            {meta.jobBoards.map((j) => (
-              <li key={j.url}>
-                <a href={j.url} target="_blank" rel="noreferrer">
-                  {j.label}
-                </a>
-              </li>
+      {/* 4. Emerging Industries — pills */}
+      {(meta?.industries?.length ?? 0) > 0 && (
+        <div className="planner-card" style={{ marginBottom: "1rem" }}>
+          <h2 style={{ marginTop: 0, marginBottom: "0.75rem" }}>
+            Emerging Industries
+          </h2>
+          <div style={{ display: "flex", flexWrap: "wrap", margin: "-4px" }}>
+            {meta!.industries.map((x) => (
+              <span
+                key={x}
+                style={{
+                  border: "1px solid #1D9E75",
+                  color: "#1D9E75",
+                  background: "#ffffff",
+                  borderRadius: "999px",
+                  padding: "4px 12px",
+                  fontSize: "0.85rem",
+                  margin: "4px",
+                  display: "inline-block",
+                }}
+              >
+                {x}
+              </span>
             ))}
-          </ul>
-        ) : (
-          <p style={{ color: "#6b7280" }}>
-            Country-specific boards coming soon for {countryCode}.
-          </p>
-        )}
-
-        <h3>Caribbean-wide</h3>
-        <ul>
-          {REGIONAL_JOB_BOARDS.map((j) => (
-            <li key={j.url}>
-              <a href={j.url} target="_blank" rel="noreferrer">
-                {j.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="planner-card">
-        <h2 style={{ marginTop: 0 }}>Housing &amp; Accommodation</h2>
-
-        <h3>Country-specific</h3>
-        {meta?.housing?.length ? (
-          <ul>
-            {meta.housing.map((h) => (
-              <li key={h.url}>
-                <a href={h.url} target="_blank" rel="noreferrer">
-                  {h.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p style={{ color: "#6b7280" }}>
-            Housing links coming soon for {countryCode}.
-          </p>
-        )}
-
-        <h3>Regional / short-term</h3>
-        <ul>
-          {REGIONAL_HOUSING.map((h) => (
-            <li key={h.url}>
-              <a href={h.url} target="_blank" rel="noreferrer">
-                {h.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+          </div>
+        </div>
+      )}  
     </div>
   );
 }

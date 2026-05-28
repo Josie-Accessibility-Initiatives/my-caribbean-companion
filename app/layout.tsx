@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/nav/Navbar";
+import AICompanionBubble from "@/components/nav/AICompanionBubble";
 import Footer from "@/components/nav/Footer";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { createClient } from "@/lib/supabase/server";
@@ -29,11 +30,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning>
         <AuthProvider initialUser={user}>
           <div className="app-root">
             <Navbar />
             <main className="app-main">{children}</main>
+            <AICompanionBubble />
             <Footer />
           </div>
         </AuthProvider>
