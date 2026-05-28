@@ -1,0 +1,528 @@
+{
+  "regional": [
+    {
+      "name": "Caribbean MLS",
+      "url": "https://www.caribbeanmls.com",
+      "description": "Multiple listing service covering all Caribbean territories",
+      "type": "real_estate",
+      "icon": "home"
+    },
+    {
+      "name": "Century 21 Caribbean",
+      "url": "https://www.century21caribbean.com",
+      "description": "Regional real estate listings across the Caribbean",
+      "type": "real_estate",
+      "icon": "home"
+    },
+    {
+      "name": "RE/MAX Caribbean",
+      "url": "https://www.remax-caribbean.com",
+      "description": "RE/MAX listings across Caribbean member states",
+      "type": "real_estate",
+      "icon": "home"
+    },
+    {
+      "name": "Airbnb Caribbean",
+      "url": "https://www.airbnb.com/caribbean",
+      "description": "Short-term accommodation while searching for permanent housing",
+      "type": "temporary",
+      "icon": "building"
+    },
+    {
+      "name": "VRBO Caribbean",
+      "url": "https://www.vrbo.com/vacation-rentals/caribbean",
+      "description": "Vacation rentals for temporary stays",
+      "type": "temporary",
+      "icon": "building"
+    }
+  ],
+  "by_country": {
+    "TT": {
+      "facebookGroups": [
+        {
+          "name": "Trinidad Rentals & Real Estate",
+          "url": "https://www.facebook.com/groups/trinidadrentals",
+          "description": "Active group for rental listings in Trinidad",
+          "members": "50,000+"
+        },
+        {
+          "name": "Accommodation in Trinidad",
+          "url": "https://www.facebook.com/groups/accommodationtt",
+          "description": "Short and long term accommodation",
+          "members": "25,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Property Solutions TT",
+          "url": "https://www.propertysolutionstt.com",
+          "description": "Trinidad and Tobago real estate listings"
+        },
+        {
+          "name": "Caribbean MLS Trinidad",
+          "url": "https://www.caribbeanmls.com/trinidad-tobago",
+          "description": "MLS listings for Trinidad and Tobago"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/tt/port-of-spain.html",
+      "averageRent": {
+        "studio": { "min": 400, "max": 700 },
+        "oneBed": { "min": 600, "max": 1200 },
+        "twoBed": { "min": 900, "max": 1800 },
+        "currency": "USD",
+        "note": "Port of Spain area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Woodbrook",
+          "description": "Popular expat area, walkable, close to amenities",
+          "priceRange": "mid-high"
+        },
+        {
+          "name": "Maraval",
+          "description": "Quiet residential, good for families",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Chaguanas",
+          "description": "More affordable, good transport links",
+          "priceRange": "budget"
+        }
+      ]
+    },
+    "BB": {
+      "facebookGroups": [
+        {
+          "name": "Barbados Rentals & Real Estate",
+          "url": "https://www.facebook.com/groups/barbadosrentals",
+          "description": "Rental listings across Barbados",
+          "members": "30,000+"
+        },
+        {
+          "name": "Expats in Barbados",
+          "url": "https://www.facebook.com/groups/expatsbarbados",
+          "description": "Expat community with housing tips and leads",
+          "members": "15,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Bajan Homes",
+          "url": "https://www.bajanhomes.com",
+          "description": "Barbados property listings and rentals"
+        },
+        {
+          "name": "Caribbean MLS Barbados",
+          "url": "https://www.caribbeanmls.com/barbados",
+          "description": "MLS listings for Barbados"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/bb/bridgetown.html",
+      "averageRent": {
+        "studio": { "min": 600, "max": 900 },
+        "oneBed": { "min": 800, "max": 1400 },
+        "twoBed": { "min": 1200, "max": 2200 },
+        "currency": "USD",
+        "note": "Bridgetown area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Bridgetown",
+          "description": "Capital city, commercial hub, busy",
+          "priceRange": "mid-high"
+        },
+        {
+          "name": "Speightstown",
+          "description": "North coast, quieter, more affordable",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Oistins",
+          "description": "South coast, popular with expats",
+          "priceRange": "mid"
+        }
+      ]
+    },
+    "JM": {
+      "facebookGroups": [
+        {
+          "name": "Jamaica Real Estate & Rentals",
+          "url": "https://www.facebook.com/groups/jamaicarealestate",
+          "description": "Real estate and rental listings for Jamaica",
+          "members": "40,000+"
+        },
+        {
+          "name": "Kingston Apartments & Rooms",
+          "url": "https://www.facebook.com/groups/kingstonapartments",
+          "description": "Apartment and room rentals in Kingston",
+          "members": "20,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Jamaica Real Estate",
+          "url": "https://www.jamaicarealestate.com",
+          "description": "Jamaica property listings and rentals"
+        },
+        {
+          "name": "Caribbean MLS Jamaica",
+          "url": "https://www.caribbeanmls.com/jamaica",
+          "description": "MLS listings for Jamaica"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/jm/kingston.html",
+      "averageRent": {
+        "studio": { "min": 300, "max": 600 },
+        "oneBed": { "min": 500, "max": 900 },
+        "twoBed": { "min": 700, "max": 1400 },
+        "currency": "USD",
+        "note": "Kingston area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "New Kingston",
+          "description": "Business district, safe, well connected",
+          "priceRange": "mid-high"
+        },
+        {
+          "name": "Portmore",
+          "description": "Affordable suburb, good for families",
+          "priceRange": "budget"
+        },
+        {
+          "name": "Liguanea",
+          "description": "Popular residential area, good amenities",
+          "priceRange": "mid"
+        }
+      ]
+    },
+    "GY": {
+      "facebookGroups": [
+        {
+          "name": "Guyana Real Estate & Rentals",
+          "url": "https://www.facebook.com/groups/guyanarealestate",
+          "description": "Property listings for Guyana",
+          "members": "15,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Guyana Properties",
+          "url": "https://www.guyanaproperties.com",
+          "description": "Real estate listings for Guyana"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/gy/georgetown.html",
+      "averageRent": {
+        "studio": { "min": 250, "max": 450 },
+        "oneBed": { "min": 400, "max": 700 },
+        "twoBed": { "min": 600, "max": 1100 },
+        "currency": "USD",
+        "note": "Georgetown area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Queenstown",
+          "description": "Central, popular with professionals",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Bel Air",
+          "description": "Upscale residential area",
+          "priceRange": "high"
+        },
+        {
+          "name": "Agricola",
+          "description": "More affordable, good community feel",
+          "priceRange": "budget"
+        }
+      ]
+    },
+    "LC": {
+      "facebookGroups": [
+        {
+          "name": "Saint Lucia Rentals",
+          "url": "https://www.facebook.com/groups/saintluciarentals",
+          "description": "Rental listings for Saint Lucia",
+          "members": "8,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Saint Lucia Real Estate",
+          "url": "https://www.caribbeanmls.com/saint-lucia",
+          "description": "MLS listings for Saint Lucia"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/lc/castries.html",
+      "averageRent": {
+        "studio": { "min": 400, "max": 650 },
+        "oneBed": { "min": 550, "max": 950 },
+        "twoBed": { "min": 800, "max": 1400 },
+        "currency": "USD",
+        "note": "Castries area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Castries",
+          "description": "Capital city, commercial center",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Rodney Bay",
+          "description": "Popular expat area, great amenities",
+          "priceRange": "mid-high"
+        }
+      ]
+    },
+    "GD": {
+      "facebookGroups": [
+        {
+          "name": "Grenada Rentals & Housing",
+          "url": "https://www.facebook.com/groups/grenadahousing",
+          "description": "Housing and rental listings for Grenada",
+          "members": "6,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Grenada Real Estate",
+          "url": "https://www.caribbeanmls.com/grenada",
+          "description": "MLS listings for Grenada"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/gd/saint-george-s.html",
+      "averageRent": {
+        "studio": { "min": 350, "max": 600 },
+        "oneBed": { "min": 500, "max": 900 },
+        "twoBed": { "min": 750, "max": 1300 },
+        "currency": "USD",
+        "note": "St. George's area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "St. George's",
+          "description": "Capital, historic, walkable",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Grand Anse",
+          "description": "Beach area, popular with expats",
+          "priceRange": "mid-high"
+        }
+      ]
+    },
+    "DM": {
+      "facebookGroups": [
+        {
+          "name": "Dominica Housing & Rentals",
+          "url": "https://www.facebook.com/groups/dominicahousing",
+          "description": "Housing listings for Dominica",
+          "members": "4,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Dominica Real Estate",
+          "url": "https://www.caribbeanmls.com/dominica",
+          "description": "MLS listings for Dominica"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/dm/roseau.html",
+      "averageRent": {
+        "studio": { "min": 300, "max": 500 },
+        "oneBed": { "min": 400, "max": 700 },
+        "twoBed": { "min": 600, "max": 1000 },
+        "currency": "USD",
+        "note": "Roseau area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Roseau",
+          "description": "Capital, rebuilt post-hurricane, growing",
+          "priceRange": "mid"
+        }
+      ]
+    },
+    "VC": {
+      "facebookGroups": [
+        {
+          "name": "St Vincent Rentals",
+          "url": "https://www.facebook.com/groups/stvincentrentals",
+          "description": "Rental listings for St Vincent",
+          "members": "5,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "SVG Real Estate",
+          "url": "https://www.caribbeanmls.com/st-vincent",
+          "description": "MLS listings for St Vincent"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/vc/kingstown.html",
+      "averageRent": {
+        "studio": { "min": 300, "max": 500 },
+        "oneBed": { "min": 400, "max": 750 },
+        "twoBed": { "min": 600, "max": 1100 },
+        "currency": "USD",
+        "note": "Kingstown area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Kingstown",
+          "description": "Capital, main commercial center",
+          "priceRange": "mid"
+        }
+      ]
+    },
+    "KN": {
+      "facebookGroups": [
+        {
+          "name": "St Kitts Nevis Housing",
+          "url": "https://www.facebook.com/groups/stkittshousing",
+          "description": "Housing listings for St Kitts and Nevis",
+          "members": "4,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "SKN Real Estate",
+          "url": "https://www.caribbeanmls.com/st-kitts-nevis",
+          "description": "MLS listings for St Kitts and Nevis"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/kn/basseterre.html",
+      "averageRent": {
+        "studio": { "min": 400, "max": 650 },
+        "oneBed": { "min": 550, "max": 900 },
+        "twoBed": { "min": 800, "max": 1400 },
+        "currency": "USD",
+        "note": "Basseterre area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Basseterre",
+          "description": "Capital, main hub, good amenities",
+          "priceRange": "mid"
+        }
+      ]
+    },
+    "AG": {
+      "facebookGroups": [
+        {
+          "name": "Antigua Barbuda Rentals",
+          "url": "https://www.facebook.com/groups/antiguarentals",
+          "description": "Rental listings for Antigua and Barbuda",
+          "members": "7,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Antigua Real Estate",
+          "url": "https://www.caribbeanmls.com/antigua-barbuda",
+          "description": "MLS listings for Antigua and Barbuda"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/ag/saint-john-s.html",
+      "averageRent": {
+        "studio": { "min": 500, "max": 800 },
+        "oneBed": { "min": 700, "max": 1200 },
+        "twoBed": { "min": 1000, "max": 1800 },
+        "currency": "USD",
+        "note": "St. John's area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "St. John's",
+          "description": "Capital, commercial hub, busy",
+          "priceRange": "mid-high"
+        },
+        {
+          "name": "English Harbour",
+          "description": "Popular with expats, marina area",
+          "priceRange": "high"
+        }
+      ]
+    },
+    "SR": {
+      "facebookGroups": [
+        {
+          "name": "Suriname Housing & Rentals",
+          "url": "https://www.facebook.com/groups/surinamehousing",
+          "description": "Housing listings for Suriname",
+          "members": "8,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Suriname Real Estate",
+          "url": "https://www.caribbeanmls.com/suriname",
+          "description": "Property listings for Suriname"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/sr/paramaribo.html",
+      "averageRent": {
+        "studio": { "min": 250, "max": 450 },
+        "oneBed": { "min": 350, "max": 650 },
+        "twoBed": { "min": 500, "max": 950 },
+        "currency": "USD",
+        "note": "Paramaribo area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Paramaribo",
+          "description": "Capital, Dutch colonial architecture, central",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Wanica",
+          "description": "Suburban district, more affordable",
+          "priceRange": "budget"
+        }
+      ]
+    },
+    "BZ": {
+      "facebookGroups": [
+        {
+          "name": "Belize Rentals & Housing",
+          "url": "https://www.facebook.com/groups/belizehousing",
+          "description": "Housing listings for Belize",
+          "members": "10,000+"
+        }
+      ],
+      "realEstateLinks": [
+        {
+          "name": "Belize Real Estate",
+          "url": "https://www.belizerealestate.com",
+          "description": "Real estate listings for Belize"
+        },
+        {
+          "name": "Caribbean MLS Belize",
+          "url": "https://www.caribbeanmls.com/belize",
+          "description": "MLS listings for Belize"
+        }
+      ],
+      "bookingComUrl": "https://www.booking.com/city/bz/belize-city.html",
+      "averageRent": {
+        "studio": { "min": 300, "max": 500 },
+        "oneBed": { "min": 400, "max": 750 },
+        "twoBed": { "min": 600, "max": 1100 },
+        "currency": "USD",
+        "note": "Belize City area. Updated 2025."
+      },
+      "neighborhoods": [
+        {
+          "name": "Belize City",
+          "description": "Main commercial hub, busy port city",
+          "priceRange": "mid"
+        },
+        {
+          "name": "Belmopan",
+          "description": "Quiet capital, government hub",
+          "priceRange": "budget"
+        }
+      ]
+    }
+  }
+}
