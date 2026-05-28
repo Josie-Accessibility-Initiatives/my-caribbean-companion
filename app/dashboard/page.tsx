@@ -12,6 +12,8 @@ import { COUNTRY_META } from "@/data/countryMeta";
 import type { JobListing } from "@/lib/external/jsearch";
 import type { JobLink } from "@/lib/types/jobs";
 
+// ── Types ──────────────────────────────────────────────────────────
+
 type JobPreviewResult = {
   country: { code: string; name: string };
   profession: string;
@@ -24,6 +26,21 @@ type JobPreviewResult = {
     countryLinks: JobLink[];
     professionLinks: Omit<JobLink, "categories">[];
     caribbeanWideLinks: JobLink[];
+  };
+};
+
+type HousingPreview = {
+  country: { name: string };
+  liveData: {
+    averageRentOneBed: { min: number | null; max: number | null } | null;
+  };
+  staticData: {
+    averageRent: {
+      oneBed: { min: number; max: number };
+      currency: string;
+    } | null;
+    facebookGroups: { name: string; url: string }[];
+    bookingComUrl: string | null;
   };
 };
 
@@ -62,12 +79,25 @@ type StoredPlan = {
   plan: Plan;
 };
 
+// ── Helpers ────────────────────────────────────────────────────────
+
+function resolveOneBed(
+  preview: HousingPreview
+): { min: number; max: number } | null {
+  const live = preview.liveData.averageRentOneBed;
+  if (live?.min != null && live?.max != null) return { min: live.min, max: live.max };
+  return preview.staticData.averageRent?.oneBed ?? null;
+}
+
+// ── Page ───────────────────────────────────────────────────────────
+
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [stored, setStored] = useState<StoredPlan | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [jobPreview, setJobPreview] = useState<JobPreviewResult | null>(null);
+  const [housingPreview, setHousingPreview] = useState<HousingPreview | null>(null);
 
   useEffect(() => {
     const raw = localStorage.getItem("mcc_plan");
@@ -102,6 +132,7 @@ export default function DashboardPage() {
     localStorage.setItem(stateKey, JSON.stringify(checked));
   }, [checked, stored]);
 
+  // Jobs teaser fetch
   useEffect(() => {
     if (!stored) return;
     const { toCountry, categoryLabel } = stored.input;
@@ -112,6 +143,21 @@ export default function DashboardPage() {
       .then((r) => (r.ok ? r.json() : null))
       .then((data: JobPreviewResult | null) => {
         if (data) setJobPreview(data);
+      })
+      .catch(() => {
+        /* silent — teaser is non-critical */
+      });
+  }, [stored]);
+
+  // Housing teaser fetch
+  useEffect(() => {
+    if (!stored) return;
+    const { toCountry } = stored.input;
+    if (!toCountry) return;
+    fetch(`/api/housing?country=${encodeURIComponent(toCountry)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: HousingPreview | null) => {
+        if (data) setHousingPreview(data);
       })
       .catch(() => {
         /* silent — teaser is non-critical */
@@ -129,8 +175,7 @@ export default function DashboardPage() {
   }
 
   const { input, plan } = stored;
-  const completedCount = plan.checklist.filter((item) => checked[item.id])
-    .length;
+  const completedCount = plan.checklist.filter((item) => checked[item.id]).length;
 
   const toggle = (id: string) =>
     setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -138,6 +183,13 @@ export default function DashboardPage() {
   const handleExportPDF = () => {
     exportPlanToPDF(plan, input, checked, !!user);
   };
+
+  // Resolved housing data for teaser
+  const oneBed = housingPreview ? resolveOneBed(housingPreview) : null;
+  const bookingUrl = housingPreview?.staticData.bookingComUrl ?? null;
+  const firstFbGroup = housingPreview?.staticData.facebookGroups[0] ?? null;
+  const housingCountryName =
+    housingPreview?.country.name ?? input.targetCountryName;
 
   return (
     <div className="page page-dashboard">
@@ -171,6 +223,7 @@ export default function DashboardPage() {
               <a href="#cost-estimate">Cost Estimate</a>
               <Link href="/companion">AI Companion</Link>
               <Link href="/jobs">Job Board</Link>
+              <Link href="/housing">Housing</Link>
             </nav>
 
             {!loading && !user && (
@@ -404,6 +457,118 @@ export default function DashboardPage() {
                 </Link>
               </>
             )}
+          </section>
+
+          {/* ── Housing teaser ── */}
+          <section id="housing" className="dashboard-section">
+            <h2 className="section-title">Housing Discovery</h2>
+
+            {oneBed ? (
+              <>
+                {/* Rent highlight */}
+                <div
+                  style={{
+                    background: "#f0fdf4",
+                    border: "1px solid #bbf7d0",
+                    borderRadius: "0.75rem",
+                    padding: "1rem 1.25rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: "0 0 0.2rem",
+                      fontSize: "1.2rem",
+                      fontWeight: 700,
+                      color: "#1D9E75",
+                    }}
+                  >
+                    ${oneBed.min.toLocaleString()} – ${oneBed.max.toLocaleString()}{" "}
+                    <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>
+                      {housingPreview?.staticData.averageRent?.currency ?? "USD"}/month
+                    </span>
+                  </p>
+                  <p style={{ margin: 0, fontSize: "0.8rem", color: "#6b7280" }}>
+                    Estimated 1-bedroom rent in {housingCountryName}
+                  </p>
+                </div>
+
+                {/* Quick links */}
+                {(bookingUrl || firstFbGroup) && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "0.6rem",
+                      flexWrap: "wrap",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    {bookingUrl && (
+                      <a
+                        href={bookingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.25rem",
+                          background: "rgba(29,158,117,0.08)",
+                          color: "#1D9E75",
+                          border: "1px solid rgba(29,158,117,0.25)",
+                          borderRadius: "999px",
+                          padding: "0.35rem 0.85rem",
+                          fontSize: "0.8rem",
+                          fontWeight: 600,
+                          textDecoration: "none",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Browse Booking.com →
+                      </a>
+                    )}
+                    {firstFbGroup && (
+                      <a
+                        href={firstFbGroup.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.25rem",
+                          background: "rgba(24,119,242,0.08)",
+                          color: "#1877f2",
+                          border: "1px solid rgba(24,119,242,0.25)",
+                          borderRadius: "999px",
+                          padding: "0.35rem 0.85rem",
+                          fontSize: "0.8rem",
+                          fontWeight: 600,
+                          textDecoration: "none",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Join Housing Groups →
+                      </a>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0 0 1rem" }}>
+                Find accommodation in{" "}
+                <strong>{housingCountryName}</strong> — temporary stays,
+                long-term rentals, and local housing communities.
+              </p>
+            )}
+
+            <div className="plan-actions">
+              <Link
+                href="/housing"
+                className="btn-primary"
+                style={{ textDecoration: "none" }}
+              >
+                Explore Housing Options →
+              </Link>
+            </div>
           </section>
         </main>
       </div>

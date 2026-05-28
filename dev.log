@@ -299,3 +299,20 @@ Require stack:
  ✓ Compiled in 2.6s (2221 modules)
  ✓ Compiled in 1698ms (2221 modules)
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz'
+ ✓ Compiled in 21.1s (2390 modules)
+ ○ Compiling /api/test-housing ...
+ ✓ Compiled /api/test-housing in 7.9s (2381 modules)
+ GET /api/test-housing 200 in 24482ms
+ ✓ Compiled in 7.3s (2390 modules)
+ ✓ Compiled in 3.2s (2390 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: unexpected end of file
+ ✓ Compiled in 12s (986 modules)
+ ✓ Compiled in 1133ms (986 modules)
+ ✓ Compiled in 1561ms (986 modules)
+ ✓ Compiled in 1140ms (986 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack failed from C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development.pack.gz: Error: unexpected end of file
+ ✓ Compiled in 27.4s (2390 modules)
+ ✓ Compiled in 21.8s (2221 modules)
+ ✓ Compiled in 902ms (986 modules)
+ ⨯ ReferenceError: self is not defined
+    at Object.<anonymous> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\middleware.js:9:1)
