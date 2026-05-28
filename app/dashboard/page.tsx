@@ -131,6 +131,7 @@ export default function DashboardPage() {
               <a href="#checklist">Checklist</a>
               <a href="#timeline">Timeline</a>
               <a href="#links">Official Links</a>
+              <Link href="/companion">AI Companion</Link>
             </nav>
 
             {!loading && !user && (
@@ -284,6 +285,29 @@ export default function DashboardPage() {
                 Export as PDF
               </button>
             </div>
+          </section>
+
+          <section id="companion" className="dashboard-section">
+            <h2 className="section-title">Ask Your AI Companion</h2>
+            <p style={{ color: "#4b5563", margin: "0.5rem 0 1rem" }}>
+              Have questions about your move? Your AI companion can answer
+              anything about CSME eligibility, documents, and next steps.
+            </p>
+            <div className="companion-teaser-bubble">
+              What documents do I need as a {input.categoryLabel} moving from{" "}
+              {input.homeCountryName} to {input.targetCountryName}?
+            </div>
+            <Link
+              href="/companion"
+              className="btn-primary"
+              style={{
+                marginTop: "1.25rem",
+                display: "inline-block",
+                textDecoration: "none",
+              }}
+            >
+              Chat with Companion
+            </Link>
           </section>
         </main>
       </div>

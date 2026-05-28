@@ -8,6 +8,7 @@ const baseNavLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/onboarding", label: "Plan My Move" },
+  { href: "/companion", label: "AI Companion" },
   { href: "/resources", label: "Resources" },
   { href: "/contact", label: "Contact" },
 ];

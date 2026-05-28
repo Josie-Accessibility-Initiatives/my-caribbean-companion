@@ -4,10 +4,13 @@ export type CountryMeta = {
   name: string;
   stats: {
     capital: string;
+    searchCity: string;
     population: string;
     currency: string;
     languages: string[];
     coordinates: { lat: number; lng: number };
+    airportCode: string;
+    airportName: string;
   };
   industries: string[];
   jobBoards: LinkItem[];
@@ -35,10 +38,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Trinidad and Tobago",
     stats: {
       capital: "Port of Spain",
+      searchCity: "Port of Spain",
       population: "1.4 million",
       currency: "TTD",
       languages: ["English"],
       coordinates: { lat: 10.6603, lng: -61.5086 },
+      airportCode: "POS",
+      airportName: "Piarco International",
     },
     industries: [
       "Energy & Petrochemicals",
@@ -77,10 +83,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Barbados",
     stats: {
       capital: "Bridgetown",
+      searchCity: "Bridgetown",
       population: "281,000",
       currency: "BBD",
       languages: ["English"],
       coordinates: { lat: 13.0975, lng: -59.6167 },
+      airportCode: "BGI",
+      airportName: "Grantley Adams International",
     },
     industries: [
       "Tourism & Hospitality",
@@ -116,10 +125,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Jamaica",
     stats: {
       capital: "Kingston",
+      searchCity: "Kingston",
       population: "2.8 million",
       currency: "JMD",
       languages: ["English"],
       coordinates: { lat: 18.1096, lng: -77.2975 },
+      airportCode: "KIN",
+      airportName: "Norman Manley International",
     },
     industries: [
       "Tourism",
@@ -156,10 +168,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Guyana",
     stats: {
       capital: "Georgetown",
+      searchCity: "Georgetown",
       population: "813,000",
       currency: "GYD",
       languages: ["English"],
       coordinates: { lat: 6.8013, lng: -58.1551 },
+      airportCode: "GEO",
+      airportName: "Cheddi Jagan International",
     },
     industries: [
       "Oil & Gas",
@@ -191,10 +206,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Saint Lucia",
     stats: {
       capital: "Castries",
+      searchCity: "Castries",
       population: "184,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 13.9094, lng: -60.9789 },
+      airportCode: "SLU",
+      airportName: "George F. L. Charles Airport",
     },
     industries: [
       "Tourism",
@@ -226,10 +244,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Grenada",
     stats: {
       capital: "St. George's",
+      searchCity: "St. George's",
       population: "113,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 12.1165, lng: -61.679 },
+      airportCode: "GND",
+      airportName: "Maurice Bishop International",
     },
     industries: [
       "Tourism",
@@ -261,10 +282,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Dominica",
     stats: {
       capital: "Roseau",
+      searchCity: "Roseau",
       population: "72,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 15.415, lng: -61.371 },
+      airportCode: "DOM",
+      airportName: "Douglas-Charles Airport",
     },
     industries: [
       "Eco-Tourism",
@@ -292,10 +316,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "St. Vincent and the Grenadines",
     stats: {
       capital: "Kingstown",
+      searchCity: "Kingstown",
       population: "111,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 13.2528, lng: -61.1971 },
+      airportCode: "SVD",
+      airportName: "Argyle International",
     },
     industries: [
       "Tourism",
@@ -323,10 +350,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "St. Kitts and Nevis",
     stats: {
       capital: "Basseterre",
+      searchCity: "Basseterre",
       population: "53,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 17.3578, lng: -62.783 },
+      airportCode: "SKB",
+      airportName: "Robert L. Bradshaw International",
     },
     industries: [
       "Tourism",
@@ -358,10 +388,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Antigua and Barbuda",
     stats: {
       capital: "St. John's",
+      searchCity: "St. John's",
       population: "99,000",
       currency: "XCD",
       languages: ["English"],
       coordinates: { lat: 17.0608, lng: -61.7964 },
+      airportCode: "ANU",
+      airportName: "V.C. Bird International",
     },
     industries: [
       "Tourism",
@@ -393,10 +426,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Suriname",
     stats: {
       capital: "Paramaribo",
+      searchCity: "Paramaribo",
       population: "623,000",
       currency: "SRD",
       languages: ["Dutch"],
       coordinates: { lat: 5.852, lng: -55.2038 },
+      airportCode: "PBM",
+      airportName: "Johan Adolf Pengel International",
     },
     industries: [
       "Mining",
@@ -425,10 +461,13 @@ export const COUNTRY_META: Record<string, CountryMeta> = {
     name: "Belize",
     stats: {
       capital: "Belmopan",
+      searchCity: "Belize City",
       population: "405,000",
       currency: "BZD",
       languages: ["English"],
       coordinates: { lat: 17.1899, lng: -88.4976 },
+      airportCode: "BZE",
+      airportName: "Philip S. W. Goldson International",
     },
     industries: [
       "Tourism",

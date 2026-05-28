@@ -1,0 +1,79 @@
+{
+  "defaults": {
+    "documents": {
+      "skillsCertificate": 50,
+      "policeCertificate": 30,
+      "medicalCertificate": 80,
+      "notarization": 40,
+      "translation": 0,
+      "total": 200,
+      "note": "Approximate fees in USD. Verify with competent authority."
+    },
+    "shipping": {
+      "carryon": 0,
+      "extraBaggage": 100,
+      "smallLoad": 300,
+      "mediumLoad": 800,
+      "note": "Personal effects, regional shipping"
+    },
+    "housing": {
+      "depositMonths": 2,
+      "temporaryNights": 14,
+      "note": "Deposit typically 1-2 months rent"
+    },
+    "emergency": {
+      "recommendedMonths": 3,
+      "note": "3 months living expenses recommended"
+    }
+  },
+  "countries": {
+    "TT": {
+      "temporaryAccommodationPerNight": 60,
+      "bookingComLink": "https://www.booking.com/city/tt/port-of-spain.html"
+    },
+    "BB": {
+      "temporaryAccommodationPerNight": 80,
+      "bookingComLink": "https://www.booking.com/city/bb/bridgetown.html"
+    },
+    "JM": {
+      "temporaryAccommodationPerNight": 70,
+      "bookingComLink": "https://www.booking.com/city/jm/kingston.html"
+    },
+    "GY": {
+      "temporaryAccommodationPerNight": 50,
+      "bookingComLink": "https://www.booking.com/city/gy/georgetown.html"
+    },
+    "LC": {
+      "temporaryAccommodationPerNight": 65,
+      "bookingComLink": "https://www.booking.com/city/lc/castries.html"
+    },
+    "GD": {
+      "temporaryAccommodationPerNight": 70,
+      "bookingComLink": "https://www.booking.com/city/gd/saint-george-s.html"
+    },
+    "DM": {
+      "temporaryAccommodationPerNight": 55,
+      "bookingComLink": "https://www.booking.com/city/dm/roseau.html"
+    },
+    "VC": {
+      "temporaryAccommodationPerNight": 60,
+      "bookingComLink": "https://www.booking.com/city/vc/kingstown.html"
+    },
+    "KN": {
+      "temporaryAccommodationPerNight": 75,
+      "bookingComLink": "https://www.booking.com/city/kn/basseterre.html"
+    },
+    "AG": {
+      "temporaryAccommodationPerNight": 80,
+      "bookingComLink": "https://www.booking.com/city/ag/saint-john-s.html"
+    },
+    "SR": {
+      "temporaryAccommodationPerNight": 50,
+      "bookingComLink": "https://www.booking.com/city/sr/paramaribo.html"
+    },
+    "BZ": {
+      "temporaryAccommodationPerNight": 55,
+      "bookingComLink": "https://www.booking.com/city/bz/belize-city.html"
+    }
+  }
+}

@@ -23,6 +23,35 @@ type StoredPlan = {
 
 type StoredChecklist = Record<string, boolean>;
 
+export type OnboardingContext = {
+  homeCountry: string;
+  targetCountry: string;
+  category: string;
+};
+
+export function getOnboarding(): OnboardingContext | null {
+  if (typeof window === "undefined") return null;
+
+  const raw = window.localStorage.getItem(STORAGE_KEYS.plan);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as StoredPlan;
+    const input = parsed?.input;
+    if (!input) return null;
+
+    const homeCountry = input.homeCountryName ?? input.fromCountry;
+    const targetCountry = input.targetCountryName ?? input.toCountry;
+    const category = input.categoryLabel ?? input.category;
+
+    if (!homeCountry || !targetCountry || !category) return null;
+
+    return { homeCountry, targetCountry, category };
+  } catch {
+    return null;
+  }
+}
+
 export function clearLocalData(): void {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(STORAGE_KEYS.plan);
