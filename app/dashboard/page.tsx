@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 import SavePlanBanner from "@/components/dashboard/SavePlanBanner";
+import CostEstimator from "@/components/dashboard/CostEstimator";
 import { exportPlanToPDF } from "@/lib/pdfExport";
+import { COUNTRY_META } from "@/data/countryMeta";
 
 type ChecklistItem = {
   id: string;
@@ -131,6 +133,7 @@ export default function DashboardPage() {
               <a href="#checklist">Checklist</a>
               <a href="#timeline">Timeline</a>
               <a href="#links">Official Links</a>
+              <a href="#cost-estimate">Cost Estimate</a>
               <Link href="/companion">AI Companion</Link>
             </nav>
 
@@ -309,6 +312,20 @@ export default function DashboardPage() {
               Chat with Companion
             </Link>
           </section>
+
+          <div id="cost-estimate">
+            <CostEstimator
+              fromCountry={input.fromCountry}
+              toCountry={input.toCountry}
+              toCountryName={
+                COUNTRY_META[input.toCountry]?.name ?? input.targetCountryName
+              }
+              category={input.categoryLabel}
+              onViewed={() =>
+                localStorage.setItem("mcc_cost_viewed", "true")
+              }
+            />
+          </div>
         </main>
       </div>
     </div>

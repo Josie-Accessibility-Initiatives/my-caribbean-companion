@@ -75,3 +75,19 @@
  ✓ Compiled /api/countries in 932ms (566 modules)
  GET /api/countries 200 in 1769ms
  GET /api/countries 200 in 41ms
+ ✓ Compiled in 2.7s (327 modules)
+ ✓ Compiled in 163ms (327 modules)
+ ✓ Compiled in 237ms (327 modules)
+ ✓ Compiled in 472ms (1022 modules)
+ ⨯ ReferenceError: self is not defined
+    at Object.<anonymous> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\middleware.js:9:1)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.1s (1213 modules)
+ ✓ Compiled in 1227ms (478 modules)
+ ✓ Compiled in 2.7s (478 modules)
+ ✓ Compiled in 183ms (478 modules)
+ ✓ Compiled in 1353ms (1272 modules)
+ ✓ Compiled in 885ms (1117 modules)
+ ✓ Compiled in 4s (1117 modules)
+ ✓ Compiled in 1254ms (1117 modules)
+ ✓ Compiled in 4.4s (2099 modules)

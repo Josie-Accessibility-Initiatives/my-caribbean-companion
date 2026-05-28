@@ -10,6 +10,7 @@ const baseNavLinks = [
   { href: "/onboarding", label: "Plan My Move" },
   { href: "/companion", label: "AI Companion" },
   { href: "/resources", label: "Resources" },
+  { href: "/cost-estimate", label: "Cost Estimator" },
   { href: "/contact", label: "Contact" },
 ];
 
