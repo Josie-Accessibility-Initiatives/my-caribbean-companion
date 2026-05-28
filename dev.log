@@ -171,3 +171,131 @@
  ✓ Compiled in 815ms (2254 modules)
    Reload env: .env.local
  ✓ Compiled in 1004ms (2254 modules)
+ ✓ Compiled in 7.5s (2268 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz'
+ ○ Compiling /api/test-jobs ...
+ ✓ Compiled /api/test-jobs in 1644ms (2107 modules)
+ GET /api/test-jobs 200 in 7571ms
+ GET /api/test-jobs 200 in 472ms
+ ✓ Compiled in 1475ms (2268 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz'
+ ✓ Compiled in 1469ms (2268 modules)
+ ○ Compiling /api/jobs ...
+ ✓ Compiled /api/jobs in 1052ms (2110 modules)
+ GET /api/jobs?country=BB&profession=Nurse 200 in 2507ms
+ GET /api/jobs?country=TT&profession=Teacher 200 in 4084ms
+ GET /api/jobs?country=XX&profession=Nurse 400 in 61ms
+ GET /api/jobs?country=XX&profession=Nurse 400 in 27ms
+ GET /api/jobs?country=XX&profession=Nurse 400 in 19ms
+ ✓ Compiled in 481ms (969 modules)
+ ✓ Compiled in 374ms (969 modules)
+ ✓ Compiled in 354ms (969 modules)
+ ✓ Compiled in 331ms (969 modules)
+ ✓ Compiled in 1876ms (2268 modules)
+ ✓ Compiled in 1560ms (2099 modules)
+ ✓ Compiled in 4.6s (2099 modules)
+ ✓ Compiled in 3.6s (2099 modules)
+ ✓ Compiled in 2.2s (2099 modules)
+ ✓ Compiled in 1339ms (2099 modules)
+ ✓ Compiled in 1359ms (2105 modules)
+ ○ Compiling /api/jobs ...
+ ✓ Compiled /api/jobs in 3.7s (1158 modules)
+ GET /api/jobs?country=BB&profession=Nurse 200 in 7029ms
+ GET /api/jobs?country=TT&profession=Teacher 200 in 371ms
+ GET /api/jobs?country=JM&profession=Engineer 200 in 3215ms
+ GET /api/jobs?country=BB&profession=Nurse 200 in 1724ms
+ ✓ Compiled in 16.3s (2105 modules)
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at __webpack_exec__ (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\page.js:367:39)
+    at <unknown> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\page.js:368:202)
+    at <unknown> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\page.js:368:47)
+    at Object.<anonymous> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\page.js:371:3) {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.8s (2201 modules)
+ GET / 500 in 3714ms
+ ○ Compiling /jobs ...
+ ✓ Compiled /jobs in 2.1s (2198 modules)
+ GET /jobs 200 in 5440ms
+ GET /jobs 200 in 218ms
+ ○ Compiling /api/jobs ...
+ ✓ Compiled /api/jobs in 817ms (1260 modules)
+ GET /api/jobs?country=BB&profession=Nurse&page=1 200 in 1994ms
+ GET /jobs 200 in 917ms
+ GET /api/jobs?country=JM&profession=Teacher&page=1 200 in 10930ms
+ GET / 200 in 284ms
+ GET /jobs 200 in 280ms
+ GET /jobs 200 in 307ms
+ GET / 200 in 639ms
+ GET /jobs 200 in 507ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 6.4s (2224 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /api/jobs?country=BB&profession=Nurse&page=1 404 in 8364ms
+ GET /jobs 200 in 278ms
+ GET /jobs 200 in 454ms
+ GET /api/jobs?country=JM&profession=Teacher&page=1 200 in 1267ms
+ GET /api/jobs?country=JM&profession=Teacher&page=1 200 in 223ms
+ GET /api/jobs?country=DM&profession=Nurse&page=1 200 in 11668ms
+ GET /api/jobs?country=JM&profession=Engineer&page=1 200 in 395ms
+ GET /jobs 200 in 410ms
+ GET /api/jobs?country=BB&profession=Nurse&page=1 200 in 184ms
+ ⨯ Error: Cannot find module './vendor-chunks/recharts.js'
+Require stack:
+- C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\webpack-runtime.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\_not-found\page.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\require.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\load-components.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\utils.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\swc\options.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\swc\index.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\analysis\parse-module.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\analysis\get-page-static-info.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\router-server.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\dashboard\page.js:454:47)
+    at Object.<anonymous> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\dashboard\page.js:457:3) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/dashboard'
+}
+ GET /dashboard 500 in 1234ms
+ ○ Compiling /compare ...
+ ✓ Compiled /compare in 5.4s (2219 modules)
+ ⨯ Error: Cannot find module './vendor-chunks/@reduxjs.js'
+Require stack:
+- C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\webpack-runtime.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\compare\page.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\require.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\load-components.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\utils.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\swc\options.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\swc\index.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\analysis\parse-module.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\build\analysis\get-page-static-info.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\router-server.js
+- C:\Users\Administrator\my-projects\my-caribbean-companion\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\compare\page.js:465:47)
+    at Object.<anonymous> (C:\Users\Administrator\my-projects\my-caribbean-companion\.next\server\app\compare\page.js:468:3) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/compare'
+}
+ GET /compare 500 in 6408ms
+ GET / 200 in 3685ms
+ GET /jobs 200 in 398ms
+ ○ Compiling /api/jobs ...
+ ✓ Compiled /api/jobs in 3.1s (1260 modules)
+ GET /api/jobs?country=BB&profession=Nurse&page=1 200 in 4564ms
+ ✓ Compiled in 2.8s (2221 modules)
+ ✓ Compiled in 2s (2221 modules)
+ ✓ Compiled in 1944ms (2221 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\12.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\12.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\server-development\6.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\server-development\6.pack.gz'
+ ✓ Compiled in 1378ms (2221 modules)
+ ✓ Compiled in 2.6s (2221 modules)
+ ✓ Compiled in 1698ms (2221 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Administrator\my-projects\my-caribbean-companion\.next\cache\webpack\client-development\0.pack.gz'

@@ -6,8 +6,26 @@ import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 import SavePlanBanner from "@/components/dashboard/SavePlanBanner";
 import CostEstimator from "@/components/dashboard/CostEstimator";
+import JobCard from "@/components/jobs/JobCard";
 import { exportPlanToPDF } from "@/lib/pdfExport";
 import { COUNTRY_META } from "@/data/countryMeta";
+import type { JobListing } from "@/lib/external/jsearch";
+import type { JobLink } from "@/lib/types/jobs";
+
+type JobPreviewResult = {
+  country: { code: string; name: string };
+  profession: string;
+  listings: {
+    jobs: JobListing[];
+    total: number;
+    source: "jsearch" | "cache" | "empty";
+  };
+  curatedLinks: {
+    countryLinks: JobLink[];
+    professionLinks: Omit<JobLink, "categories">[];
+    caribbeanWideLinks: JobLink[];
+  };
+};
 
 type ChecklistItem = {
   id: string;
@@ -49,6 +67,7 @@ export default function DashboardPage() {
   const { user, loading } = useAuth();
   const [stored, setStored] = useState<StoredPlan | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [jobPreview, setJobPreview] = useState<JobPreviewResult | null>(null);
 
   useEffect(() => {
     const raw = localStorage.getItem("mcc_plan");
@@ -82,6 +101,22 @@ export default function DashboardPage() {
     const stateKey = `mcc_checklist_${stored.plan.planId}`;
     localStorage.setItem(stateKey, JSON.stringify(checked));
   }, [checked, stored]);
+
+  useEffect(() => {
+    if (!stored) return;
+    const { toCountry, categoryLabel } = stored.input;
+    if (!toCountry || !categoryLabel) return;
+    fetch(
+      `/api/jobs?country=${encodeURIComponent(toCountry)}&profession=${encodeURIComponent(categoryLabel)}&page=1`
+    )
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: JobPreviewResult | null) => {
+        if (data) setJobPreview(data);
+      })
+      .catch(() => {
+        /* silent — teaser is non-critical */
+      });
+  }, [stored]);
 
   if (!stored) {
     return (
@@ -135,6 +170,7 @@ export default function DashboardPage() {
               <a href="#links">Official Links</a>
               <a href="#cost-estimate">Cost Estimate</a>
               <Link href="/companion">AI Companion</Link>
+              <Link href="/jobs">Job Board</Link>
             </nav>
 
             {!loading && !user && (
@@ -326,6 +362,49 @@ export default function DashboardPage() {
               }
             />
           </div>
+
+          <section id="jobs" className="dashboard-section">
+            <h2 className="section-title">Job Opportunities</h2>
+            <p style={{ color: "#6b7280", fontSize: "0.85rem", margin: "0.25rem 0 1rem" }}>
+              Jobs for{" "}
+              <strong style={{ color: "#111827" }}>{input.categoryLabel}</strong>
+              {" "}in{" "}
+              <strong style={{ color: "#111827" }}>{input.targetCountryName}</strong>
+            </p>
+
+            {jobPreview && jobPreview.listings.jobs.length > 0 ? (
+              <>
+                <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: "0 0 0.75rem" }}>
+                  Showing {Math.min(2, jobPreview.listings.total)} of{" "}
+                  {jobPreview.listings.total} opportunit{jobPreview.listings.total === 1 ? "y" : "ies"}
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {jobPreview.listings.jobs.slice(0, 2).map((job) => (
+                    <JobCard
+                      key={job.jobId}
+                      job={job}
+                      userProfession={input.categoryLabel}
+                    />
+                  ))}
+                </div>
+                <div className="plan-actions">
+                  <Link href="/jobs" className="btn-primary" style={{ textDecoration: "none" }}>
+                    View All Jobs →
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0 0 1rem" }}>
+                  Browse Caribbean job boards for{" "}
+                  <strong>{input.categoryLabel}</strong> opportunities.
+                </p>
+                <Link href="/jobs" className="btn-secondary" style={{ textDecoration: "none" }}>
+                  Browse Job Boards →
+                </Link>
+              </>
+            )}
+          </section>
         </main>
       </div>
     </div>
