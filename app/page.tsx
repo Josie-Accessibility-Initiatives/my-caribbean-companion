@@ -23,41 +23,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SECTION 3 — Why use My Caribbean Companion? ─────── */}
-      <section className="section section-why">
-        <SectionHeader
-          title="Why use My Caribbean Companion?"
-          subtitle="My Caribbean Companion helps CARICOM citizens understand and navigate
-          the process of legally relocating for work under the CSME Free
-          Movement of Skills framework. We make the process clear, personalized,
-          and stress-free."
-          green
-        />
-        <div className="feature-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
-          <FeatureCard
-            title="Built for CARICOM"
-            body="Designed specifically for CSME free movement rights across all 12 member states."
-          />
-          <FeatureCard
-            title="Personalized Move Plan"
-            body="Get a customized checklist and timeline based on your home country, destination, and profession."
-          />
-          <FeatureCard
-            title="Live Job Board"
-            body="Search real job opportunities across the Caribbean matched to your profession and destination."
-          />
-          <FeatureCard
-            title="Cost Estimator"
-            body="Know exactly what your relocation will cost: flights, housing, documents, and living expenses."
-          />
-          <FeatureCard
-            title="Housing Discovery"
-            body="Find rental ranges, neighborhoods, Facebook housing groups, and temporary accommodation in your destination."
-          />
-          <FeatureCard
-            title="AI Companion"
-            body="Ask anything about CSME in plain language. Your AI guide is available on every page."
-          />
+      <section className="section section-about-main">
+        <div className="about-two-column">
+          <div>
+            <h2>What is My Caribbean Companion?</h2>
+            <p>
+              A digital platform that helps Caribbean nationals understand how
+              to work legally in other CARICOM countries under CSME. The
+              Movement Planner is designed to make CSME free movement easier,
+              clearer, and more accessible for every Caribbean national.
+            </p>
+            <p>It provides:</p>
+            <ul>
+              <li>Personalized move plans</li>
+              <li>Document checklists</li>
+              <li>Estimated timelines</li>
+              <li>Official government links</li>
+              <li>Competent Authority details</li>
+              <li>Country-specific requirements</li>
+              <li>Tools to track progress and save plans (for logged-in users)</li>
+            </ul>
+          </div>
+          <div className="about-image-card" />
         </div>
       </section>
 

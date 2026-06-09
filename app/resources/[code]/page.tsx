@@ -63,10 +63,10 @@ export default function CountryDetailPage() {
 
   const meta = COUNTRY_META[countryCode] ?? null;
 
-  const _filteredJobBoards = (meta?.jobBoards ?? []).filter(
+  const filteredJobBoards = (meta?.jobBoards ?? []).filter(
     (j) => !isExcluded(j.label, JOB_BOARD_EXCLUDE),
   );
-  const _filteredHousing = (meta?.housing ?? []).filter(
+  const filteredHousing = (meta?.housing ?? []).filter(
     (h) => !isExcluded(h.label, HOUSING_EXCLUDE),
   );
 
@@ -136,8 +136,8 @@ export default function CountryDetailPage() {
               justifyContent: "center",
               gap: "0.4rem",
               background: "#ffffff",
-              border: "1px solid #117F74",
-              color: "#117F74",
+              border: "1px solid #1D9E75",
+              color: "#1D9E75",
               borderRadius: "0.5rem",
               padding: "0.75rem 1rem",
               fontSize: "0.85rem",
@@ -146,12 +146,12 @@ export default function CountryDetailPage() {
               transition: "background 0.15s ease, color 0.15s ease",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "#117F74";
+              (e.currentTarget as HTMLAnchorElement).style.background = "#1D9E75";
               (e.currentTarget as HTMLAnchorElement).style.color = "#ffffff";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff";
-              (e.currentTarget as HTMLAnchorElement).style.color = "#117F74";
+              (e.currentTarget as HTMLAnchorElement).style.color = "#1D9E75";
             }}
           >
             <Icon size={15} />
@@ -181,7 +181,7 @@ export default function CountryDetailPage() {
                   gap: "1rem",
                   background: "#ffffff",
                   border: "1px solid #e5e7eb",
-                  borderLeft: "3px solid #117F74",
+                  borderLeft: "3px solid #1D9E75",
                   borderRadius: "0.5rem",
                   padding: "0.75rem 1rem",
                   textDecoration: "none",
@@ -207,7 +207,7 @@ export default function CountryDetailPage() {
                     Last verified: January 2025
                   </div>
                 </div>
-                <ExternalLink size={15} color="#117F74" style={{ flexShrink: 0 }} />
+                <ExternalLink size={15} color="#1D9E75" style={{ flexShrink: 0 }} />
               </a>
             ))}
           </div>
@@ -278,8 +278,8 @@ export default function CountryDetailPage() {
               <span
                 key={x}
                 style={{
-                  border: "1px solid #117F74",
-                  color: "#117F74",
+                  border: "1px solid #1D9E75",
+                  color: "#1D9E75",
                   background: "#ffffff",
                   borderRadius: "999px",
                   padding: "4px 12px",
