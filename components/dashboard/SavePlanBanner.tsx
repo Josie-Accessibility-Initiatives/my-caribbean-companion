@@ -18,7 +18,7 @@ export default function SavePlanBanner() {
       style={{
         position: 'relative',
         background: '#E1F5EE',
-        borderLeft: '4px solid #1D9E75',
+        borderLeft: '4px solid #117F74',
         borderRadius: '0.5rem',
         padding: '16px 20px',
         marginBottom: '1.5rem',
@@ -29,7 +29,7 @@ export default function SavePlanBanner() {
     >
       <Bookmark
         size={22}
-        color="#1D9E75"
+        color="#117F74"
         style={{ flexShrink: 0, marginTop: 2 }}
         aria-hidden="true"
       />
@@ -78,7 +78,7 @@ export default function SavePlanBanner() {
           right: 10,
           background: 'transparent',
           border: 'none',
-          color: '#1D9E75',
+          color: '#117F74',
           cursor: 'pointer',
           padding: 4,
           borderRadius: 4,

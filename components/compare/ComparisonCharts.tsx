@@ -349,8 +349,13 @@ const CC_STYLES = `
 
 .cc-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* First chart spans full width */
+.cc-grid .cc-chart:first-child {
+  grid-column: 1 / -1;
 }
 
 .cc-chart {
@@ -423,7 +428,8 @@ const CC_STYLES = `
   50% { opacity: 0.45; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 680px) {
   .cc-grid { grid-template-columns: 1fr; }
+  .cc-grid .cc-chart:first-child { grid-column: auto; }
 }
 `

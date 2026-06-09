@@ -58,7 +58,7 @@ export default function CompanionPage() {
               ) : (
                 <>
                   <p className="companion-muted">
-                    No move plan yet — start the wizard to personalize your
+                    No move plan yet. Start the wizard to personalize your
                     guidance.
                   </p>
                   <Link href="/onboarding" className="btn-primary">

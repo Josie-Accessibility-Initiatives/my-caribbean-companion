@@ -98,6 +98,7 @@ export default function DashboardPage() {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [jobPreview, setJobPreview] = useState<JobPreviewResult | null>(null);
   const [housingPreview, setHousingPreview] = useState<HousingPreview | null>(null);
+  const [activeTab, setActiveTab] = useState<"cost" | "jobs" | "housing">("cost");
 
   useEffect(() => {
     const raw = localStorage.getItem("mcc_plan");
@@ -191,9 +192,19 @@ export default function DashboardPage() {
   const housingCountryName =
     housingPreview?.country.name ?? input.targetCountryName;
 
+  const scrollToTabs = () =>
+    document.getElementById("tabs")?.scrollIntoView({ behavior: "smooth" });
+
+  const openTab = (tab: "cost" | "jobs" | "housing") => {
+    setActiveTab(tab);
+    scrollToTabs();
+  };
+
   return (
     <div className="page page-dashboard">
       <div className="dashboard-grid">
+
+        {/* ── LEFT SIDEBAR ─────────────────────────────────────── */}
         <aside className="dashboard-sidebar">
           <div className="planner-card">
             <p className="dashboard-eyebrow">Your plan</p>
@@ -219,11 +230,65 @@ export default function DashboardPage() {
               <a href="#overview">Overview</a>
               <a href="#checklist">Checklist</a>
               <a href="#timeline">Timeline</a>
-              <a href="#links">Official Links</a>
-              <a href="#cost-estimate">Cost Estimate</a>
-              <Link href="/companion">AI Companion</Link>
-              <Link href="/jobs">Job Board</Link>
-              <Link href="/housing">Housing</Link>
+              <button
+                type="button"
+                onClick={() => openTab("cost")}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0.5rem 0.75rem",
+                  borderRadius: "0.5rem",
+                  color: "#4b5563",
+                  fontSize: "0.9rem",
+                  fontFamily: "inherit",
+                }}
+              >
+                Cost Estimate
+              </button>
+              <button
+                type="button"
+                onClick={() => openTab("jobs")}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0.5rem 0.75rem",
+                  borderRadius: "0.5rem",
+                  color: "#4b5563",
+                  fontSize: "0.9rem",
+                  fontFamily: "inherit",
+                }}
+              >
+                Job Board
+              </button>
+              <button
+                type="button"
+                onClick={() => openTab("housing")}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "0.5rem 0.75rem",
+                  borderRadius: "0.5rem",
+                  color: "#4b5563",
+                  fontSize: "0.9rem",
+                  fontFamily: "inherit",
+                }}
+              >
+                Housing
+              </button>
+              <a href="#official-links">Official Links</a>
+              <a href="#ai-companion">AI Companion</a>
             </nav>
 
             {!loading && !user && (
@@ -243,8 +308,11 @@ export default function DashboardPage() {
           </div>
         </aside>
 
+        {/* ── MAIN CONTENT ─────────────────────────────────────── */}
         <main>
           <SavePlanBanner />
+
+          {/* ── AREA A: Always visible ── */}
 
           <section id="overview" className="dashboard-section">
             <h2 className="section-title">Overview</h2>
@@ -318,7 +386,219 @@ export default function DashboardPage() {
             </ul>
           </section>
 
-          <section id="links" className="dashboard-section">
+          {/* ── AREA B: Tabbed section ── */}
+
+          <div id="tabs" className="plan-tabs-container">
+            <div className="plan-tabs-bar">
+              <button
+                type="button"
+                className={`plan-tab-btn${activeTab === "cost" ? " active" : ""}`}
+                onClick={() => setActiveTab("cost")}
+              >
+                Cost Estimator
+              </button>
+              <button
+                type="button"
+                className={`plan-tab-btn${activeTab === "jobs" ? " active" : ""}`}
+                onClick={() => setActiveTab("jobs")}
+              >
+                Job Opportunities
+              </button>
+              <button
+                type="button"
+                className={`plan-tab-btn${activeTab === "housing" ? " active" : ""}`}
+                onClick={() => setActiveTab("housing")}
+              >
+                Housing Discovery
+              </button>
+            </div>
+
+            <div className="plan-tab-content">
+
+              {/* Tab 1 — Cost Estimator */}
+              {activeTab === "cost" && (
+                <CostEstimator
+                  fromCountry={input.fromCountry}
+                  toCountry={input.toCountry}
+                  toCountryName={
+                    COUNTRY_META[input.toCountry]?.name ?? input.targetCountryName
+                  }
+                  category={input.categoryLabel}
+                  onViewed={() =>
+                    localStorage.setItem("mcc_cost_viewed", "true")
+                  }
+                />
+              )}
+
+              {/* Tab 2 — Job Opportunities */}
+              {activeTab === "jobs" && (
+                <div>
+                  <h2 className="section-title" style={{ marginBottom: "0.25rem" }}>
+                    Job Opportunities
+                  </h2>
+                  <p style={{ color: "#6b7280", fontSize: "0.85rem", margin: "0.25rem 0 1rem" }}>
+                    Jobs for{" "}
+                    <strong style={{ color: "#111827" }}>{input.categoryLabel}</strong>
+                    {" "}in{" "}
+                    <strong style={{ color: "#111827" }}>{input.targetCountryName}</strong>
+                  </p>
+
+                  {jobPreview && jobPreview.listings.jobs.length > 0 ? (
+                    <>
+                      <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: "0 0 0.75rem" }}>
+                        Showing {Math.min(2, jobPreview.listings.total)} of{" "}
+                        {jobPreview.listings.total} opportunit{jobPreview.listings.total === 1 ? "y" : "ies"}
+                      </p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                        {jobPreview.listings.jobs.slice(0, 2).map((job) => (
+                          <JobCard
+                            key={job.jobId}
+                            job={job}
+                            userProfession={input.categoryLabel}
+                          />
+                        ))}
+                      </div>
+                      <div className="plan-actions">
+                        <Link href="/jobs" className="btn-primary" style={{ textDecoration: "none" }}>
+                          View All Jobs →
+                        </Link>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0 0 1rem" }}>
+                        Browse Caribbean job boards for{" "}
+                        <strong>{input.categoryLabel}</strong> opportunities.
+                      </p>
+                      <Link href="/jobs" className="btn-secondary" style={{ textDecoration: "none" }}>
+                        Browse Job Boards →
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Tab 3 — Housing Discovery */}
+              {activeTab === "housing" && (
+                <div>
+                  <h2 className="section-title" style={{ marginBottom: "0.25rem" }}>
+                    Housing Discovery
+                  </h2>
+
+                  {oneBed ? (
+                    <>
+                      <div
+                        style={{
+                          background: "#f0fdf4",
+                          border: "1px solid #bbf7d0",
+                          borderRadius: "0.75rem",
+                          padding: "1rem 1.25rem",
+                          marginBottom: "1rem",
+                          marginTop: "0.75rem",
+                        }}
+                      >
+                        <p
+                          style={{
+                            margin: "0 0 0.2rem",
+                            fontSize: "1.2rem",
+                            fontWeight: 700,
+                            color: "#117F74",
+                          }}
+                        >
+                          ${oneBed.min.toLocaleString()} – ${oneBed.max.toLocaleString()}{" "}
+                          <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>
+                            {housingPreview?.staticData.averageRent?.currency ?? "USD"}/month
+                          </span>
+                        </p>
+                        <p style={{ margin: 0, fontSize: "0.8rem", color: "#6b7280" }}>
+                          Estimated 1-bedroom rent in {housingCountryName}
+                        </p>
+                      </div>
+
+                      {(bookingUrl || firstFbGroup) && (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "0.6rem",
+                            flexWrap: "wrap",
+                            marginBottom: "1rem",
+                          }}
+                        >
+                          {bookingUrl && (
+                            <a
+                              href={bookingUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "0.25rem",
+                                background: "rgba(17,127,116,0.08)",
+                                color: "#117F74",
+                                border: "1px solid rgba(17,127,116,0.25)",
+                                borderRadius: "999px",
+                                padding: "0.35rem 0.85rem",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              Browse Booking.com →
+                            </a>
+                          )}
+                          {firstFbGroup && (
+                            <a
+                              href={firstFbGroup.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "0.25rem",
+                                background: "rgba(24,119,242,0.08)",
+                                color: "#1877f2",
+                                border: "1px solid rgba(24,119,242,0.25)",
+                                borderRadius: "999px",
+                                padding: "0.35rem 0.85rem",
+                                fontSize: "0.8rem",
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              Join Housing Groups →
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0.75rem 0 1rem" }}>
+                      Find accommodation in{" "}
+                      <strong>{housingCountryName}</strong>: temporary stays,
+                      long-term rentals, and local housing communities.
+                    </p>
+                  )}
+
+                  <div className="plan-actions">
+                    <Link
+                      href="/housing"
+                      className="btn-primary"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Explore Housing Options →
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          {/* ── AREA C: Always visible ── */}
+
+          <section id="official-links" className="dashboard-section">
             <h2 className="section-title">Official Links &amp; Next Steps</h2>
             {plan.officialLinks.immigration ||
             plan.officialLinks.competentAuthority ||
@@ -379,7 +659,7 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          <section id="companion" className="dashboard-section">
+          <section id="ai-companion" className="dashboard-section">
             <h2 className="section-title">Ask Your AI Companion</h2>
             <p style={{ color: "#4b5563", margin: "0.5rem 0 1rem" }}>
               Have questions about your move? Your AI companion can answer
@@ -402,174 +682,6 @@ export default function DashboardPage() {
             </Link>
           </section>
 
-          <div id="cost-estimate">
-            <CostEstimator
-              fromCountry={input.fromCountry}
-              toCountry={input.toCountry}
-              toCountryName={
-                COUNTRY_META[input.toCountry]?.name ?? input.targetCountryName
-              }
-              category={input.categoryLabel}
-              onViewed={() =>
-                localStorage.setItem("mcc_cost_viewed", "true")
-              }
-            />
-          </div>
-
-          <section id="jobs" className="dashboard-section">
-            <h2 className="section-title">Job Opportunities</h2>
-            <p style={{ color: "#6b7280", fontSize: "0.85rem", margin: "0.25rem 0 1rem" }}>
-              Jobs for{" "}
-              <strong style={{ color: "#111827" }}>{input.categoryLabel}</strong>
-              {" "}in{" "}
-              <strong style={{ color: "#111827" }}>{input.targetCountryName}</strong>
-            </p>
-
-            {jobPreview && jobPreview.listings.jobs.length > 0 ? (
-              <>
-                <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: "0 0 0.75rem" }}>
-                  Showing {Math.min(2, jobPreview.listings.total)} of{" "}
-                  {jobPreview.listings.total} opportunit{jobPreview.listings.total === 1 ? "y" : "ies"}
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                  {jobPreview.listings.jobs.slice(0, 2).map((job) => (
-                    <JobCard
-                      key={job.jobId}
-                      job={job}
-                      userProfession={input.categoryLabel}
-                    />
-                  ))}
-                </div>
-                <div className="plan-actions">
-                  <Link href="/jobs" className="btn-primary" style={{ textDecoration: "none" }}>
-                    View All Jobs →
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <>
-                <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0 0 1rem" }}>
-                  Browse Caribbean job boards for{" "}
-                  <strong>{input.categoryLabel}</strong> opportunities.
-                </p>
-                <Link href="/jobs" className="btn-secondary" style={{ textDecoration: "none" }}>
-                  Browse Job Boards →
-                </Link>
-              </>
-            )}
-          </section>
-
-          {/* ── Housing teaser ── */}
-          <section id="housing" className="dashboard-section">
-            <h2 className="section-title">Housing Discovery</h2>
-
-            {oneBed ? (
-              <>
-                {/* Rent highlight */}
-                <div
-                  style={{
-                    background: "#f0fdf4",
-                    border: "1px solid #bbf7d0",
-                    borderRadius: "0.75rem",
-                    padding: "1rem 1.25rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: "0 0 0.2rem",
-                      fontSize: "1.2rem",
-                      fontWeight: 700,
-                      color: "#1D9E75",
-                    }}
-                  >
-                    ${oneBed.min.toLocaleString()} – ${oneBed.max.toLocaleString()}{" "}
-                    <span style={{ fontSize: "0.85rem", fontWeight: 500 }}>
-                      {housingPreview?.staticData.averageRent?.currency ?? "USD"}/month
-                    </span>
-                  </p>
-                  <p style={{ margin: 0, fontSize: "0.8rem", color: "#6b7280" }}>
-                    Estimated 1-bedroom rent in {housingCountryName}
-                  </p>
-                </div>
-
-                {/* Quick links */}
-                {(bookingUrl || firstFbGroup) && (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.6rem",
-                      flexWrap: "wrap",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    {bookingUrl && (
-                      <a
-                        href={bookingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.25rem",
-                          background: "rgba(29,158,117,0.08)",
-                          color: "#1D9E75",
-                          border: "1px solid rgba(29,158,117,0.25)",
-                          borderRadius: "999px",
-                          padding: "0.35rem 0.85rem",
-                          fontSize: "0.8rem",
-                          fontWeight: 600,
-                          textDecoration: "none",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        Browse Booking.com →
-                      </a>
-                    )}
-                    {firstFbGroup && (
-                      <a
-                        href={firstFbGroup.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.25rem",
-                          background: "rgba(24,119,242,0.08)",
-                          color: "#1877f2",
-                          border: "1px solid rgba(24,119,242,0.25)",
-                          borderRadius: "999px",
-                          padding: "0.35rem 0.85rem",
-                          fontSize: "0.8rem",
-                          fontWeight: 600,
-                          textDecoration: "none",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        Join Housing Groups →
-                      </a>
-                    )}
-                  </div>
-                )}
-              </>
-            ) : (
-              <p style={{ color: "#4b5563", fontSize: "0.9rem", margin: "0 0 1rem" }}>
-                Find accommodation in{" "}
-                <strong>{housingCountryName}</strong> — temporary stays,
-                long-term rentals, and local housing communities.
-              </p>
-            )}
-
-            <div className="plan-actions">
-              <Link
-                href="/housing"
-                className="btn-primary"
-                style={{ textDecoration: "none" }}
-              >
-                Explore Housing Options →
-              </Link>
-            </div>
-          </section>
         </main>
       </div>
     </div>

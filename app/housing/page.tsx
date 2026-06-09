@@ -53,7 +53,7 @@ const COUNTRIES = Object.entries(COUNTRY_META)
   .sort((a, b) => a.name.localeCompare(b.name))
 
 const STATIC_TIPS = [
-  "Arrange temporary accommodation before arriving — don't commit to a long-term rental remotely",
+  "Arrange temporary accommodation before arriving. Don't commit to a long-term rental remotely",
   'Join the Facebook groups below to get insider knowledge before you arrive',
   'Ask employers if they offer any relocation or housing assistance',
   'Visit neighborhoods on weekends when locals are around to get a feel for the community',
@@ -244,7 +244,7 @@ export default function HousingPage() {
               href="/onboarding"
               style={{
                 fontSize: '0.8rem',
-                color: '#1D9E75',
+                color: '#117F74',
                 fontWeight: 600,
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',

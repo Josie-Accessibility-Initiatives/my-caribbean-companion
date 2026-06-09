@@ -87,7 +87,7 @@ export interface CostEstimatorProps {
 
 // ── Constants ─────────────────────────────────────────────────────
 
-const TEAL = '#1D9E75'
+const TEAL = '#117F74'
 
 const BUDGET_LABELS: Record<BudgetLevel, string> = {
   budget: 'Budget',

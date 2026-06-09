@@ -37,7 +37,7 @@ export default function RentOverview({
       style={{
         background: '#ffffff',
         border: '1px solid #e5e7eb',
-        borderLeft: '4px solid #1D9E75',
+        borderLeft: '4px solid #117F74',
         borderRadius: '0.75rem',
         padding: '1.25rem 1.5rem',
       }}
@@ -157,8 +157,8 @@ function RentRow({
         gap: '0.75rem',
         padding: featured ? '0.6rem 0.75rem' : '0.35rem 0.75rem',
         borderRadius: '0.5rem',
-        background: featured ? 'rgba(29,158,117,0.06)' : 'transparent',
-        border: featured ? '1px solid rgba(29,158,117,0.15)' : '1px solid transparent',
+        background: featured ? 'rgba(17,127,116,0.06)' : 'transparent',
+        border: featured ? '1px solid rgba(17,127,116,0.15)' : '1px solid transparent',
       }}
     >
       <span
@@ -171,7 +171,7 @@ function RentRow({
           color: featured ? '#111827' : '#4b5563',
         }}
       >
-        <BedDouble size={15} color={featured ? '#1D9E75' : '#9ca3af'} />
+        <BedDouble size={15} color={featured ? '#117F74' : '#9ca3af'} />
         {label}
       </span>
       <span

@@ -3,11 +3,11 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <div className="footer-logo">CC</div>
-          <span className="footer-brand-text">Caribbean Companion</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" style={{ height: 40, width: "auto", display: "block" }} />
         </div>
         <p className="footer-tagline">
-          My Caribbean Companion — Your guide to working anywhere in the
+          My Caribbean Companion: Your guide to working anywhere in the
           Caribbean.
         </p>
 

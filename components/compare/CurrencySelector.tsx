@@ -29,7 +29,6 @@ export default function CurrencySelector({
             onClick={() => onChange(currency.code)}
             title={currency.name}
           >
-            <span className="cs-flag">{currency.flag}</span>
             <span className="cs-code">{currency.code}</span>
           </button>
         ))}
@@ -82,13 +81,13 @@ const CS_STYLES = `
 
 .cs-pill:hover {
   background: #E1F5EE;
-  border-color: #1D9E75;
+  border-color: #117F74;
   color: #0f766e;
 }
 
 .cs-pill-active {
-  background: #1D9E75;
-  border-color: #1D9E75;
+  background: #117F74;
+  border-color: #117F74;
   color: #fff;
 }
 
@@ -96,11 +95,6 @@ const CS_STYLES = `
   background: #178a64;
   border-color: #178a64;
   color: #fff;
-}
-
-.cs-flag {
-  font-size: 14px;
-  line-height: 1;
 }
 
 .cs-code {

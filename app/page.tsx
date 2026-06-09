@@ -1,13 +1,17 @@
 import Link from "next/link";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { FeatureCard } from "@/components/ui/FeatureCard";
+import { PlanCTACard } from "@/components/ui/PlanCTACard";
 
 export default function Home() {
   return (
     <div className="page page-home">
+
+      {/* ── SECTION 1 — Hero ─────────────────────────────────── */}
       <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title">My Caribbean Companion</h1>
           <p className="hero-subtitle">Bridging Islands, Building Futures.</p>
-
           <div className="hero-actions">
             <Link href="/onboarding" className="btn-primary">
               Start My Move Plan
@@ -44,65 +48,56 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── SECTION 4 — How It Works ─────────────────────────── */}
       <section className="section section-how">
-        <h2 className="section-title">How It Works</h2>
-        <p className="section-subtitle">
-          Plan your move across the Caribbean in four simple steps.
-        </p>
-
+        <SectionHeader
+          title="How It Works"
+          subtitle="Plan your Caribbean relocation in four simple steps."
+          green
+        />
         <div className="steps-list">
           <div className="step-card">
-            <h3>Step 1 — Tell Us Your Migration Details</h3>
+            <h3 className="card-title">Step 1: Tell Us About Your Move</h3>
             <p>
-              Select your home country, destination country, and professional
-              category:
+              Select your home country, destination, and professional category
+              to get started.
             </p>
-            <ul>
-              <li>Choose where you&apos;re coming from</li>
-              <li>Choose where you want to work</li>
-              <li>
-                Pick your category (Graduate, Nurse, Artisan, Teacher, etc.)
-              </li>
-            </ul>
           </div>
-
           <div className="step-card">
-            <h3>Step 2 — Generate Your Personalized Migration Plan</h3>
+            <h3 className="card-title">Step 2: Get Your Personalized Plan</h3>
             <p>
-              Get a customized guide based on your exact country-to-country
-              path, including:
+              Receive a customized CSME checklist, eligibility summary, and
+              document requirements specific to your move.
             </p>
-            <ul>
-              <li>Eligibility summary</li>
-              <li>Country-specific requirements</li>
-              <li>Category-specific documents</li>
-              <li>Verification steps</li>
-            </ul>
           </div>
-
           <div className="step-card">
-            <h3>Step 3 — Complete Your Interactive Checklist</h3>
-            <p>Track everything you need with clear, actionable tasks:</p>
-            <ul>
-              <li>Document checklist with explanations</li>
-              <li>Sample templates &amp; document hints</li>
-              <li>Status tracking with checkmarks</li>
-              <li>&ldquo;Add to calendar&rdquo; suggestions (future feature)</li>
-            </ul>
+            <h3 className="card-title">Step 3: Explore Jobs, Housing &amp; Costs</h3>
+            <p>
+              Browse live job listings, housing options, and a full cost
+              breakdown for your destination country.
+            </p>
           </div>
-
           <div className="step-card">
-            <h3>Step 4 — Explore Resources &amp; Take Action</h3>
-            <p>Access official websites, competent authorities, and links:</p>
-            <ul>
-              <li>Visit immigration websites</li>
-              <li>Find competent authorities</li>
-              <li>Download forms</li>
-              <li>Read country-specific tips</li>
-            </ul>
+            <h3 className="card-title">Step 4: Move with Confidence</h3>
+            <p>
+              Use your AI companion, download your PDF roadmap, and track your
+              application status every step of the way.
+            </p>
           </div>
         </div>
       </section>
+
+      {/* ── SECTION 6 — Mission / Vision ─────────────────────── */}
+      <section className="section section-impact">
+        <p className="impact-quote">
+          We envision a future where Caribbean professionals can move freely,
+          work confidently, and build their futures anywhere across the region.
+        </p>
+      </section>
+
+      {/* ── SECTION 7 — CTA Card ─────────────────────────────── */}
+      <PlanCTACard />
+
     </div>
   );
 }
