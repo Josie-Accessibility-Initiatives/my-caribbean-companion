@@ -5,7 +5,7 @@ import { FeatureCard } from "@/components/ui/FeatureCard";
 
 const EVOLUTION_STEPS = [
   {
-    color: "#117F74",
+    color: "var(--color-primary)",
     period: "Nov 2025 to Jan 2026",
     title: "Inter Regional Movement Planner",
     body: "A rule-based wizard generating personalized CSME plans. Built with React + Express + Supabase."

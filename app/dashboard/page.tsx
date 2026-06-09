@@ -502,7 +502,7 @@ export default function DashboardPage() {
                             margin: "0 0 0.2rem",
                             fontSize: "1.2rem",
                             fontWeight: 700,
-                            color: "#117F74",
+                            color: "var(--color-primary)",
                           }}
                         >
                           ${oneBed.min.toLocaleString()} – ${oneBed.max.toLocaleString()}{" "}
@@ -533,9 +533,9 @@ export default function DashboardPage() {
                                 display: "inline-flex",
                                 alignItems: "center",
                                 gap: "0.25rem",
-                                background: "rgba(17,127,116,0.08)",
-                                color: "#117F74",
-                                border: "1px solid rgba(17,127,116,0.25)",
+                                background: "var(--color-primary-soft)",
+                                color: "var(--color-primary)",
+                                border: "1px solid var(--color-primary-border)",
                                 borderRadius: "999px",
                                 padding: "0.35rem 0.85rem",
                                 fontSize: "0.8rem",

@@ -10,8 +10,9 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts'
-import type { CountryComparisonData } from './ComparisonTable'
+import type { CountryComparisonData } from '@/lib/types/comparison'
 import { SUPPORTED_CURRENCIES, convertAmount } from '@/lib/currency'
+import { fmtTick } from '@/lib/format'
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -24,7 +25,7 @@ interface ComparisonChartsProps {
 
 // ── Constants ─────────────────────────────────────────────────────
 
-const COLOR_HIGHLIGHT = '#0d9488'
+const COLOR_HIGHLIGHT = 'var(--color-primary)'
 const COLOR_DEFAULT = '#38bdf8'
 const BAR_H = 34
 const MIN_H = 140
@@ -37,12 +38,6 @@ function barFill(code: string, highlight?: string): string {
 
 function chartHeight(n: number): number {
   return Math.max(MIN_H, n * BAR_H + 24)
-}
-
-function fmtTick(v: number, sym: string): string {
-  if (v >= 1_000_000) return `${sym}${(v / 1_000_000).toFixed(1)}M`
-  if (v >= 1_000) return `${sym}${(v / 1_000).toFixed(0)}k`
-  return `${sym}${v}`
 }
 
 // ── Sub-components ────────────────────────────────────────────────

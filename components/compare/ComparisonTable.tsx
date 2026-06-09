@@ -2,47 +2,11 @@
 
 import { useState, useMemo } from 'react'
 import { SUPPORTED_CURRENCIES, convertAmount } from '@/lib/currency'
+import type { CountryComparisonData } from '@/lib/types/comparison'
+import { COMPLEXITY_ORDER, complexityColor, complexityBg } from '@/lib/badge'
+import { fmtPop, capitalize } from '@/lib/format'
 
-// ── Types ─────────────────────────────────────────────────────────
-
-export type CountryComparisonData = {
-  code: string
-  name: string
-  flag: string
-  flagAlt: string
-  capital: string
-  stats: {
-    population: number | null
-    populationYear: number | null
-    gdpPerCapita: number | null
-    gdpPerCapitaYear: number | null
-    inflation: number | null
-    currency: string
-    currencySymbol: string
-    languages: string[]
-  }
-  costOfLiving: {
-    rentOneBedMin: number | null
-    rentOneBedMax: number | null
-    monthlyTotal: number | null
-    source: string
-  }
-  qualityOfLife: {
-    qualityOfLifeScore: number | null
-    safetyScore: number | null
-    healthcareScore: number | null
-    costOfLivingIndex: number | null
-    summary: string | null
-  }
-  csme: {
-    complexity: 'easy' | 'moderate' | 'hard'
-    processingWeeks: { min: number; max: number }
-    competentAuthority: string
-    inDemandProfessions: string[]
-    notes: string
-  } | null
-  industries: string[]
-}
+export type { CountryComparisonData }
 
 type SortKey =
   | 'name'
@@ -66,26 +30,6 @@ export interface ComparisonTableProps {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────
-
-const COMPLEXITY_ORDER: Record<string, number> = {
-  easy: 0,
-  moderate: 1,
-  hard: 2,
-}
-
-function complexityColor(c: 'easy' | 'moderate' | 'hard'): string {
-  return c === 'easy' ? '#166534' : c === 'moderate' ? '#92400e' : '#991b1b'
-}
-
-function complexityBg(c: 'easy' | 'moderate' | 'hard'): string {
-  return c === 'easy' ? '#dcfce7' : c === 'moderate' ? '#fef3c7' : '#fee2e2'
-}
-
-function fmtPop(n: number | null): string {
-  if (n === null) return '–'
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
-  return `${(n / 1_000).toFixed(0)}K`
-}
 
 function professionMatch(
   professions: string[],
@@ -353,9 +297,7 @@ export default function ComparisonTable({
               className={`ct-pill${complexityFilter === f ? ' ct-pill-active' : ''}`}
               onClick={() => setComplexityFilter(f)}
             >
-              {f === 'all'
-                ? 'All'
-                : f.charAt(0).toUpperCase() + f.slice(1)}
+              {f === 'all' ? 'All' : capitalize(f)}
             </button>
           ))}
         </div>
@@ -504,8 +446,7 @@ export default function ComparisonTable({
                           background: complexityBg(c.csme.complexity),
                         }}
                       >
-                        {c.csme.complexity.charAt(0).toUpperCase() +
-                          c.csme.complexity.slice(1)}
+                        {capitalize(c.csme.complexity)}
                       </span>
                     ) : (
                       '–'
@@ -546,10 +487,7 @@ export default function ComparisonTable({
             emoji="⭐"
             label={`Best for ${userCategory}`}
             country={bestProfessionMatch}
-            detail={`${
-              bestProfessionMatch.csme!.complexity.charAt(0).toUpperCase() +
-              bestProfessionMatch.csme!.complexity.slice(1)
-            } CSME process`}
+            detail={`${capitalize(bestProfessionMatch.csme!.complexity)} CSME process`}
           />
         )}
       </div>

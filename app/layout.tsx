@@ -16,6 +16,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "My Caribbean Companion",
   description: "Your guide to working anywhere in the Caribbean.",
+  icons: {
+    icon: "/assets/favicon.png",
+  },
 };
 
 export default async function RootLayout({

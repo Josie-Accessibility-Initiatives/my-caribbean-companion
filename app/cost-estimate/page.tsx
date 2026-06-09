@@ -191,7 +191,7 @@ export default function CostEstimatePage() {
                     border: 'none',
                     padding: 0,
                     cursor: 'pointer',
-                    color: '#117F74',
+                    color: 'var(--color-primary)',
                     fontSize: '0.85rem',
                     fontWeight: 500,
                     fontFamily: 'inherit',
@@ -303,7 +303,7 @@ export default function CostEstimatePage() {
                   color: '#111827',
                 }}
               >
-                <CheckCircle2 size={17} color="#117F74" />
+                <CheckCircle2 size={17} color="var(--color-primary)" />
                 What&apos;s included
               </h3>
               <ul
@@ -333,7 +333,7 @@ export default function CostEstimatePage() {
                         width: 5,
                         height: 5,
                         borderRadius: '50%',
-                        background: '#117F74',
+                        background: 'var(--color-primary)',
                         flexShrink: 0,
                         marginTop: '0.44rem',
                       }}
@@ -357,7 +357,7 @@ export default function CostEstimatePage() {
                   color: '#111827',
                 }}
               >
-                <Lightbulb size={17} color="#117F74" />
+                <Lightbulb size={17} color="var(--color-primary)" />
                 Tips to reduce costs
               </h3>
               <ul

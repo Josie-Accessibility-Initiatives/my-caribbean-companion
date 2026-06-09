@@ -80,20 +80,20 @@ const CS_STYLES = `
 }
 
 .cs-pill:hover {
-  background: #E1F5EE;
-  border-color: #117F74;
-  color: #0f766e;
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
 }
 
 .cs-pill-active {
-  background: #117F74;
-  border-color: #117F74;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 
 .cs-pill-active:hover {
-  background: #178a64;
-  border-color: #178a64;
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
   color: #fff;
 }
 

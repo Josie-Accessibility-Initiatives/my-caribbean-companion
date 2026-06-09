@@ -21,6 +21,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
+import { fmt, fmtUsdRange } from '@/lib/format'
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -87,22 +88,12 @@ export interface CostEstimatorProps {
 
 // ── Constants ─────────────────────────────────────────────────────
 
-const TEAL = '#117F74'
+const TEAL = 'var(--color-primary)'
 
 const BUDGET_LABELS: Record<BudgetLevel, string> = {
   budget: 'Budget',
   mid: 'Mid-Range',
   comfortable: 'Comfortable',
-}
-
-// ── Helpers ───────────────────────────────────────────────────────
-
-function fmt(n: number) {
-  return `$${Math.round(n).toLocaleString()}`
-}
-
-function fmtRange(min: number, max: number) {
-  return `$${Math.round(min).toLocaleString()} – $${Math.round(max).toLocaleString()} USD`
 }
 
 // ── Sub-components ────────────────────────────────────────────────
@@ -458,7 +449,7 @@ export default function CostEstimator({
               amount={data.breakdown.flights.amount}
               description={
                 <p style={{ margin: '0 0 0.35rem', fontSize: '0.8rem', color: '#6b7280' }}>
-                  Range: {fmtRange(data.breakdown.flights.min, data.breakdown.flights.max)}
+                  Range: {fmtUsdRange(data.breakdown.flights.min, data.breakdown.flights.max)}
                   {data.breakdown.flights.airlines.length > 0 && (
                     <span style={{ color: '#9ca3af' }}>
                       {' · '}

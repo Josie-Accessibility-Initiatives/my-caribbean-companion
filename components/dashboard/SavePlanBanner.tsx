@@ -17,8 +17,8 @@ export default function SavePlanBanner() {
       aria-label="Save your plan"
       style={{
         position: 'relative',
-        background: '#E1F5EE',
-        borderLeft: '4px solid #117F74',
+        background: 'var(--color-primary-soft)',
+        borderLeft: '4px solid var(--color-primary)',
         borderRadius: '0.5rem',
         padding: '16px 20px',
         marginBottom: '1.5rem',
@@ -29,7 +29,7 @@ export default function SavePlanBanner() {
     >
       <Bookmark
         size={22}
-        color="#117F74"
+        color="var(--color-primary)"
         style={{ flexShrink: 0, marginTop: 2 }}
         aria-hidden="true"
       />
@@ -78,7 +78,7 @@ export default function SavePlanBanner() {
           right: 10,
           background: 'transparent',
           border: 'none',
-          color: '#117F74',
+          color: 'var(--color-primary)',
           cursor: 'pointer',
           padding: 4,
           borderRadius: 4,

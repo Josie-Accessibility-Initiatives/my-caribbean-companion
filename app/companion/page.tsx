@@ -1,18 +1,83 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import ChatWidget from "@/components/companion/ChatWidget";
-import { getOnboarding, type OnboardingContext } from "@/lib/persistence";
+import { type OnboardingContext } from "@/lib/persistence";
+
+type Country = { code: string; name: string };
+type Category = { code: string; label: string };
+
+function getRawPlan() {
+  if (typeof window === "undefined") return null;
+  const raw = window.localStorage.getItem("mcc_plan");
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
 
 export default function CompanionPage() {
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [fromCode, setFromCode] = useState("");
+  const [toCode, setToCode] = useState("");
+  const [categoryCode, setCategoryCode] = useState("");
   const [context, setContext] = useState<OnboardingContext | null>(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setContext(getOnboarding());
-    setLoaded(true);
+    async function load() {
+      const [countriesRes, categoriesRes] = await Promise.all([
+        fetch("/api/countries"),
+        fetch("/api/categories"),
+      ]);
+      const [c, k] = await Promise.all([countriesRes.json(), categoriesRes.json()]);
+      setCountries(c);
+      setCategories(k);
+
+      const plan = getRawPlan();
+      const input = plan?.input;
+      if (input) {
+        setFromCode(input.fromCountry ?? "");
+        setToCode(input.toCountry ?? "");
+        setCategoryCode(input.category ?? "");
+        setContext({
+          homeCountry: input.homeCountryName ?? input.fromCountry ?? "",
+          targetCountry: input.targetCountryName ?? input.toCountry ?? "",
+          category: input.categoryLabel ?? input.category ?? "",
+        });
+      }
+      setLoaded(true);
+    }
+    load();
   }, []);
+
+  function saveContext(newFrom: string, newTo: string, newCategory: string, allCountries: Country[], allCategories: Category[]) {
+    const homeCountryName = allCountries.find((c) => c.code === newFrom)?.name ?? newFrom;
+    const targetCountryName = allCountries.find((c) => c.code === newTo)?.name ?? newTo;
+    const categoryLabel = allCategories.find((c) => c.code === newCategory)?.label ?? newCategory;
+
+    const plan = getRawPlan() ?? {};
+    localStorage.setItem(
+      "mcc_plan",
+      JSON.stringify({
+        ...plan,
+        input: {
+          ...(plan.input ?? {}),
+          fromCountry: newFrom,
+          toCountry: newTo,
+          category: newCategory,
+          homeCountryName,
+          targetCountryName,
+          categoryLabel,
+        },
+      })
+    );
+
+    if (newFrom && newTo && newCategory) {
+      setContext({ homeCountry: homeCountryName, targetCountry: targetCountryName, category: categoryLabel });
+    } else {
+      setContext(null);
+    }
+  }
 
   return (
     <div className="page page-companion">
@@ -36,35 +101,69 @@ export default function CompanionPage() {
           <aside className="companion-sidebar">
             <div className="planner-card">
               <h3 className="companion-card-title">Your Move Context</h3>
+
               {!loaded ? (
-                <p className="companion-muted">Loading your plan…</p>
-              ) : context ? (
-                <>
-                  <ul className="companion-context-list">
-                    <li>
-                      <strong>From:</strong> {context.homeCountry}
-                    </li>
-                    <li>
-                      <strong>To:</strong> {context.targetCountry}
-                    </li>
-                    <li>
-                      <strong>Category:</strong> {context.category}
-                    </li>
-                  </ul>
-                  <Link href="/onboarding" className="companion-change-link">
-                    Change plan
-                  </Link>
-                </>
+                <p className="companion-muted">Loading…</p>
               ) : (
-                <>
-                  <p className="companion-muted">
-                    No move plan yet. Start the wizard to personalize your
-                    guidance.
-                  </p>
-                  <Link href="/onboarding" className="btn-primary">
-                    Start the wizard
-                  </Link>
-                </>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  <label className="form-label">
+                    From
+                    <select
+                      className="form-select"
+                      value={fromCode}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFromCode(val);
+                        saveContext(val, toCode, categoryCode, countries, categories);
+                      }}
+                    >
+                      <option value="">Select country</option>
+                      {countries
+                        .filter((c) => c.code !== toCode)
+                        .map((c) => (
+                          <option key={c.code} value={c.code}>{c.name}</option>
+                        ))}
+                    </select>
+                  </label>
+
+                  <label className="form-label">
+                    To
+                    <select
+                      className="form-select"
+                      value={toCode}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setToCode(val);
+                        saveContext(fromCode, val, categoryCode, countries, categories);
+                      }}
+                    >
+                      <option value="">Select country</option>
+                      {countries
+                        .filter((c) => c.code !== fromCode)
+                        .map((c) => (
+                          <option key={c.code} value={c.code}>{c.name}</option>
+                        ))}
+                    </select>
+                  </label>
+
+                  <label className="form-label">
+                    Category
+                    <select
+                      className="form-select"
+                      value={categoryCode}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setCategoryCode(val);
+                        saveContext(fromCode, toCode, val, countries, categories);
+                      }}
+                    >
+                      <option value="">Select profession</option>
+                      {categories.map((c) => (
+                        <option key={c.code} value={c.code}>{c.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
               )}
             </div>
 

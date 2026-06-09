@@ -370,13 +370,13 @@ const PH_STYLES = `
 .ph-prof-hl {
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-color: #14b8a6;
-  color: #0f766e;
+  text-decoration-color: var(--color-primary-dark);
+  color: var(--color-primary-dark);
 }
 
 .ph-your-label {
   font-size: 10.5px;
-  color: #0d9488;
+  color: var(--color-primary-dark);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -394,7 +394,7 @@ const PH_STYLES = `
 }
 
 .ph-dot-filled {
-  color: #0d9488;
+  color: var(--color-primary-dark);
 }
 
 .ph-dot-empty {

@@ -507,11 +507,11 @@ const PAGE_STYLES = `
 }
 
 .cp-pill-on {
-  background: #0d9488;
+  background: var(--color-primary);
   color: #fff;
-  border-color: #0d9488;
+  border-color: var(--color-primary);
 }
-.cp-pill-on:hover { background: #0f766e; border-color: #0f766e; }
+.cp-pill-on:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); }
 
 .cp-pill-off {
   background: #f3f4f6;
@@ -639,7 +639,7 @@ const PAGE_STYLES = `
 
 .cp-cta-link {
   font-size: 13.5px;
-  color: #0d9488;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   white-space: nowrap;

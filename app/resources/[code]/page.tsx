@@ -136,8 +136,8 @@ export default function CountryDetailPage() {
               justifyContent: "center",
               gap: "0.4rem",
               background: "#ffffff",
-              border: "1px solid #1D9E75",
-              color: "#1D9E75",
+              border: "1px solid var(--color-primary)",
+              color: "var(--color-primary)",
               borderRadius: "0.5rem",
               padding: "0.75rem 1rem",
               fontSize: "0.85rem",
@@ -146,12 +146,12 @@ export default function CountryDetailPage() {
               transition: "background 0.15s ease, color 0.15s ease",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "#1D9E75";
+              (e.currentTarget as HTMLAnchorElement).style.background = "var(--color-primary)";
               (e.currentTarget as HTMLAnchorElement).style.color = "#ffffff";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff";
-              (e.currentTarget as HTMLAnchorElement).style.color = "#1D9E75";
+              (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-primary)";
             }}
           >
             <Icon size={15} />
@@ -181,7 +181,7 @@ export default function CountryDetailPage() {
                   gap: "1rem",
                   background: "#ffffff",
                   border: "1px solid #e5e7eb",
-                  borderLeft: "3px solid #1D9E75",
+                  borderLeft: "3px solid var(--color-primary)",
                   borderRadius: "0.5rem",
                   padding: "0.75rem 1rem",
                   textDecoration: "none",
@@ -207,7 +207,7 @@ export default function CountryDetailPage() {
                     Last verified: January 2025
                   </div>
                 </div>
-                <ExternalLink size={15} color="#1D9E75" style={{ flexShrink: 0 }} />
+                <ExternalLink size={15} color="var(--color-primary)" style={{ flexShrink: 0 }} />
               </a>
             ))}
           </div>
@@ -278,8 +278,8 @@ export default function CountryDetailPage() {
               <span
                 key={x}
                 style={{
-                  border: "1px solid #1D9E75",
-                  color: "#1D9E75",
+                  border: "1px solid var(--color-primary)",
+                  color: "var(--color-primary)",
                   background: "#ffffff",
                   borderRadius: "999px",
                   padding: "4px 12px",

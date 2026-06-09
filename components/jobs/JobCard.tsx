@@ -115,7 +115,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
             {matchesProfession && (
               <span
                 title="Matches your profession"
-                style={{ color: '#117F74', fontSize: '0.95rem', lineHeight: 1 }}
+                style={{ color: 'var(--color-primary)', fontSize: '0.95rem', lineHeight: 1 }}
               >
                 ★
               </span>
@@ -164,7 +164,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
           <span
             style={{
               background: '#ccfbf1',
-              color: '#0f766e',
+              color: 'var(--color-primary-dark)',
               fontSize: '0.75rem',
               fontWeight: 600,
               padding: '0.2rem 0.6rem',
@@ -178,7 +178,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
 
       {/* Salary row */}
       {salary && (
-        <div style={{ fontSize: '0.9rem', color: '#0f766e', fontWeight: 600 }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--color-primary-dark)', fontWeight: 600 }}>
           {salary}
         </div>
       )}
@@ -196,7 +196,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
                   marginLeft: '0.4rem',
                   background: 'none',
                   border: 'none',
-                  color: '#117F74',
+                  color: 'var(--color-primary)',
                   cursor: 'pointer',
                   fontSize: '0.85rem',
                   fontWeight: 600,
@@ -225,7 +225,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#117F74',
+                color: 'var(--color-primary)',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 fontWeight: 600,
@@ -264,7 +264,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.25rem',
-              background: '#117F74',
+              background: 'var(--color-primary)',
               color: '#ffffff',
               borderRadius: '999px',
               padding: '0.4rem 1rem',

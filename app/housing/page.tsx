@@ -244,7 +244,7 @@ export default function HousingPage() {
               href="/onboarding"
               style={{
                 fontSize: '0.8rem',
-                color: '#117F74',
+                color: 'var(--color-primary)',
                 fontWeight: 600,
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',

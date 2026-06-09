@@ -1,11 +1,8 @@
 'use client'
 
 import { BedDouble } from 'lucide-react'
-
-interface RentRange {
-  min: number
-  max: number
-}
+import type { RentRange } from '@/lib/types/housing'
+import { fmtRentRange } from '@/lib/format'
 
 interface RentOverviewProps {
   averageRent: {
@@ -17,10 +14,6 @@ interface RentOverviewProps {
   note?: string
   source: 'tavily' | 'fallback'
   countryName: string
-}
-
-function fmtRange(range: RentRange, currency: string): string {
-  return `$${range.min.toLocaleString()} – $${range.max.toLocaleString()} ${currency}/month`
 }
 
 export default function RentOverview({
@@ -37,7 +30,7 @@ export default function RentOverview({
       style={{
         background: '#ffffff',
         border: '1px solid #e5e7eb',
-        borderLeft: '4px solid #117F74',
+        borderLeft: '4px solid var(--color-primary)',
         borderRadius: '0.75rem',
         padding: '1.25rem 1.5rem',
       }}
@@ -157,8 +150,8 @@ function RentRow({
         gap: '0.75rem',
         padding: featured ? '0.6rem 0.75rem' : '0.35rem 0.75rem',
         borderRadius: '0.5rem',
-        background: featured ? 'rgba(17,127,116,0.06)' : 'transparent',
-        border: featured ? '1px solid rgba(17,127,116,0.15)' : '1px solid transparent',
+        background: featured ? 'rgba(var(--color-primary-rgb), 0.06)' : 'transparent',
+        border: featured ? '1px solid rgba(var(--color-primary-rgb), 0.15)' : '1px solid transparent',
       }}
     >
       <span
@@ -171,7 +164,7 @@ function RentRow({
           color: featured ? '#111827' : '#4b5563',
         }}
       >
-        <BedDouble size={15} color={featured ? '#117F74' : '#9ca3af'} />
+        <BedDouble size={15} color={featured ? 'var(--color-primary)' : '#9ca3af'} />
         {label}
       </span>
       <span
@@ -182,7 +175,7 @@ function RentRow({
           whiteSpace: 'nowrap',
         }}
       >
-        {fmtRange(range, currency)}
+        {fmtRentRange(range, currency)}
       </span>
     </div>
   )
