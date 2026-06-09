@@ -22,29 +22,27 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
 
-      <section className="section section-about-main">
-        <div className="about-two-column">
-          <div>
-            <h2>What is My Caribbean Companion?</h2>
-            <p>
-              A digital platform that helps Caribbean nationals understand how
-              to work legally in other CARICOM countries under CSME. The
-              Movement Planner is designed to make CSME free movement easier,
-              clearer, and more accessible for every Caribbean national.
-            </p>
-            <p>It provides:</p>
-            <ul>
-              <li>Personalized move plans</li>
-              <li>Document checklists</li>
-              <li>Estimated timelines</li>
-              <li>Official government links</li>
-              <li>Competent Authority details</li>
-              <li>Country-specific requirements</li>
-              <li>Tools to track progress and save plans (for logged-in users)</li>
-            </ul>
-          </div>
-          <div className="about-image-card" />
+      {/* ── SECTION 2 — Highlights ─────────────────────────────── */}
+      <section className="section section-features">
+        <SectionHeader
+          title="A smarter way to plan your move"
+          subtitle="Personalized insights, eligibility guidance, and Caribbean-specific support in one place."
+        />
+        <div className="feature-grid">
+          <FeatureCard
+            title="Destination Insights"
+            body="Compare living costs, housing, and job opportunities across Caribbean countries."
+          />
+          <FeatureCard
+            title="Personalized Move Plan"
+            body="Receive a CSME checklist, eligibility summary, and document roadmap tailored to your profession."
+          />
+          <FeatureCard
+            title="AI Companion Support"
+            body="Get on-demand guidance and move-ready advice as you build your relocation plan."
+          />
         </div>
       </section>
 
