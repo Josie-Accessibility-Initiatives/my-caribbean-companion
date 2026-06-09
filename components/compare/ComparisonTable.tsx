@@ -73,13 +73,6 @@ const COMPLEXITY_ORDER: Record<string, number> = {
   hard: 2,
 }
 
-function scoreColor(score: number | null): string {
-  if (score === null) return '#9ca3af'
-  if (score >= 70) return '#16a34a'
-  if (score >= 45) return '#d97706'
-  return '#dc2626'
-}
-
 function complexityColor(c: 'easy' | 'moderate' | 'hard'): string {
   return c === 'easy' ? '#166534' : c === 'moderate' ? '#92400e' : '#991b1b'
 }
@@ -106,17 +99,6 @@ function professionMatch(
 }
 
 // ── Sub-components ────────────────────────────────────────────────
-
-function ScoreBadge({ value }: { value: number | null }) {
-  if (value === null) {
-    return <span style={{ color: '#9ca3af' }}>–</span>
-  }
-  return (
-    <span className="ct-score" style={{ color: scoreColor(value) }}>
-      {Math.round(value)}
-    </span>
-  )
-}
 
 function SummaryCard({
   emoji,
@@ -298,14 +280,6 @@ export default function ComparisonTable({
         (b.costOfLiving.monthlyTotal ?? 9999)
     )[0]
 
-  const highestQoL = [...allCountries]
-    .filter((c) => c.qualityOfLife.qualityOfLifeScore !== null)
-    .sort(
-      (a, b) =>
-        (b.qualityOfLife.qualityOfLifeScore ?? 0) -
-        (a.qualityOfLife.qualityOfLifeScore ?? 0)
-    )[0]
-
   const bestProfessionMatch =
     userCategory
       ? [...allCountries]
@@ -431,24 +405,6 @@ export default function ComparisonTable({
                 )}
               </th>
               <th
-                className="ct-th ct-num"
-                onClick={() => handleSort('safetyScore')}
-              >
-                Safety{sortArrow('safetyScore')}
-              </th>
-              <th
-                className="ct-th ct-num"
-                onClick={() => handleSort('healthcareScore')}
-              >
-                Healthcare{sortArrow('healthcareScore')}
-              </th>
-              <th
-                className="ct-th ct-num"
-                onClick={() => handleSort('qualityOfLifeScore')}
-              >
-                QoL{sortArrow('qualityOfLifeScore')}
-              </th>
-              <th
                 className="ct-th"
                 onClick={() => handleSort('csmeComplexity')}
               >
@@ -465,7 +421,7 @@ export default function ComparisonTable({
           <tbody>
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={10} className="ct-empty">
+                <td colSpan={7} className="ct-empty">
                   No countries match your filters.
                 </td>
               </tr>
@@ -539,17 +495,6 @@ export default function ComparisonTable({
                       return `${min.symbol}${min.amount.toLocaleString()}–${max.amount.toLocaleString()}`
                     })()}
                   </td>
-                  <td className="ct-td ct-num">
-                    <ScoreBadge value={c.qualityOfLife.safetyScore} />
-                  </td>
-                  <td className="ct-td ct-num">
-                    <ScoreBadge value={c.qualityOfLife.healthcareScore} />
-                  </td>
-                  <td className="ct-td ct-num">
-                    <ScoreBadge
-                      value={c.qualityOfLife.qualityOfLifeScore}
-                    />
-                  </td>
                   <td className="ct-td">
                     {c.csme ? (
                       <span
@@ -594,14 +539,6 @@ export default function ComparisonTable({
             label="Most affordable"
             country={mostAffordable}
             detail={`${conv(Math.round(mostAffordable.costOfLiving.monthlyTotal!))}/mo`}
-          />
-        )}
-        {highestQoL && (
-          <SummaryCard
-            emoji="🌟"
-            label="Highest QoL score"
-            country={highestQoL}
-            detail={`Score: ${highestQoL.qualityOfLife.qualityOfLifeScore}`}
           />
         )}
         {bestProfessionMatch && (
@@ -802,10 +739,6 @@ const CT_STYLES = `
   padding: 2px 10px;
   border-radius: 12px;
   font-size: 12px;
-  font-weight: 600;
-}
-
-.ct-score {
   font-weight: 600;
 }
 

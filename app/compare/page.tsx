@@ -20,11 +20,6 @@ const COUNTRY_ORDER = [
 
 // ── Helpers ───────────────────────────────────────────────────────
 
-function flagEmoji(code: string): string {
-  return [...code.toUpperCase()]
-    .map((c) => String.fromCodePoint(0x1f1e6 + c.charCodeAt(0) - 65))
-    .join('')
-}
 
 function toCountryCode(nameOrCode: string): string | null {
   const trimmed = nameOrCode.trim()
@@ -229,9 +224,6 @@ export default function ComparePage() {
                       onClick={() => toggleCountry(code)}
                       title={COUNTRY_META[code]?.name ?? code}
                     >
-                      <span className="cp-pill-flag">
-                        {flagEmoji(code)}
-                      </span>
                       <span className="cp-pill-code">{code}</span>
                     </button>
                   )
@@ -538,7 +530,6 @@ const PAGE_STYLES = `
   border-color: #0369a1;
 }
 
-.cp-pill-flag { font-size: 15px; line-height: 1; }
 .cp-pill-code { letter-spacing: 0.03em; }
 
 /* Loading */

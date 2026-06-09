@@ -61,9 +61,9 @@ function LinkRow({
         textDecoration: 'none',
         whiteSpace: 'nowrap' as const,
         flexShrink: 0,
-        background: 'rgba(29,158,117,0.08)',
-        color: '#1D9E75',
-        border: '1px solid rgba(29,158,117,0.25)',
+        background: 'rgba(17,127,116,0.08)',
+        color: '#117F74',
+        border: '1px solid rgba(17,127,116,0.25)',
         ...btnStyle,
       }}
     >
@@ -96,7 +96,7 @@ export default function HousingLinks({
   realEstateLinks,
   bookingComUrl,
   regional,
-  countryName,
+  countryName: _countryName,
   temporaryOptions,
 }: HousingLinksProps) {
   return (
@@ -115,7 +115,7 @@ export default function HousingLinks({
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.35rem',
-              background: '#1D9E75',
+              background: '#117F74',
               color: '#ffffff',
               borderRadius: '999px',
               padding: '0.55rem 1.25rem',
@@ -140,7 +140,7 @@ export default function HousingLinks({
                   <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem' }}>
                     {opt.type.charAt(0).toUpperCase() + opt.type.slice(1)}
                     {opt.pricePerNight != null && (
-                      <span style={{ marginLeft: '0.4rem', color: '#1D9E75', fontWeight: 600 }}>
+                      <span style={{ marginLeft: '0.4rem', color: '#117F74', fontWeight: 600 }}>
                         · ${opt.pricePerNight}/night
                       </span>
                     )}

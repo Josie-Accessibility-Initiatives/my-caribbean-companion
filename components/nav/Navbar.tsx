@@ -34,8 +34,8 @@ export default function Navbar() {
     <header className="nav-wrapper">
       <nav className="nav">
         <Link href="/" className="nav-logo">
-          <span className="nav-logo-mark">CC</span>
-          <span className="nav-logo-text">Caribbean Companion</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" style={{ height: 35, width: "auto", display: "block" }} />
         </Link>
 
         <div className="nav-links">

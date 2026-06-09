@@ -1,3 +1,8 @@
+// Quality of life scores are collected but not yet displayed in the UI due to
+// incomplete data coverage across all 12 CARICOM countries.
+// Re-enable in ComparisonTable and ComparisonCharts when coverage improves.
+// See Phase 3 roadmap.
+
 import { searchWeb, QUALITY_OF_LIFE_DOMAINS } from '@/lib/tavily'
 import { extractJSON } from '@/lib/ai'
 import { getCached, setCached } from '@/lib/cache'

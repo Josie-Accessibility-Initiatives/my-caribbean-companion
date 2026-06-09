@@ -91,11 +91,11 @@ export function exportPlanToPDF(
     }
     .header {
       text-align: center;
-      border-bottom: 3px solid #1D9E75;
+      border-bottom: 3px solid #117F74;
       padding-bottom: 20px;
       margin-bottom: 30px;
     }
-    .header h1 { color: #1D9E75; margin: 0; font-size: 28px; }
+    .header h1 { color: #117F74; margin: 0; font-size: 28px; }
     .header .subtitle { font-size: 15px; color: #6b7280; margin-top: 8px; }
 
     .move-details {
@@ -104,13 +104,13 @@ export function exportPlanToPDF(
       border-radius: 8px;
       margin-bottom: 24px;
     }
-    .move-details h2 { color: #1D9E75; margin-top: 0; }
+    .move-details h2 { color: #117F74; margin-top: 0; }
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .detail-item { background: #ffffff; padding: 10px 12px; border-radius: 4px; }
-    .detail-item strong { color: #1D9E75; }
+    .detail-item strong { color: #117F74; }
 
     .section { margin-bottom: 28px; }
-    .section h2 { color: #1D9E75; border-bottom: 2px solid #1D9E75; padding-bottom: 8px; }
+    .section h2 { color: #117F74; border-bottom: 2px solid #117F74; padding-bottom: 8px; }
 
     .checklist { list-style: none; padding: 0; }
     .checklist li {
@@ -123,7 +123,7 @@ export function exportPlanToPDF(
     .checkbox {
       width: 20px;
       height: 20px;
-      border: 2px solid #1D9E75;
+      border: 2px solid #117F74;
       border-radius: 3px;
       margin-right: 15px;
       flex-shrink: 0;
@@ -134,7 +134,7 @@ export function exportPlanToPDF(
       position: absolute;
       top: -2px;
       left: 3px;
-      color: #1D9E75;
+      color: #117F74;
       font-weight: 700;
       font-size: 16px;
     }
@@ -145,7 +145,7 @@ export function exportPlanToPDF(
     .timeline ul { list-style: none; padding: 0; margin: 0; }
     .timeline li { padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
     .timeline li:last-child { border-bottom: none; }
-    .timeline strong { color: #1D9E75; }
+    .timeline strong { color: #117F74; }
 
     .notes {
       background: #fff7ed;
@@ -240,7 +240,7 @@ export function exportPlanToPDF(
   </div>
 
   <div class="no-print" style="text-align:center; margin-top:20px;">
-    <button onclick="window.print()" style="background:#1D9E75;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px;">
+    <button onclick="window.print()" style="background:#117F74;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:16px;">
       Print / Save as PDF
     </button>
   </div>

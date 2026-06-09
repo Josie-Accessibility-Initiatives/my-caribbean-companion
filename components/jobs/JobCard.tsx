@@ -115,7 +115,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
             {matchesProfession && (
               <span
                 title="Matches your profession"
-                style={{ color: '#1D9E75', fontSize: '0.95rem', lineHeight: 1 }}
+                style={{ color: '#117F74', fontSize: '0.95rem', lineHeight: 1 }}
               >
                 ★
               </span>
@@ -196,7 +196,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
                   marginLeft: '0.4rem',
                   background: 'none',
                   border: 'none',
-                  color: '#1D9E75',
+                  color: '#117F74',
                   cursor: 'pointer',
                   fontSize: '0.85rem',
                   fontWeight: 600,
@@ -225,7 +225,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#1D9E75',
+                color: '#117F74',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 fontWeight: 600,
@@ -264,7 +264,7 @@ export default function JobCard({ job, userProfession }: JobCardProps) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.25rem',
-              background: '#1D9E75',
+              background: '#117F74',
               color: '#ffffff',
               borderRadius: '999px',
               padding: '0.4rem 1rem',

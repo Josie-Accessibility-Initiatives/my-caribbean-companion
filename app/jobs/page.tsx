@@ -281,12 +281,12 @@ export default function JobsPage() {
                   style={{ margin: '0 auto 1rem', display: 'block' }}
                   aria-hidden="true"
                 >
-                  <circle cx="24" cy="24" r="24" fill="rgba(29,158,117,0.1)" />
+                  <circle cx="24" cy="24" r="24" fill="rgba(17,127,116,0.1)" />
                   <path
                     d="M16 32V20a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12M20 18v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                    stroke="#1D9E75" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"
+                    stroke="#117F74" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"
                   />
-                  <path d="M20 24h8M20 28h5" stroke="#1D9E75" strokeWidth="1.75" strokeLinecap="round" />
+                  <path d="M20 24h8M20 28h5" stroke="#117F74" strokeWidth="1.75" strokeLinecap="round" />
                 </svg>
                 <p style={{ color: '#6b7280', margin: 0 }}>
                   Select a country and profession to see available opportunities.
@@ -312,9 +312,9 @@ export default function JobsPage() {
                     {result.listings.total > 0
                       ? `${result.listings.total} job${result.listings.total === 1 ? '' : 's'} found for `
                       : 'No live listings for '}
-                    <span style={{ color: '#1D9E75' }}>{result.profession}</span>
+                    <span style={{ color: '#117F74' }}>{result.profession}</span>
                     {' in '}
-                    <span style={{ color: '#1D9E75' }}>{result.country.name}</span>
+                    <span style={{ color: '#117F74' }}>{result.country.name}</span>
                   </p>
 
                   {sourceBadge && (

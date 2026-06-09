@@ -14,7 +14,7 @@ const COUNTRY_LIST = Object.entries(COUNTRY_META)
   .sort((a, b) => a.name.localeCompare(b.name))
 
 const INCLUDED_ITEMS = [
-  'Flights — live web search pricing',
+  'Flights: live web search pricing',
   'Housing deposit (2 months rent)',
   'Temporary accommodation (14 nights)',
   'Document fees (Skills cert, police cert)',
@@ -25,10 +25,10 @@ const INCLUDED_ITEMS = [
 
 const TIPS = [
   'Arrange temporary accommodation before you arrive to avoid rushed decisions',
-  'Get all documents certified in your home country — cheaper and faster',
+  'Get all documents certified in your home country, which is cheaper and faster',
   'Connect with Caribbean expat Facebook groups to find housing leads',
   'Check if your employer covers any relocation costs before budgeting',
-  'The XCD (East Caribbean Dollar) is fixed to USD — no exchange rate risk for 6 CARICOM destinations',
+  'The XCD (East Caribbean Dollar) is fixed to USD, so no exchange rate risk for 6 CARICOM destinations',
 ]
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -191,7 +191,7 @@ export default function CostEstimatePage() {
                     border: 'none',
                     padding: 0,
                     cursor: 'pointer',
-                    color: '#1D9E75',
+                    color: '#117F74',
                     fontSize: '0.85rem',
                     fontWeight: 500,
                     fontFamily: 'inherit',
@@ -303,7 +303,7 @@ export default function CostEstimatePage() {
                   color: '#111827',
                 }}
               >
-                <CheckCircle2 size={17} color="#1D9E75" />
+                <CheckCircle2 size={17} color="#117F74" />
                 What&apos;s included
               </h3>
               <ul
@@ -333,7 +333,7 @@ export default function CostEstimatePage() {
                         width: 5,
                         height: 5,
                         borderRadius: '50%',
-                        background: '#1D9E75',
+                        background: '#117F74',
                         flexShrink: 0,
                         marginTop: '0.44rem',
                       }}
@@ -357,7 +357,7 @@ export default function CostEstimatePage() {
                   color: '#111827',
                 }}
               >
-                <Lightbulb size={17} color="#1D9E75" />
+                <Lightbulb size={17} color="#117F74" />
                 Tips to reduce costs
               </h3>
               <ul
