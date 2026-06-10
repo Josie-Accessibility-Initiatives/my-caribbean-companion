@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import BackButton from "@/components/ui/BackButton";
 import { Briefcase, Home, Calculator, BarChart2, ExternalLink } from "lucide-react";
 import { COUNTRY_META } from "@/data/countryMeta";
 
@@ -105,7 +106,7 @@ export default function CountryDetailPage() {
 
   return (
     <div className="section">
-      <Link href="/resources">← Back to Resources</Link>
+      <BackButton />
 
       <h1 className="section-title" style={{ marginTop: "1rem" }}>
         {dbCountry.name}{" "}

@@ -4,14 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { CheckCircle2, Lightbulb, ArrowRight } from 'lucide-react'
 import { COUNTRY_META } from '@/data/countryMeta'
+import { SORTED_COUNTRIES } from '@/lib/constants'
 import { getOnboarding, type OnboardingContext } from '@/lib/persistence'
+import { toCountryCode } from '@/lib/country-utils'
 import CostEstimator from '@/components/dashboard/CostEstimator'
+import BackButton from '@/components/ui/BackButton'
 
 // ── Static data ───────────────────────────────────────────────────
-
-const COUNTRY_LIST = Object.entries(COUNTRY_META)
-  .map(([code, meta]) => ({ code, name: meta.name }))
-  .sort((a, b) => a.name.localeCompare(b.name))
 
 const INCLUDED_ITEMS = [
   'Flights: live web search pricing',
@@ -30,18 +29,6 @@ const TIPS = [
   'Check if your employer covers any relocation costs before budgeting',
   'The XCD (East Caribbean Dollar) is fixed to USD, so no exchange rate risk for 6 CARICOM destinations',
 ]
-
-// ── Helpers ───────────────────────────────────────────────────────
-
-function toCountryCode(nameOrCode: string): string | null {
-  const trimmed = nameOrCode.trim()
-  const up = trimmed.toUpperCase()
-  if (COUNTRY_META[up]) return up
-  const entry = Object.entries(COUNTRY_META).find(
-    ([, meta]) => meta.name.toLowerCase() === trimmed.toLowerCase()
-  )
-  return entry?.[0] ?? null
-}
 
 // ── Page ──────────────────────────────────────────────────────────
 
@@ -75,30 +62,7 @@ export default function CostEstimatePage() {
   const canEstimate = Boolean(fromCode && toCode && fromCode !== toCode)
 
   return (
-    <>
-      <style>{`
-        @keyframes ce-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-        .ce-page-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 2rem;
-          align-items: start;
-        }
-        .ce-selector-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-        @media (max-width: 768px) {
-          .ce-page-grid { grid-template-columns: 1fr; }
-          .ce-selector-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
-      <main
+    <main
         style={{
           maxWidth: 1120,
           margin: '0 auto',
@@ -107,6 +71,7 @@ export default function CostEstimatePage() {
       >
         {/* Page header */}
         <div style={{ marginBottom: '2.5rem', maxWidth: 680 }}>
+          <BackButton />
           <p
             className="dashboard-eyebrow"
             style={{ marginTop: 0, marginBottom: '0.5rem' }}
@@ -152,7 +117,7 @@ export default function CostEstimatePage() {
                     background: '#e5e7eb',
                     borderRadius: '0.375rem',
                     marginBottom: '0.75rem',
-                    animation: 'ce-pulse 1.5s ease-in-out infinite',
+                    animation: 'pulse 1.5s ease-in-out infinite',
                   }}
                 />
                 <div
@@ -160,7 +125,7 @@ export default function CostEstimatePage() {
                     height: 40,
                     background: '#e5e7eb',
                     borderRadius: '0.375rem',
-                    animation: 'ce-pulse 1.5s ease-in-out infinite',
+                    animation: 'pulse 1.5s ease-in-out infinite',
                   }}
                 />
               </div>
@@ -217,7 +182,7 @@ export default function CostEstimatePage() {
                       onChange={(e) => setFromCode(e.target.value)}
                     >
                       <option value="">Select country…</option>
-                      {COUNTRY_LIST.map((c) => (
+                      {SORTED_COUNTRIES.map((c) => (
                         <option key={c.code} value={c.code}>
                           {c.name}
                         </option>
@@ -237,7 +202,7 @@ export default function CostEstimatePage() {
                       onChange={(e) => setToCode(e.target.value)}
                     >
                       <option value="">Select country…</option>
-                      {COUNTRY_LIST.filter((c) => c.code !== fromCode).map(
+                      {SORTED_COUNTRIES.filter((c) => c.code !== fromCode).map(
                         (c) => (
                           <option key={c.code} value={c.code}>
                             {c.name}
@@ -443,7 +408,6 @@ export default function CostEstimatePage() {
             </div>
           </div>
         </div>
-      </main>
-    </>
+    </main>
   )
 }

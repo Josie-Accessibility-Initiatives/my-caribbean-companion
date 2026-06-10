@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -15,25 +17,25 @@ export default function Footer() {
           <div className="footer-column">
             <h4>Use cases</h4>
             <ul>
-              <li>Students &amp; Graduates</li>
-              <li>Skilled Professionals</li>
-              <li>Regional Job Seekers</li>
+              <li><Link href="/onboarding">Students &amp; Graduates</Link></li>
+              <li><Link href="/onboarding">Skilled Professionals</Link></li>
+              <li><Link href="/jobs">Regional Job Seekers</Link></li>
             </ul>
           </div>
           <div className="footer-column">
             <h4>Explore</h4>
             <ul>
-              <li>CSME Basics</li>
-              <li>Plan My Move</li>
-              <li>Country Resources</li>
+              <li><Link href="/csme-basics">CSME Basics</Link></li>
+              <li><Link href="/onboarding">Plan My Move</Link></li>
+              <li><Link href="/resources">Country Resources</Link></li>
             </ul>
           </div>
           <div className="footer-column">
             <h4>Resources</h4>
             <ul>
-              <li>Help &amp; FAQ</li>
-              <li>Contact</li>
-              <li>Privacy &amp; Terms</li>
+              <li><Link href="/csme-basics">Help &amp; FAQ</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/csme-basics">Privacy &amp; Terms</Link></li>
             </ul>
           </div>
         </div>

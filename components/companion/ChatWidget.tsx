@@ -23,8 +23,8 @@ interface ChatWidgetProps {
 }
 
 const STARTER_PROMPTS = [
-  "Am I eligible to work in Barbados?",
-  "What documents do I need as a nurse?",
+  "Am I eligible to work in this country?",
+  "What documents do I need for my profession?",
   "How long does the Skills Certificate take?",
 ];
 

@@ -3,6 +3,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import BackButton from '@/components/ui/BackButton'
+import { SkeletonBlock } from '@/components/ui/Skeleton'
+import { ErrorCard } from '@/components/ui/ErrorCard'
+import { SORTED_COUNTRIES } from '@/lib/constants'
 import { Lightbulb } from 'lucide-react'
 import { COUNTRY_META } from '@/data/countryMeta'
 import { getOnboarding } from '@/lib/persistence'
@@ -48,10 +52,6 @@ type HousingApiResponse = {
 
 // ── Static data ────────────────────────────────────────────────────
 
-const COUNTRIES = Object.entries(COUNTRY_META)
-  .map(([code, meta]) => ({ code, name: meta.name }))
-  .sort((a, b) => a.name.localeCompare(b.name))
-
 const STATIC_TIPS = [
   "Arrange temporary accommodation before arriving. Don't commit to a long-term rental remotely",
   'Join the Facebook groups below to get insider knowledge before you arrive',
@@ -68,21 +68,6 @@ function resolveRentRange(
   if (live?.min != null && live?.max != null) return { min: live.min, max: live.max }
   if (fallback) return fallback
   return null
-}
-
-// ── Skeleton ───────────────────────────────────────────────────────
-
-function SkeletonBlock({ height = 120 }: { height?: number }) {
-  return (
-    <div
-      style={{
-        borderRadius: '0.75rem',
-        background: '#e5e7eb',
-        height,
-        animation: 'pulse 1.5s ease-in-out infinite',
-      }}
-    />
-  )
 }
 
 // ── Page ───────────────────────────────────────────────────────────
@@ -156,17 +141,11 @@ export default function HousingPage() {
 
   return (
     <>
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
-
       <div style={{ maxWidth: 1120, margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
 
         {/* Page header */}
         <div style={{ marginBottom: '2rem' }}>
+          <BackButton />
           <h1 className="section-title" style={{ marginBottom: '0.35rem' }}>
             Housing Discovery
           </h1>
@@ -202,7 +181,7 @@ export default function HousingPage() {
               style={{ marginTop: '0.35rem' }}
             >
               <option value="">Choose a country…</option>
-              {COUNTRIES.map((c) => (
+              {SORTED_COUNTRIES.map((c) => (
                 <option key={c.code} value={c.code}>{c.name}</option>
               ))}
             </select>
@@ -267,26 +246,10 @@ export default function HousingPage() {
 
         {/* Error state */}
         {!loading && error && (
-          <div
-            style={{
-              background: '#fff7ed',
-              border: '1px solid #fed7aa',
-              borderRadius: '0.75rem',
-              padding: '1.5rem',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ color: '#92400e', fontWeight: 600, margin: '0 0 0.75rem' }}>
-              Unable to load housing data.
-            </p>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => fetchHousing(selectedCountry)}
-            >
-              Try again
-            </button>
-          </div>
+          <ErrorCard
+            message="Unable to load housing data."
+            onRetry={() => fetchHousing(selectedCountry)}
+          />
         )}
 
         {/* Empty state */}

@@ -21,6 +21,22 @@ export default function OnboardingPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // Pre-fill from existing plan so revisiting doesn't wipe previous choices
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("mcc_plan");
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const input = parsed?.input;
+      if (!input) return;
+      if (input.fromCountry) setHomeCountry(input.fromCountry);
+      if (input.toCountry) setTargetCountry(input.toCountry);
+      if (input.category) setCategory(input.category);
+    } catch {
+      // ignore corrupt storage
+    }
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     async function loadOptions() {

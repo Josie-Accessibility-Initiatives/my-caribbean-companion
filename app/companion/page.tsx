@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ChatWidget from "@/components/companion/ChatWidget";
+import BackButton from "@/components/ui/BackButton";
 import { type OnboardingContext } from "@/lib/persistence";
 
 type Country = { code: string; name: string };
@@ -83,6 +84,7 @@ export default function CompanionPage() {
     <div className="page page-companion">
       <div className="companion-container">
         <header className="companion-header">
+          <BackButton />
           <h1 className="section-title">Your AI Companion</h1>
           <p className="section-subtitle">
             Ask anything about relocating for work in the Caribbean. Powered

@@ -2,6 +2,10 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import BackButton from '@/components/ui/BackButton'
+import { SkeletonCard } from '@/components/ui/Skeleton'
+import { ErrorCard } from '@/components/ui/ErrorCard'
+import { SORTED_COUNTRIES } from '@/lib/constants'
 import { COUNTRY_META } from '@/data/countryMeta'
 import JobCard from '@/components/jobs/JobCard'
 import CuratedJobLinks from '@/components/jobs/CuratedJobLinks'
@@ -31,10 +35,6 @@ type JobsApiResponse = {
 
 // ── Static data ────────────────────────────────────────────────────
 
-const COUNTRIES = Object.entries(COUNTRY_META)
-  .map(([code, meta]) => ({ code, name: meta.name }))
-  .sort((a, b) => a.name.localeCompare(b.name))
-
 const PROFESSIONS = [
   'Agricultural Worker',
   'Artisan',
@@ -59,35 +59,6 @@ const SOURCE_BADGE: Record<string, { label: string; dot: string }> = {
   jsearch: { label: 'Live listings',    dot: '#22c55e' },
   cache:   { label: 'Cached results',   dot: '#9ca3af' },
   empty:   { label: 'Browse boards below', dot: '#f59e0b' },
-}
-
-// ── Skeleton card ──────────────────────────────────────────────────
-
-function SkeletonCard() {
-  return (
-    <div
-      style={{
-        background: '#ffffff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '0.75rem',
-        padding: '1.25rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.75rem',
-      }}
-    >
-      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-        <div style={{ width: 40, height: 40, borderRadius: '0.375rem', background: '#e5e7eb', animation: 'pulse 1.5s ease-in-out infinite' }} />
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          <div style={{ height: 14, width: '55%', borderRadius: 4, background: '#e5e7eb', animation: 'pulse 1.5s ease-in-out infinite' }} />
-          <div style={{ height: 11, width: '35%', borderRadius: 4, background: '#f3f4f6', animation: 'pulse 1.5s ease-in-out infinite' }} />
-        </div>
-      </div>
-      <div style={{ height: 11, width: '70%', borderRadius: 4, background: '#f3f4f6', animation: 'pulse 1.5s ease-in-out infinite' }} />
-      <div style={{ height: 11, width: '90%', borderRadius: 4, background: '#f3f4f6', animation: 'pulse 1.5s ease-in-out infinite' }} />
-      <div style={{ height: 11, width: '60%', borderRadius: 4, background: '#f3f4f6', animation: 'pulse 1.5s ease-in-out infinite' }} />
-    </div>
-  )
 }
 
 // ── Main page ──────────────────────────────────────────────────────
@@ -146,17 +117,11 @@ export default function JobsPage() {
 
   return (
     <>
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
-
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem 1.5rem 4rem' }}>
 
         {/* Page header */}
         <div style={{ marginBottom: '2rem' }}>
+          <BackButton />
           <h1 className="section-title" style={{ marginBottom: '0.35rem' }}>
             Caribbean Job Board
           </h1>
@@ -195,7 +160,7 @@ export default function JobsPage() {
                   onChange={(e) => setSelectedCountry(e.target.value)}
                 >
                   <option value="">Select a country…</option>
-                  {COUNTRIES.map((c) => (
+                  {SORTED_COUNTRIES.map((c) => (
                     <option key={c.code} value={c.code}>{c.name}</option>
                   ))}
                 </select>
@@ -243,26 +208,10 @@ export default function JobsPage() {
 
             {/* Error state */}
             {!loading && error && (
-              <div
-                style={{
-                  background: '#fff7ed',
-                  border: '1px solid #fed7aa',
-                  borderRadius: '0.75rem',
-                  padding: '1.5rem',
-                  textAlign: 'center',
-                }}
-              >
-                <p style={{ color: '#92400e', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  Unable to load job listings.
-                </p>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => doSearch(selectedCountry, selectedProfession, page)}
-                >
-                  Try again
-                </button>
-              </div>
+              <ErrorCard
+                message="Unable to load job listings."
+                onRetry={() => doSearch(selectedCountry, selectedProfession, page)}
+              />
             )}
 
             {/* Empty state */}
@@ -404,15 +353,6 @@ export default function JobsPage() {
           </div>
         </div>
       </div>
-
-      {/* Mobile responsive override */}
-      <style>{`
-        @media (max-width: 768px) {
-          .jobs-layout {
-            grid-template-columns: minmax(0, 1fr) !important;
-          }
-        }
-      `}</style>
     </>
   )
 }
