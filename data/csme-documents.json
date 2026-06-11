@@ -1,0 +1,238 @@
+{
+  "global": [
+    {
+      "id": "csme-about-us",
+      "title": "About Us | CARICOM Single Market and Economy (CSME)",
+      "description": "Learn more about the CARICOM Single Market and Economy from the official About Us page.",
+      "url": "https://csme.me/about-us/",
+      "type": "reference",
+      "lastVerified": "2025-01-01",
+      "source": "CARICOM Secretariat",
+      "categories": ["all"]
+    },
+    {
+      "id": "caricom-single-market-and-economy",
+      "title": "CARICOM Single Market and Economy - CARICOM",
+      "description": "Official CARICOM overview of the Single Market and Economy project.",
+      "url": "https://caricom.org/projects/caricom-single-market-and-economy/",
+      "type": "reference",
+      "lastVerified": "2025-01-01",
+      "source": "CARICOM Secretariat",
+      "categories": ["all"]
+    },
+    {
+      "id": "caricom-csme-search",
+      "title": "You searched for CSME - CARICOM",
+      "description": "Search results for CSME on the official CARICOM site.",
+      "url": "https://caricom.org//?s=CSME",
+      "type": "reference",
+      "lastVerified": "2025-01-01",
+      "source": "CARICOM Secretariat",
+      "categories": ["all"]
+    },
+    {
+      "id": "csme-skilled-nationals-categories",
+      "title": "Definition of Categories of Skilled Nationals as at August 2025 - CARICOM",
+      "description": "Official CARICOM definition of categories of skilled nationals for CSME entry and recognition.",
+      "url": "https://caricom.org/documents/definition-of-categories-of-skilled-nationals-as-at-august-2024/",
+      "type": "reference",
+      "lastVerified": "2025-01-01",
+      "source": "CARICOM Secretariat",
+      "categories": ["all"]
+    }
+  ],
+  "by_country": {
+    "TT": [
+      {
+        "id": "tt-immigration",
+        "title": "Trinidad & Tobago Immigration Division",
+        "description": "Official immigration authority for work authorization and CSME registration in Trinidad and Tobago.",
+        "url": "https://immigration.gov.tt",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Trinidad and Tobago"
+      },
+      {
+        "id": "tt-csme-unit",
+        "title": "CSME Unit — Ministry of National Security",
+        "description": "The competent authority responsible for processing CSME Skills Certificate applications in Trinidad and Tobago.",
+        "url": "https://nationalsecurity.gov.tt",
+        "type": "competent_authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Trinidad and Tobago"
+      }
+    ],
+    "BB": [
+      {
+        "id": "bb-immigration",
+        "title": "Barbados Immigration Department",
+        "description": "Official immigration authority for work authorization and entry requirements in Barbados.",
+        "url": "https://immigration.gov.bb",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Barbados"
+      },
+      {
+        "id": "bb-csme",
+        "title": "CSME Unit — Ministry of Home Affairs",
+        "description": "The competent authority for CSME Skills Certificate processing in Barbados.",
+        "url": "https://homeaffairs.gov.bb",
+        "type": "competent_authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Barbados"
+      }
+    ],
+    "JM": [
+      {
+        "id": "jm-immigration",
+        "title": "Jamaica Immigration",
+        "description": "Official immigration authority for entry and work authorization in Jamaica.",
+        "url": "https://pica.gov.jm",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Jamaica"
+      },
+      {
+        "id": "jm-csme",
+        "title": "CSME Unit — Ministry of Labour",
+        "description": "The competent authority for CSME Skills Certificate applications in Jamaica.",
+        "url": "https://mlss.gov.jm",
+        "type": "competent_authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Jamaica"
+      }
+    ],
+    "GY": [
+      {
+        "id": "gy-immigration",
+        "title": "Guyana Immigration Department",
+        "description": "Official immigration authority for entry and work authorization in Guyana.",
+        "url": "https://moha.gov.gy",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Guyana"
+      },
+      {
+        "id": "gy-csme",
+        "title": "CSME Unit — Ministry of Labour",
+        "description": "The competent authority for CSME applications in Guyana.",
+        "url": "https://labour.gov.gy",
+        "type": "competent_authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Guyana"
+      }
+    ],
+    "LC": [
+      {
+        "id": "lc-immigration",
+        "title": "Saint Lucia Immigration Department",
+        "description": "Official immigration authority for Saint Lucia.",
+        "url": "https://homaffairs.govt.lc",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Saint Lucia"
+      }
+    ],
+    "GD": [
+      {
+        "id": "gd-immigration",
+        "title": "Grenada Immigration Division",
+        "description": "Official immigration authority for Grenada.",
+        "url": "https://immigration.gov.gd",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Grenada"
+      }
+    ],
+    "DM": [
+      {
+        "id": "dm-immigration",
+        "title": "Dominica Immigration Division",
+        "description": "Official immigration authority for Dominica.",
+        "url": "https://dominica.gov.dm",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Dominica"
+      }
+    ],
+    "VC": [
+      {
+        "id": "vc-immigration",
+        "title": "St Vincent Immigration Department",
+        "description": "Official immigration authority for St Vincent and the Grenadines.",
+        "url": "https://gov.vc",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of St Vincent"
+      }
+    ],
+    "KN": [
+      {
+        "id": "kn-immigration",
+        "title": "St Kitts and Nevis Immigration",
+        "description": "Official immigration authority for St Kitts and Nevis.",
+        "url": "https://immigration.gov.kn",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of St Kitts and Nevis"
+      }
+    ],
+    "AG": [
+      {
+        "id": "ag-immigration",
+        "title": "Antigua and Barbuda Immigration",
+        "description": "Official immigration authority for Antigua and Barbuda.",
+        "url": "https://immigration.gov.ag",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Antigua and Barbuda"
+      }
+    ],
+    "SR": [
+      {
+        "id": "sr-immigration",
+        "title": "Suriname Immigration Department",
+        "description": "Official immigration authority for Suriname.",
+        "url": "https://gov.sr",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Suriname"
+      }
+    ],
+    "BZ": [
+      {
+        "id": "bz-immigration",
+        "title": "Belize Immigration Department",
+        "description": "Official immigration authority for Belize.",
+        "url": "https://immigration.gov.bz",
+        "type": "authority",
+        "lastVerified": "2025-01-01",
+        "source": "Government of Belize"
+      }
+    ]
+  },
+  "by_category": {
+    "Nurse": [
+      {
+        "id": "nurse-nursing-council",
+        "title": "Caribbean Nursing Councils",
+        "description": "Contact the nursing council in your destination country to verify your qualifications.",
+        "url": "https://caricom.org",
+        "type": "guide",
+        "lastVerified": "2025-01-01",
+        "source": "CARICOM Secretariat"
+      }
+    ],
+    "Teacher": [
+      {
+        "id": "teacher-qualifications",
+        "title": "Teacher Qualification Recognition",
+        "description": "Guide to getting your teaching qualifications recognized in another CARICOM country.",
+        "url": "https://caricom.org",
+        "type": "guide",
+        "lastVerified": "2025-01-01",
+        "source": "CARICOM Secretariat"
+      }
+    ]
+  }
+}

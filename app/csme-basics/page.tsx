@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PlanCTACard } from "@/components/ui/PlanCTACard";
 import {
@@ -16,7 +16,44 @@ import {
   Leaf,
   Shield,
   ChevronDown,
+  ExternalLink,
 } from "lucide-react";
+import type { CSMEDocument, DocumentType } from "@/lib/types/documents";
+
+const BADGE: Record<DocumentType, { label: string; bg: string; color: string }> = {
+  guide:               { label: "Guide",     bg: "#d1fae5", color: "#065f46" },
+  form:                { label: "Form",      bg: "#dbeafe", color: "#1e40af" },
+  reference:           { label: "Reference", bg: "#f3f4f6", color: "#374151" },
+  authority:           { label: "Authority", bg: "#e0e7ff", color: "#1e3a8a" },
+  competent_authority: { label: "Authority", bg: "#e0e7ff", color: "#1e3a8a" },
+};
+
+function TypeBadge({ type }: { type: DocumentType }) {
+  const b = BADGE[type] ?? BADGE.reference;
+  return (
+    <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: "999px", fontSize: "0.75rem", fontWeight: 600, background: b.bg, color: b.color, marginBottom: "0.4rem" }}>
+      {b.label}
+    </span>
+  );
+}
+
+function DocCard({ doc }: { doc: CSMEDocument }) {
+  return (
+    <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderLeft: "3px solid var(--color-primary)", borderRadius: "0.5rem", padding: "1rem" }}>
+      <TypeBadge type={doc.type} />
+      <div style={{ fontWeight: 700, color: "#111827", marginBottom: "0.25rem" }}>{doc.title}</div>
+      <p style={{ color: "#6b7280", fontSize: "0.875rem", margin: "0 0 0.5rem" }}>{doc.description}</p>
+      <a
+        href={doc.url}
+        target="_blank"
+        rel="noreferrer"
+        style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", fontSize: "0.85rem", fontWeight: 600, color: "var(--color-primary)", textDecoration: "none" }}
+      >
+        View Official Source <ExternalLink size={13} />
+      </a>
+    </div>
+  );
+}
 
 const CATEGORIES = [
   { label: "University Graduates",        Icon: GraduationCap },
@@ -80,6 +117,14 @@ const FAQS = [
 
 export default function CsmeBasicsPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [globalDocs, setGlobalDocs] = useState<CSMEDocument[]>([]);
+
+  useEffect(() => {
+    fetch("/api/documents?global=true")
+      .then((r) => r.json())
+      .then((d) => setGlobalDocs(d.global ?? []))
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="page page-csme">
@@ -221,6 +266,21 @@ export default function CsmeBasicsPage() {
         </div>
       </section>
 
+      {/* ── SECTION 7 — Document Hub ─────────────────────────── */}
+      {globalDocs.length > 0 && (
+        <section className="section">
+          <SectionHeader
+            title="Official CSME Documents"
+            subtitle="Verified resources from the CARICOM Secretariat to help you start your application."
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}>
+            {globalDocs.map((doc) => (
+              <DocCard key={doc.id} doc={doc} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ── SECTION 6 — FAQ ──────────────────────────────────── */}
       <section className="section">
         <SectionHeader title="Frequently Asked Questions" />
@@ -282,7 +342,7 @@ export default function CsmeBasicsPage() {
         </div>
       </section>
 
-      {/* ── SECTION 7 — CTA ──────────────────────────────────── */}
+      {/* ── SECTION 8 — CTA ──────────────────────────────────── */}
       <PlanCTACard />
 
     </div>
