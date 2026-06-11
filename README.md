@@ -10,7 +10,7 @@ government information and provides personalized
 relocation plans, cost estimates, job listings, 
 housing resources, and AI-powered guidance.
 
-**Live app:** [mycaribbeancompanion.com](#) ← update when deployed
+**Live app:** [my-caribbean-companion.vercel.app](#)
 
 ---
 
