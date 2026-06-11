@@ -344,21 +344,11 @@ The UI falls back to static data from
 
 ## Roadmap
 
-- [ ] Phase 9 — Document Hub (CaribGov API integration)
-- [ ] Phase 10 — PDF Roadmap Export
 - [ ] Phase 6 — Readiness Score Engine
 - [ ] Phase 13 — Community & Peer Stories
 - [ ] Phase 14 — Application Status Tracker
 - [ ] Phase 15 — Multi-language Support (FR, ES, HT, NL)
 - [ ] Phase 16 — Production Readiness (Redis, Sentry, SEO)
-
----
-
-## Contributing
-
-This project is in active development. 
-Contributions welcome — please open an issue 
-before submitting a PR.
 
 ---
 
