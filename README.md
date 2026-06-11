@@ -76,104 +76,117 @@ housing resources, and AI-powered guidance.
 ---
 
 ## Project structure
+```plaintext
 my-caribbean-companion/
+│
 ├── app/
-│   ├── layout.tsx              ← global layout, Navbar, Footer, AI bubble
-│   ├── page.tsx                ← home / landing page
-│   ├── not-found.tsx           ← custom 404 page
-│   ├── onboarding/             ← CSME move planner wizard
-│   ├── dashboard/              ← checklist, cost estimate, job/housing preview
-│   ├── compare/                ← country comparison dashboard
-│   ├── companion/              ← AI chatbot (Gemini)
-│   ├── jobs/                   ← Caribbean job board
-│   ├── housing/                ← housing discovery
-│   ├── cost-estimate/          ← relocation cost estimator
-│   ├── resources/              ← document hub + country detail pages
-│   ├── csme-basics/            ← CSME framework explainer + document categories
-│   ├── community/              ← community stories (coming soon)
-│   ├── about/                  ← about page
-│   ├── contact/                ← contact page
-│   ├── login/                  ← Supabase Auth login
-│   ├── signup/                 ← Supabase Auth signup
+│   ├── layout.tsx                 # Global layout, Navbar, Footer, AI bubble
+│   ├── page.tsx                   # Home / landing page
+│   ├── not-found.tsx              # Custom 404 page
+│   │
+│   ├── onboarding/               # CSME move planner wizard
+│   ├── dashboard/                # Checklist, cost estimate, job/housing preview
+│   ├── compare/                  # Country comparison dashboard
+│   ├── companion/                # AI chatbot (Gemini)
+│   ├── jobs/                     # Caribbean job board
+│   ├── housing/                  # Housing discovery
+│   ├── cost-estimate/            # Relocation cost estimator
+│   ├── resources/                # Document hub + country detail pages
+│   ├── csme-basics/              # CSME explainer + document categories
+│   ├── community/                # Community stories (coming soon)
+│   ├── about/
+│   ├── contact/
+│   ├── login/                    # Supabase Auth login
+│   ├── signup/                   # Supabase Auth signup
+│   │
 │   └── api/
-│       ├── plan/               ← POST — generate CSME plan
-│       ├── countries/          ← GET — CARICOM country list
-│       ├── categories/         ← GET — CSME profession categories
-│       ├── chat/               ← POST — Gemini AI chat (streaming)
-│       ├── cost-estimate/      ← POST — relocation cost breakdown
-│       ├── compare/            ← GET — country comparison data
-│       ├── jobs/               ← GET — job listings (JSearch)
-│       ├── housing/            ← GET — housing data (Tavily)
-│       ├── documents/          ← GET — CSME documents by country/category
-│       └── exchange-rates/     ← GET — live currency rates
+│       ├── plan/                 # POST — Generate CSME plan
+│       ├── countries/            # GET — CARICOM country list
+│       ├── categories/           # GET — CSME profession categories
+│       ├── chat/                 # POST — Gemini AI chat (streaming)
+│       ├── cost-estimate/        # POST — Relocation cost breakdown
+│       ├── compare/              # GET — Country comparison data
+│       ├── jobs/                 # GET — Job listings (JSearch)
+│       ├── housing/              # GET — Housing data (Tavily)
+│       ├── documents/            # GET — CSME docs by country/category
+│       └── exchange-rates/       # GET — Live currency rates
 │
 ├── components/
 │   ├── auth/
-│   │   └── AuthProvider.tsx        ← Supabase Auth context + session sync
+│   │   └── AuthProvider.tsx      # Supabase Auth context + session sync
+│   │
 │   ├── nav/
 │   │   ├── Navbar.tsx
 │   │   ├── Footer.tsx
-│   │   └── AICompanionBubble.tsx   ← floating chat button
-│   ├── ui/                         ← shared UI primitives
+│   │   └── AICompanionBubble.tsx
+│   │
+│   ├── ui/                       # Shared UI primitives
 │   │   ├── BackButton.tsx
 │   │   ├── ErrorCard.tsx
 │   │   ├── FeatureCard.tsx
 │   │   ├── PlanCTACard.tsx
 │   │   ├── SectionHeader.tsx
 │   │   └── Skeleton.tsx
-│   ├── wizard/                     ← onboarding wizard steps
-│   ├── dashboard/                  ← checklist, cost widget, save plan banner
-│   ├── compare/                    ← comparison table, charts, heatmap
-│   ├── jobs/                       ← job cards, curated links
-│   ├── housing/                    ← rent overview, neighborhoods, links
-│   ├── resources/                  ← fraud alert
-│   └── companion/                  ← ChatWidget
+│   │
+│   ├── wizard/                   # Onboarding wizard steps
+│   ├── dashboard/                # Dashboard widgets
+│   ├── compare/                  # Tables, charts, heatmaps
+│   ├── jobs/                     # Job cards + curated links
+│   ├── housing/                  # Rent overview + neighborhoods
+│   ├── resources/                # Fraud alerts
+│   └── companion/                # ChatWidget
 │
 ├── lib/
-│   ├── ai.ts                   ← Gemini client, system prompts, extractJSON
-│   ├── api.ts                  ← typed fetch helpers for internal API routes
-│   ├── badge.ts                ← document type badge config
-│   ├── cache.ts                ← Supabase api_cache utilities
-│   ├── constants.ts            ← app-wide constants
-│   ├── country-utils.ts        ← country lookup helpers
-│   ├── currency.ts             ← USD → local currency conversion
-│   ├── cost-search.ts          ← Tavily flight + cost of living search
-│   ├── exchange-rates.ts       ← ExchangeRate-API integration
-│   ├── format.ts               ← number/currency formatters
-│   ├── pdfExport.ts            ← PDF generation for relocation roadmap
-│   ├── persistence.ts          ← localStorage + Supabase data layer
-│   ├── tavily.ts               ← Tavily search client
+│   ├── ai.ts                     # Gemini client + prompt handling
+│   ├── api.ts                    # Typed fetch helpers
+│   ├── badge.ts                  # Document badge config
+│   ├── cache.ts                  # Supabase API cache utilities
+│   ├── constants.ts
+│   ├── country-utils.ts
+│   ├── currency.ts
+│   ├── cost-search.ts
+│   ├── exchange-rates.ts
+│   ├── format.ts
+│   ├── pdfExport.ts              # PDF roadmap generation
+│   ├── persistence.ts            # localStorage + Supabase layer
+│   ├── tavily.ts
+│   │
 │   ├── supabase/
-│   │   ├── client.ts           ← browser Supabase client
-│   │   ├── server.ts           ← SSR Supabase client
-│   │   └── admin.ts            ← service role client (server only)
+│   │   ├── client.ts
+│   │   ├── server.ts
+│   │   └── admin.ts
+│   │
 │   ├── external/
-│   │   ├── caribgov.ts         ← CaribGov API (competent authority contacts)
-│   │   ├── worldbank.ts        ← World Bank economic data
-│   │   ├── rest-countries.ts   ← country flags, currencies, languages
-│   │   ├── quality-of-life.ts  ← Tavily QoL search
-│   │   ├── jsearch.ts          ← RapidAPI job search
-│   │   └── housing-search.ts   ← Tavily housing search
+│   │   ├── caribgov.ts
+│   │   ├── worldbank.ts
+│   │   ├── rest-countries.ts
+│   │   ├── quality-of-life.ts
+│   │   ├── jsearch.ts
+│   │   └── housing-search.ts
+│   │
 │   └── types/
-│       ├── comparison.ts       ← CountryComparisonData type
-│       ├── csme.ts             ← CSMEComplexity type
-│       ├── documents.ts        ← CSMEDocument + DocumentType types
-│       ├── housing.ts          ← housing data types
-│       └── jobs.ts             ← job listing types
+│       ├── comparison.ts
+│       ├── csme.ts
+│       ├── documents.ts
+│       ├── housing.ts
+│       └── jobs.ts
 │
 ├── data/
-│   ├── countries.json          ← 12 CARICOM countries (code, name, URLs)
-│   ├── categories.json         ← CSME profession categories
-│   ├── countryMeta.ts          ← rich country data (capital, airport, QoL)
-│   ├── cost-estimates.json     ← hardcoded relocation costs per country
-│   ├── csme-complexity.json    ← CSME processing complexity per country
-│   ├── job-links.json          ← curated Caribbean job board links
-│   └── housing-links.json      ← curated housing links + Facebook groups
+│   ├── countries.json            # 12 CARICOM countries
+│   ├── categories.json           # CSME profession categories
+│   ├── countryMeta.ts
+│   ├── cost-estimates.json
+│   ├── csme-complexity.json
+│   ├── job-links.json
+│   └── housing-links.json
 │
 └── supabase/
     └── migrations/
         ├── 001_initial_schema.sql
         └── 002_api_cache.sql
+```
+
+        
 
 
 ---
