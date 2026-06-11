@@ -249,6 +249,7 @@ my-caribbean-companion/
 ├── 001_initial_schema.sql
 └── 002_api_cache.sql
 
+
 ---
 
 ## API routes reference
