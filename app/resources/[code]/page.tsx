@@ -4,10 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import BackButton from "@/components/ui/BackButton";
-import { Briefcase, Home, Calculator, BarChart2, ExternalLink } from "lucide-react";
+import FraudAlert from "@/components/resources/FraudAlert";
+import { Briefcase, Home, Calculator, BarChart2, ExternalLink, Phone, Mail, Globe } from "lucide-react";
 import { COUNTRY_META } from "@/data/countryMeta";
+import type { CSMEDocument, DocumentType } from "@/lib/types/documents";
 
-type Country = {
+type DbCountry = {
   id: number;
   code: string;
   name: string;
@@ -17,7 +19,23 @@ type Country = {
   notes: string | null;
 };
 
-// Labels to filter from country-specific lists
+type CaribGovContact = {
+  type: string;
+  ministry: string;
+  email?: string | null;
+  phone?: string | null;
+  website?: string | null;
+  officer?: string | null;
+  title?: string | null;
+  address?: string | null;
+};
+
+type LiveContacts = {
+  competentAuthority: CaribGovContact | null;
+  immigrationDept: CaribGovContact | null;
+  source: string;
+};
+
 const JOB_BOARD_EXCLUDE = ["linkedin", "caricom", "indeed"];
 const HOUSING_EXCLUDE = ["airbnb", "vrbo", "facebook"];
 
@@ -26,25 +44,145 @@ function isExcluded(label: string, list: string[]): boolean {
   return list.some((term) => l.includes(term));
 }
 
+const TYPE_COLORS: Record<DocumentType, { bg: string; text: string }> = {
+  guide:               { bg: "#dbeafe", text: "#1d4ed8" },
+  form:                { bg: "#d1fae5", text: "#065f46" },
+  authority:           { bg: "#ede9fe", text: "#5b21b6" },
+  competent_authority: { bg: "#fce7f3", text: "#9d174d" },
+  reference:           { bg: "#f3f4f6", text: "#374151" },
+};
+
+function TypeBadge({ type }: { type: DocumentType }) {
+  const { bg, text } = TYPE_COLORS[type] ?? TYPE_COLORS.reference;
+  const label = type.replace(/_/g, " ");
+  return (
+    <span
+      style={{
+        background: bg,
+        color: text,
+        fontSize: "0.7rem",
+        fontWeight: 700,
+        padding: "2px 8px",
+        borderRadius: "999px",
+        textTransform: "uppercase",
+        letterSpacing: "0.04em",
+        flexShrink: 0,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function DocRow({ doc }: { doc: CSMEDocument }) {
+  return (
+    <a
+      href={doc.url}
+      target="_blank"
+      rel="noreferrer"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "1rem",
+        background: "#ffffff",
+        border: "1px solid #e5e7eb",
+        borderLeft: "3px solid var(--color-primary)",
+        borderRadius: "0.5rem",
+        padding: "0.75rem 1rem",
+        textDecoration: "none",
+      }}
+    >
+      <div style={{ minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+          <TypeBadge type={doc.type} />
+          <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "#111827" }}>
+            {doc.title}
+          </span>
+        </div>
+        <div style={{ fontSize: "0.8rem", color: "#6b7280", marginTop: "0.2rem" }}>
+          {doc.description}
+        </div>
+      </div>
+      <ExternalLink size={14} color="var(--color-primary)" style={{ flexShrink: 0 }} />
+    </a>
+  );
+}
+
+function ContactCard({ contact, label }: { contact: CaribGovContact; label: string }) {
+  return (
+    <div
+      style={{
+        background: "#f9fafb",
+        border: "1px solid #e5e7eb",
+        borderRadius: "0.5rem",
+        padding: "0.875rem 1rem",
+        marginBottom: "0.75rem",
+      }}
+    >
+      <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.3rem" }}>
+        {label}
+      </div>
+      <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#111827", marginBottom: "0.5rem" }}>
+        {contact.ministry}
+      </div>
+      {contact.officer && (
+        <div style={{ fontSize: "0.85rem", color: "#374151", marginBottom: "0.3rem" }}>
+          {contact.officer}{contact.title ? ` — ${contact.title}` : ""}
+        </div>
+      )}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        {contact.phone && (
+          <a href={`tel:${contact.phone}`} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "var(--color-primary)", textDecoration: "none" }}>
+            <Phone size={13} /> {contact.phone}
+          </a>
+        )}
+        {contact.email && (
+          <a href={`mailto:${contact.email}`} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "var(--color-primary)", textDecoration: "none" }}>
+            <Mail size={13} /> {contact.email}
+          </a>
+        )}
+        {contact.website && (
+          <a href={contact.website} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", color: "var(--color-primary)", textDecoration: "none" }}>
+            <Globe size={13} /> {contact.website}
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function CountryDetailPage() {
   const params = useParams<{ code: string }>();
   const countryCode = String(params?.code || "").toUpperCase();
 
-  const [resources, setResources] = useState<Country[]>([]);
+  const [resources, setResources] = useState<DbCountry[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [liveContacts, setLiveContacts] = useState<LiveContacts | null>(null);
+  const [countryDocs, setCountryDocs] = useState<CSMEDocument[]>([]);
+  const [docsDisclaimer, setDocsDisclaimer] = useState("");
 
   useEffect(() => {
     async function load() {
       try {
         setLoading(true);
         setError("");
-        const res = await fetch("/api/countries");
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data?.error || "Failed to load resources");
+        const [countriesRes, docsRes] = await Promise.all([
+          fetch("/api/countries"),
+          fetch(`/api/documents?country=${countryCode}`),
+        ]);
+        const countriesData = await countriesRes.json();
+        if (!countriesRes.ok) throw new Error(countriesData?.error || "Failed to load resources");
+        setResources(Array.isArray(countriesData) ? countriesData : []);
+
+        if (docsRes.ok) {
+          const docsData = await docsRes.json();
+          setLiveContacts(docsData.liveContacts ?? null);
+          setCountryDocs(docsData.documents?.countrySpecific ?? []);
+          setDocsDisclaimer(docsData.disclaimer ?? "");
         }
-        setResources(Array.isArray(data) ? data : []);
       } catch (e) {
         setError(e instanceof Error ? e.message : "Failed to load resources");
       } finally {
@@ -52,13 +190,10 @@ export default function CountryDetailPage() {
       }
     }
     load();
-  }, []);
+  }, [countryCode]);
 
   const dbCountry = useMemo(
-    () =>
-      resources.find(
-        (c) => String(c.code || "").toUpperCase() === countryCode,
-      ) ?? null,
+    () => resources.find((c) => String(c.code || "").toUpperCase() === countryCode) ?? null,
     [resources, countryCode],
   );
 
@@ -83,7 +218,7 @@ export default function CountryDetailPage() {
     return (
       <div className="section">
         <p className="form-error">{error}</p>
-        <Link href="/resources">← Back to Resources</Link>
+        <BackButton href="/resources" label="Back to Resources" />
       </div>
     );
   }
@@ -93,7 +228,7 @@ export default function CountryDetailPage() {
       <div className="section">
         <h1>Country not found</h1>
         <p>We couldn&apos;t find a country with code: {countryCode}</p>
-        <Link href="/resources">← Back to Resources</Link>
+        <BackButton href="/resources" label="Back to Resources" />
       </div>
     );
   }
@@ -106,7 +241,7 @@ export default function CountryDetailPage() {
 
   return (
     <div className="section">
-      <BackButton />
+      <BackButton href="/resources" label="Back to Resources" />
 
       <h1 className="section-title" style={{ marginTop: "1rem" }}>
         {dbCountry.name}{" "}
@@ -161,66 +296,7 @@ export default function CountryDetailPage() {
         ))}
       </div>
 
-      {/* 2. Official CSME Resources */}
-      <div className="planner-card" style={{ marginBottom: "1rem" }}>
-        <h2 style={{ marginTop: 0, marginBottom: "0.85rem" }}>
-          Official CSME Resources
-        </h2>
-
-        {officialLinks.length > 0 ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {officialLinks.map(({ label, url }) => (
-              <a
-                key={url}
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "1rem",
-                  background: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderLeft: "3px solid var(--color-primary)",
-                  borderRadius: "0.5rem",
-                  padding: "0.75rem 1rem",
-                  textDecoration: "none",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                      color: "#111827",
-                    }}
-                  >
-                    {label}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#9ca3af",
-                      marginTop: "0.15rem",
-                    }}
-                  >
-                    Last verified: January 2025
-                  </div>
-                </div>
-                <ExternalLink size={15} color="var(--color-primary)" style={{ flexShrink: 0 }} />
-              </a>
-            ))}
-          </div>
-        ) : (
-          <p style={{ color: "#6b7280", margin: 0 }}>
-            Official resource links coming soon. Check back or contact the
-            competent authority directly.
-          </p>
-        )}
-      </div>
-
-      {/* 3. Country Snapshot — stat grid */}
+      {/* 5. Country Snapshot — stat grid */}
       {meta?.stats && (
         <div className="planner-card" style={{ marginBottom: "1rem" }}>
           <div
@@ -244,22 +320,10 @@ export default function CountryDetailPage() {
                   padding: "0.75rem 1rem",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "#9ca3af",
-                    marginBottom: "0.25rem",
-                  }}
-                >
+                <div style={{ fontSize: "0.75rem", color: "#9ca3af", marginBottom: "0.25rem" }}>
                   {label}
                 </div>
-                <div
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: "#111827",
-                  }}
-                >
+                <div style={{ fontWeight: 700, fontSize: "1rem", color: "#111827" }}>
                   {value}
                 </div>
               </div>
@@ -268,7 +332,7 @@ export default function CountryDetailPage() {
         </div>
       )}
 
-      {/* 4. Emerging Industries — pills */}
+      {/* 6. Emerging Industries — pills */}
       {(meta?.industries?.length ?? 0) > 0 && (
         <div className="planner-card" style={{ marginBottom: "1rem" }}>
           <h2 style={{ marginTop: 0, marginBottom: "0.75rem" }}>
@@ -294,7 +358,97 @@ export default function CountryDetailPage() {
             ))}
           </div>
         </div>
-      )}  
+      )}
+
+      {/* 2. Live Government Contacts (CaribGov) */}
+      {liveContacts && liveContacts.source === "caribgov" && (
+        <div className="planner-card" style={{ marginBottom: "1rem" }}>
+          <h2 style={{ marginTop: 0, marginBottom: "0.85rem" }}>
+            Government Contacts
+          </h2>
+          {liveContacts.competentAuthority && (
+            <ContactCard contact={liveContacts.competentAuthority} label="Competent Authority (CSME)" />
+          )}
+          {liveContacts.immigrationDept && (
+            <ContactCard contact={liveContacts.immigrationDept} label="Immigration Department" />
+          )}
+          {!liveContacts.competentAuthority && !liveContacts.immigrationDept && (
+            <p style={{ color: "#6b7280", margin: 0 }}>
+              Live contact data is not available for this country. Check the{" "}
+              <a href="https://caribgov.com" target="_blank" rel="noreferrer">
+                CaribGov directory
+              </a>{" "}
+              for up-to-date contacts.
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* 3. Official CSME Resources (from DB) */}
+      {officialLinks.length > 0 && (
+        <div className="planner-card" style={{ marginBottom: "1rem" }}>
+          <h2 style={{ marginTop: 0, marginBottom: "0.85rem" }}>
+            Official CSME Resources
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {officialLinks.map(({ label, url }) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  background: "#ffffff",
+                  border: "1px solid #e5e7eb",
+                  borderLeft: "3px solid var(--color-primary)",
+                  borderRadius: "0.5rem",
+                  padding: "0.75rem 1rem",
+                  textDecoration: "none",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#111827" }}>
+                    {label}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#9ca3af", marginTop: "0.15rem" }}>
+                    Last verified: January 2025
+                  </div>
+                </div>
+                <ExternalLink size={15} color="var(--color-primary)" style={{ flexShrink: 0 }} />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 4. Country-specific document hub docs */}
+      {countryDocs.length > 0 && (
+        <div className="planner-card" style={{ marginBottom: "1rem" }}>
+          <h2 style={{ marginTop: 0, marginBottom: "0.85rem" }}>
+            Document Resources
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {countryDocs.map((doc) => (
+              <DocRow key={doc.id} doc={doc} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Disclaimer */}
+      {docsDisclaimer && (
+        <p style={{ fontSize: "0.8rem", color: "#9ca3af", marginTop: "1.5rem", lineHeight: 1.5 }}>
+          {docsDisclaimer}
+        </p>
+      )}
+
+      <div style={{ marginTop: "2rem" }}>
+        <FraudAlert context="documents" />
+      </div>
     </div>
   );
 }
