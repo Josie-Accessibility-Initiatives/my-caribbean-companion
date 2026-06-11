@@ -287,8 +287,6 @@ export default function DashboardPage() {
               >
                 Housing
               </button>
-              <a href="#official-links">Official Links</a>
-              <a href="#ai-companion">AI Companion</a>
             </nav>
 
             {!loading && !user && (
@@ -599,53 +597,6 @@ export default function DashboardPage() {
           {/* ── AREA C: Always visible ── */}
 
           <section id="official-links" className="dashboard-section">
-            <h2 className="section-title">Official Links &amp; Next Steps</h2>
-            {plan.officialLinks.immigration ||
-            plan.officialLinks.competentAuthority ||
-            plan.officialLinks.forms ? (
-              <ul className="planner-list" style={{ marginTop: "0.5rem" }}>
-                {plan.officialLinks.immigration && (
-                  <li>
-                    <a
-                      href={plan.officialLinks.immigration}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Immigration website (destination country)
-                    </a>
-                  </li>
-                )}
-                {plan.officialLinks.competentAuthority && (
-                  <li>
-                    <a
-                      href={plan.officialLinks.competentAuthority}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Competent Authority for Skills Certificates
-                    </a>
-                  </li>
-                )}
-                {plan.officialLinks.forms && (
-                  <li>
-                    <a
-                      href={plan.officialLinks.forms}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Forms / Online services
-                    </a>
-                  </li>
-                )}
-              </ul>
-            ) : (
-              <p style={{ color: "#6b7280", margin: 0 }}>
-                Official links for {input.targetCountryName} aren&apos;t
-                available yet.
-              </p>
-            )}
-
-            <div className="plan-actions">
               <Link href="/onboarding" className="btn-secondary">
                 Try Another Country or Category
               </Link>
@@ -656,7 +607,6 @@ export default function DashboardPage() {
               >
                 Export as PDF
               </button>
-            </div>
           </section>
 
         </main>
