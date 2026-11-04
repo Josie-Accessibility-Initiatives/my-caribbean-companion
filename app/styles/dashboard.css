@@ -1,0 +1,566 @@
+/* =========================
+   Planner cards & checklist
+   ========================= */
+
+.planner-card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+}
+
+.planner-card.secondary {
+  background: var(--color-surface-muted);
+}
+
+.planner-list {
+  margin-top: 0.75rem;
+  padding-left: 1.1rem;
+  color: var(--color-text-body);
+}
+
+.checklist {
+  margin-top: 0.75rem;
+  padding-left: 0;
+  list-style: none;
+  color: var(--color-text-body);
+}
+
+.checklist-item + .checklist-item {
+  margin-top: 0.5rem;
+}
+
+.checklist-item label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.checklist-item input {
+  margin-top: 0.25rem;
+}
+
+.checklist-label {
+  font-weight: 500;
+}
+
+.checklist-description {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-left: 1.5rem;
+  margin-top: 0.15rem;
+}
+
+.checklist-item .checklist-description {
+  display: block;
+  margin-left: 0;
+}
+
+/* =========================
+   Dashboard layout
+   ========================= */
+
+/* Breathing room between the last dashboard card and the footer */
+.page-dashboard {
+  padding-bottom: 4rem;
+}
+
+.dashboard-grid {
+  max-width: var(--page-width);
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+}
+
+.dashboard-section {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-section-title {
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+
+.dashboard-sidebar-nav {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.dashboard-sidebar-nav a,
+.dashboard-sidebar-nav button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-body);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-sidebar-nav a:hover,
+.dashboard-sidebar-nav button:hover {
+  background: var(--color-surface-sunken);
+  color: var(--color-primary);
+}
+
+.dashboard-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-primary);
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+}
+
+.plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* =========================
+   Dashboard — plan tabs
+   ========================= */
+
+.plan-tabs-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.plan-tabs-bar {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+}
+
+.plan-tab-btn {
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.plan-tab-btn:hover {
+  color: var(--color-text);
+}
+
+.plan-tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 600;
+  background: var(--color-surface);
+}
+
+.plan-tab-content {
+  padding: 1.5rem;
+  min-height: 400px;
+}
+
+/* Rent highlight in the housing teaser */
+.rent-highlight {
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.rent-highlight-amount {
+  margin: 0 0 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.rent-highlight-amount span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* =========================
+   Signed-in dashboard (profile header + my plans)
+   ========================= */
+
+.dashboard-top {
+  max-width: var(--page-width);
+  margin: 2rem auto 0;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-header-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-header-name {
+  margin: 0.35rem 0 0.15rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.profile-header-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.profile-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0.85rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.profile-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-border);
+  color: var(--color-text);
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.profile-facts li svg {
+  color: var(--color-primary);
+}
+
+.profile-fact-label {
+  color: var(--color-text-muted);
+}
+
+.profile-header-hint {
+  display: block;
+  width: fit-content;
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.profile-header-hint:hover {
+  text-decoration: underline;
+}
+
+.profile-edit-btn {
+  white-space: nowrap;
+}
+
+.my-plans {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+}
+
+.my-plans-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.my-plans-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.my-plan-card {
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface-muted);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.my-plan-card:hover {
+  border-color: var(--color-primary-border);
+}
+
+.my-plan-card.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.my-plan-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.9rem 2.5rem 0.9rem 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.my-plan-select:focus-visible,
+.my-plan-delete:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.my-plan-title {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.my-plan-route {
+  font-size: 0.8rem;
+  color: var(--color-text-body);
+}
+
+.my-plan-progress {
+  display: block;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  overflow: hidden;
+  margin-top: 0.35rem;
+}
+
+.my-plan-progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.my-plan-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.my-plan-delete {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+  display: flex;
+}
+
+.my-plan-delete:hover {
+  color: #b91c1c;
+  background: var(--color-danger-bg);
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .plan-tabs-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .plan-tab-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+  }
+
+  .my-plans-head {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================
+   Plan workspace pieces
+   ========================= */
+
+.plan-sidebar-title {
+  margin: 0.75rem 0;
+}
+
+.plan-sidebar-route {
+  font-size: 0.9rem;
+  color: var(--color-text-body);
+  margin: 0;
+}
+
+.sidebar-cta {
+  margin-top: 1.5rem;
+}
+
+.tab-title {
+  margin-bottom: 0.25rem;
+}
+
+.tab-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 0.25rem 0 1rem;
+}
+
+.tab-subtitle strong {
+  color: var(--color-text);
+}
+
+.tab-body {
+  font-size: 0.9rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.dashboard-section .section-body {
+  color: var(--color-text-body);
+  margin-top: 0.5rem;
+}
+
+.dashboard-section .section-notes {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 1rem 0 0;
+}
+
+/* Guest "save your plan" prompt */
+.save-banner {
+  position: relative;
+  background: var(--color-primary-soft);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.save-banner-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.save-banner-body {
+  flex: 1;
+  padding-right: 1.75rem;
+}
+
+.save-banner-body h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.save-banner-body p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-strong);
+  line-height: 1.5;
+}
+
+.save-banner-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+}

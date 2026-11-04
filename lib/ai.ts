@@ -59,40 +59,17 @@ no preamble, no markdown, no explanation
 outside the JSON structure.
 `;
 
+// ── TYPES ─────────────────────────────────────
+
+export type ChatMessage = { role: "user" | "assistant"; content: string };
+
+export type ChatUserContext = {
+  homeCountry?: string;
+  targetCountry?: string;
+  category?: string;
+};
+
 // ── API FUNCTIONS ─────────────────────────────
-
-export async function getChatResponse(
-  messages: { role: "user" | "assistant"; content: string }[],
-  userContext?: {
-    homeCountry?: string;
-    targetCountry?: string;
-    category?: string;
-  },
-): Promise<string> {
-  const contextNote = userContext
-    ? `\n\nUser context: Moving from ${userContext.homeCountry}
-       to ${userContext.targetCountry}
-       as a ${userContext.category}.`
-    : "";
-
-  const model = genAI.getGenerativeModel({
-    model: CHAT_MODEL,
-    systemInstruction: COMPANION_SYSTEM_PROMPT + contextNote,
-  });
-
-  // Gemini uses 'model' instead of 'assistant'
-  // and requires alternating user/model turns
-  const history = messages.slice(0, -1).map((m) => ({
-    role: m.role === "assistant" ? "model" : "user",
-    parts: [{ text: m.content }],
-  }));
-
-  const chat = model.startChat({ history });
-
-  const lastMessage = messages[messages.length - 1];
-  const result = await chat.sendMessage(lastMessage.content);
-  return result.response.text();
-}
 
 export async function getReadinessAnalysis(
   profileData: Record<string, unknown>,
@@ -109,30 +86,32 @@ export async function getReadinessAnalysis(
   return result.response.text();
 }
 
-export async function extractJSON(
-  prompt: string
-): Promise<string> {
+export async function extractJSON(prompt: string): Promise<string> {
   const model = genAI.getGenerativeModel({
-    model: CHAT_MODEL,  // gemini-1.5-flash — faster + cheaper
+    model: CHAT_MODEL,
     systemInstruction:
-      'Respond with valid JSON only. ' +
-      'No markdown, no code blocks, no explanation. ' +
-      'Output must be parseable by JSON.parse().'
-  })
+      "Respond with valid JSON only. " +
+      "No markdown, no code blocks, no explanation. " +
+      "Output must be parseable by JSON.parse().",
+  });
 
-  const result = await model.generateContent(prompt)
-  return result.response.text()
+  const result = await model.generateContent(prompt);
+  return result.response.text();
+}
+
+/** Run extractJSON and parse the result, tolerating stray ```json fences. */
+export async function extractJSONObject<T = Record<string, unknown>>(
+  prompt: string,
+): Promise<T> {
+  const raw = await extractJSON(prompt);
+  return JSON.parse(raw.replace(/```json|```/g, "").trim()) as T;
 }
 
 // ── STREAMING ─────────────────────────────────
 
 export async function getChatStream(
-  messages: { role: "user" | "assistant"; content: string }[],
-  userContext?: {
-    homeCountry?: string;
-    targetCountry?: string;
-    category?: string;
-  },
+  messages: ChatMessage[],
+  userContext?: ChatUserContext,
 ) {
   const contextNote = userContext
     ? `\n\nUser context: Moving from ${userContext.homeCountry}
@@ -145,14 +124,12 @@ export async function getChatStream(
     systemInstruction: COMPANION_SYSTEM_PROMPT + contextNote,
   });
 
+  // Gemini uses 'model' instead of 'assistant'
   const history = messages.slice(0, -1).map((m) => ({
     role: m.role === "assistant" ? "model" : "user",
     parts: [{ text: m.content }],
   }));
 
   const chat = model.startChat({ history });
-  const lastMessage = messages[messages.length - 1];
-
-  // Returns a streaming result
-  return chat.sendMessageStream(lastMessage.content);
+  return chat.sendMessageStream(messages[messages.length - 1].content);
 }

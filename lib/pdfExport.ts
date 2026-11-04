@@ -1,35 +1,8 @@
-type ChecklistItem = {
-  id: string;
-  label: string;
-  description: string;
-};
-
-type Plan = {
-  summary: string;
-  notes: string;
-  checklist: ChecklistItem[];
-  timeline: {
-    documents: string;
-    skillsCertificate: string;
-    verification: string;
-  };
-  officialLinks: {
-    immigration: string | null;
-    competentAuthority: string | null;
-    forms: string | null;
-  };
-  planId: string;
-};
-
-type PlanInput = {
-  homeCountryName: string;
-  targetCountryName: string;
-  categoryLabel: string;
-};
+import type { Plan, PlanInput } from "@/lib/types/plan";
 
 export function exportPlanToPDF(
   plan: Plan,
-  input: PlanInput,
+  input: Pick<PlanInput, "homeCountryName" | "targetCountryName" | "categoryLabel">,
   checklistState: Record<string, boolean>,
   isAuthenticated: boolean,
 ) {

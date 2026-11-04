@@ -50,3 +50,42 @@ export type HousingLinksData = {
   regional: RegionalLink[]
   by_country: Record<string, CountryHousingData>
 }
+
+export type TemporaryOption = {
+  name: string
+  pricePerNight: number | null
+  url: string
+  type: string
+}
+
+type NullableRange = { min: number | null; max: number | null }
+
+/** Response body of GET /api/housing */
+export type HousingApiResponse = {
+  country: { code: string; name: string; capital: string; searchCity: string }
+  liveData: {
+    averageRentOneBed: NullableRange | null
+    averageRentTwoBed: NullableRange | null
+    temporaryOptions: TemporaryOption[]
+    tips: string[]
+    source: 'tavily' | 'fallback'
+    searchedAt: string
+  }
+  staticData: {
+    averageRent: AverageRent | null
+    neighborhoods: Neighborhood[]
+    facebookGroups: FacebookGroup[]
+    realEstateLinks: RealEstateLink[]
+    bookingComUrl: string | null
+  }
+  regional: RegionalLink[]
+}
+
+/** Prefer a complete live rent range, otherwise fall back to the static one. */
+export function resolveRentRange(
+  live: NullableRange | null | undefined,
+  fallback: RentRange | null | undefined
+): RentRange | null {
+  if (live?.min != null && live?.max != null) return { min: live.min, max: live.max }
+  return fallback ?? null
+}

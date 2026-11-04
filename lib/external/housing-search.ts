@@ -1,5 +1,5 @@
 import { searchWeb } from '@/lib/tavily'
-import { extractJSON } from '@/lib/ai'
+import { extractJSONObject } from '@/lib/ai'
 import { getCached, setCached } from '@/lib/cache'
 import { COUNTRY_META } from '@/data/countryMeta'
 
@@ -113,13 +113,10 @@ export async function searchHousing(
        Include max 3 options.
        Only include clearly identified accommodations with real names.`
 
-    const [rentRaw, tempRaw] = await Promise.all([
-      extractJSON(rentPrompt),
-      extractJSON(tempPrompt)
+    const [rentData, tempData] = await Promise.all([
+      extractJSONObject<Partial<HousingSearchResult>>(rentPrompt),
+      extractJSONObject<Partial<HousingSearchResult>>(tempPrompt)
     ])
-
-    const rentData = JSON.parse(rentRaw)
-    const tempData = JSON.parse(tempRaw)
 
     const result: HousingSearchResult = {
       averageRentOneBed: rentData.averageRentOneBed ?? null,

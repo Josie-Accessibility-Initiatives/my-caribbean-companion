@@ -5,76 +5,42 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { mergePlanToSupabase } from '@/lib/persistence';
+import { errorMessage } from '@/lib/fetch-json';
+import { useFormState, validateEmail } from '@/lib/hooks/useFormState';
+import { FormField } from '@/components/ui/FormField';
 
-type FormState = {
-  email: string;
-  password: string;
-};
-
-type FieldErrors = Partial<Record<keyof FormState, string>>;
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function mapSupabaseError(message: string): string {
+  if (/invalid login credentials/i.test(message)) {
+    return 'Incorrect email or password. Please try again.';
+  }
+  if (/email not confirmed/i.test(message)) {
+    return 'Please check your email and confirm your account before logging in.';
+  }
+  return message;
+}
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/dashboard';
 
-  const [form, setForm] = useState<FormState>({ email: '', password: '' });
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState('');
+  const { form, fieldErrors, formError, setFormError, handleChange, runValidation } =
+    useFormState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setFieldErrors((prev) => {
-      if (!prev[name as keyof FormState]) return prev;
-      const next = { ...prev };
-      delete next[name as keyof FormState];
-      return next;
-    });
-    if (formError) setFormError('');
-  };
-
-  const validate = (): FieldErrors => {
-    const errors: FieldErrors = {};
-    if (!form.email.trim()) {
-      errors.email = 'Email is required.';
-    } else if (!EMAIL_RE.test(form.email.trim())) {
-      errors.email = 'Enter a valid email address.';
-    }
-    if (!form.password) {
-      errors.password = 'Password is required.';
-    }
-    return errors;
-  };
-
-  const mapSupabaseError = (message: string): string => {
-    if (/invalid login credentials/i.test(message)) {
-      return 'Incorrect email or password. Please try again.';
-    }
-    if (/email not confirmed/i.test(message)) {
-      return 'Please check your email and confirm your account before logging in.';
-    }
-    return message;
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError('');
 
-    const errors = validate();
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      return;
-    }
-    setFieldErrors({});
+    const valid = runValidation((values) => ({
+      email: validateEmail(values.email),
+      password: values.password ? undefined : 'Password is required.',
+    }));
+    if (!valid) return;
 
     try {
       setLoading(true);
-      const supabase = createClient();
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await createClient().auth.signInWithPassword({
         email: form.email.trim(),
         password: form.password,
       });
@@ -84,19 +50,12 @@ function LoginForm() {
         return;
       }
 
-      if (data.user) {
-        try {
-          await mergePlanToSupabase(data.user.id);
-        } catch (mergeErr) {
-          console.error('Failed to merge guest plan into Supabase:', mergeErr);
-        }
-      }
+      // mergePlanToSupabase logs and swallows its own errors.
+      if (data.user) await mergePlanToSupabase(data.user.id);
 
       router.replace(redirectTo);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Something went wrong while logging in.';
-      setFormError(message);
+      setFormError(errorMessage(err, 'Something went wrong while logging in.'));
     } finally {
       setLoading(false);
     }
@@ -113,49 +72,35 @@ function LoginForm() {
         {formError && <div className="form-error">{formError}</div>}
 
         <form onSubmit={handleSubmit} noValidate>
-          <label className="form-label">
-            Email
-            <input
-              type="email"
-              name="email"
-              className="form-input"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={handleChange}
-              autoComplete="email"
-              required
-            />
-            {fieldErrors.email && (
-              <span className="form-error">{fieldErrors.email}</span>
-            )}
-          </label>
+          <FormField
+            label="Email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={handleChange}
+            autoComplete="email"
+            error={fieldErrors.email}
+            required
+          />
 
-          <label className="form-label">
-            Password
-            <input
-              type="password"
-              name="password"
-              className="form-input"
-              placeholder="Enter your password"
-              value={form.password}
-              onChange={handleChange}
-              autoComplete="current-password"
-              required
-            />
-            {fieldErrors.password && (
-              <span className="form-error">{fieldErrors.password}</span>
-            )}
-          </label>
+          <FormField
+            label="Password"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={form.password}
+            onChange={handleChange}
+            autoComplete="current-password"
+            error={fieldErrors.password}
+            required
+          />
 
-          <p className="auth-footer-text" style={{ marginTop: 0 }}>
+          <p className="auth-footer-text mt-0">
             <Link href="/forgot-password">Forgot password?</Link>
           </p>
 
-          <button
-            type="submit"
-            className="btn-primary full-width"
-            disabled={loading}
-          >
+          <button type="submit" className="btn-primary full-width" disabled={loading}>
             {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>

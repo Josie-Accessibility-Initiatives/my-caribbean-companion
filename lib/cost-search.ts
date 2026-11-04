@@ -1,6 +1,6 @@
 import { searchWeb, COST_OF_LIVING_DOMAINS }
   from '@/lib/tavily'
-import { extractJSON } from '@/lib/ai'
+import { extractJSONObject } from '@/lib/ai'
 import { getCached, setCached } from '@/lib/cache'
 
 // ── FLIGHT SEARCH ─────────────────────────────
@@ -63,10 +63,7 @@ export async function getFlightEstimate(
        - Medium routes 500-1500km: $200-400 USD
        - Long routes over 1500km: $300-600 USD`
 
-    const raw = await extractJSON(prompt)
-    const extracted = JSON.parse(
-      raw.replace(/```json|```/g, '').trim()
-    )
+    const extracted = await extractJSONObject<Partial<FlightEstimate>>(prompt)
 
     const estimate: FlightEstimate = {
       minPrice: extracted.minPrice ?? 150,
@@ -163,10 +160,7 @@ export async function getCostOfLiving(
        - Meal: $10
        - Monthly total: $1200`
 
-    const raw = await extractJSON(prompt)
-    const extracted = JSON.parse(
-      raw.replace(/```json|```/g, '').trim()
-    )
+    const extracted = await extractJSONObject<Partial<CostOfLivingData>>(prompt)
 
     const data: CostOfLivingData = {
       rentOneBed: extracted.rentOneBed ??

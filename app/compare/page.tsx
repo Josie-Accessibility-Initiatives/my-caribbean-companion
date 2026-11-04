@@ -4,22 +4,20 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import BackButton from '@/components/ui/BackButton'
 import { toCountryCode } from '@/lib/country-utils'
-import { getOnboarding } from '@/lib/persistence'
+import {
+  getOnboarding,
+  readPreferredCurrency,
+  writePreferredCurrency,
+} from '@/lib/persistence'
+import { COUNTRY_ORDER } from '@/lib/constants'
+import { fetchJson } from '@/lib/fetch-json'
+import type { CountryComparisonData } from '@/lib/types/comparison'
 import { COUNTRY_META } from '@/data/countryMeta'
-import ComparisonTable, {
-  type CountryComparisonData,
-} from '@/components/compare/ComparisonTable'
+import ComparisonTable from '@/components/compare/ComparisonTable'
 import ComparisonCharts from '@/components/compare/ComparisonCharts'
 import ProfessionHeatmap from '@/components/compare/ProfessionHeatmap'
 import CurrencySelector from '@/components/compare/CurrencySelector'
 import { TableSkeleton } from '@/components/ui/Skeleton'
-
-// ── Constants ─────────────────────────────────────────────────────
-
-const COUNTRY_ORDER = [
-  'TT', 'BB', 'JM', 'GY', 'LC', 'GD',
-  'DM', 'VC', 'KN', 'AG', 'SR', 'BZ',
-]
 
 // ── Section wrapper ───────────────────────────────────────────────
 
@@ -75,20 +73,14 @@ export default function ComparePage() {
       setHasPlan(true)
     }
 
-    const saved =
-      localStorage.getItem('mcc_preferred_currency') ?? 'USD'
-    setSelectedCurrency(saved)
+    setSelectedCurrency(readPreferredCurrency())
 
     async function load() {
       try {
-        const [compareRes, ratesRes] = await Promise.all([
-          fetch('/api/compare?all=true'),
-          fetch('/api/exchange-rates'),
-        ])
-        if (!compareRes.ok) throw new Error(`HTTP ${compareRes.status}`)
         const [json, rates] = await Promise.all([
-          compareRes.json(),
-          ratesRes.ok ? ratesRes.json() : Promise.resolve(null),
+          fetchJson<Record<string, CountryComparisonData>>('/api/compare?all=true'),
+          // Rates are optional: the table falls back to USD without them.
+          fetchJson<Record<string, number>>('/api/exchange-rates').catch(() => null),
         ])
         setAllData(json)
         setExchangeRates(rates)
@@ -137,14 +129,9 @@ export default function ComparePage() {
         {/* ── Page header ───────────────────────────────────── */}
         <div className="cp-header">
           <BackButton />
-          <p
-            className="dashboard-eyebrow"
-            style={{ marginTop: 0, marginBottom: '0.5rem' }}
-          >
-            CSME Free Movement
-          </p>
-          <h1 className="cp-h1">Compare Caribbean Countries</h1>
-          <p className="cp-subtitle">
+          <p className="dashboard-eyebrow eyebrow">CSME Free Movement</p>
+          <h1 className="page-title">Compare Caribbean Countries</h1>
+          <p className="page-lead">
             Compare cost of living, quality of life, CSME complexity, and
             job demand across all CARICOM member states.
           </p>
@@ -212,7 +199,7 @@ export default function ComparePage() {
                       onClick={() => toggleCountry(code)}
                       title={COUNTRY_META[code]?.name ?? code}
                     >
-                      <span className="cp-pill-code">{code}</span>
+                      {code}
                     </button>
                   )
                 })}
@@ -225,7 +212,7 @@ export default function ComparePage() {
                 selected={selectedCurrency}
                 onChange={(code) => {
                   setSelectedCurrency(code)
-                  localStorage.setItem('mcc_preferred_currency', code)
+                  writePreferredCurrency(code)
                 }}
                 rates={exchangeRates}
               />

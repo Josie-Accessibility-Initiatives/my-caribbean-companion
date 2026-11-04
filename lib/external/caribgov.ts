@@ -1,23 +1,8 @@
 import { getCached, setCached } from '@/lib/cache'
+import { OFFICIAL_COUNTRY_NAMES } from '@/lib/constants'
 
 const CACHE_TTL_HOURS = 24 * 7 // 7 days
 const BASE_URL = 'https://caribgov.com/api'
-
-// Full country names as used by CaribGov (verified against live API)
-const CARIBGOV_COUNTRIES: Record<string, string> = {
-  TT: 'Trinidad and Tobago',
-  BB: 'Barbados',
-  JM: 'Jamaica',
-  GY: 'Guyana',
-  LC: 'Saint Lucia',
-  GD: 'Grenada',
-  DM: 'Dominica',
-  VC: 'Saint Vincent and the Grenadines',
-  KN: 'Saint Kitts and Nevis',
-  AG: 'Antigua and Barbuda',
-  SR: 'Suriname',
-  BZ: 'Belize',
-}
 
 // Raw shape returned by GET /api/contacts
 type RawContact = {
@@ -148,7 +133,7 @@ export async function getCaribGovData(countryCode: string): Promise<CaribGovData
   const cached = await getCached<CaribGovData>(cacheKey)
   if (cached) return cached
 
-  const countryName = CARIBGOV_COUNTRIES[countryCode]
+  const countryName = OFFICIAL_COUNTRY_NAMES[countryCode]
   if (!countryName) return fallback(countryCode)
 
   try {

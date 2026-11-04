@@ -6,14 +6,14 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" style={{ height: 40, width: "auto", display: "block" }} />
+          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" />
         </div>
         <p className="footer-tagline">
           My Caribbean Companion: Your guide to working anywhere in the
           Caribbean.
         </p>
 
-        <div className="footer-columns" style={{ marginTop: "1.5rem" }}>
+        <div className="footer-columns">
           <div className="footer-column">
             <h4>Use cases</h4>
             <ul>

@@ -1,4 +1,5 @@
 import { getCached, setCached } from '@/lib/cache'
+import { OFFICIAL_COUNTRY_NAMES } from '@/lib/constants'
 
 const CACHE_TTL_HOURS = 24 * 14 // 14 days
 const RAPIDAPI_HOST = 'jsearch.p.rapidapi.com'
@@ -32,21 +33,6 @@ export type JobSearchResult = {
   searchedAt: string
 }
 
-const JSEARCH_COUNTRY_NAMES: Record<string, string> = {
-  TT: 'Trinidad and Tobago',
-  BB: 'Barbados',
-  JM: 'Jamaica',
-  GY: 'Guyana',
-  LC: 'Saint Lucia',
-  GD: 'Grenada',
-  DM: 'Dominica',
-  VC: 'Saint Vincent and the Grenadines',
-  KN: 'Saint Kitts and Nevis',
-  AG: 'Antigua and Barbuda',
-  SR: 'Suriname',
-  BZ: 'Belize',
-}
-
 export async function searchJobs(
   countryCode: string,
   profession: string,
@@ -60,7 +46,7 @@ export async function searchJobs(
   const cached = await getCached<JobSearchResult>(cacheKey)
   if (cached) return { ...cached, source: 'cache' }
 
-  const countryName = JSEARCH_COUNTRY_NAMES[countryCode]
+  const countryName = OFFICIAL_COUNTRY_NAMES[countryCode]
   if (!countryName) {
     return emptyResult(countryCode, profession)
   }

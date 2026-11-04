@@ -1,12 +1,7 @@
 import { getCached, setCached } from '@/lib/cache'
+import { ISO3_CODES } from '@/lib/constants'
 
 const CACHE_TTL_HOURS = 24 * 30 // 30 days
-
-const WB_COUNTRY_CODES: Record<string, string> = {
-  TT: 'TTO', BB: 'BRB', JM: 'JAM', GY: 'GUY',
-  LC: 'LCA', GD: 'GRD', DM: 'DMA', VC: 'VCT',
-  KN: 'KNA', AG: 'ATG', SR: 'SUR', BZ: 'BLZ'
-}
 
 export type WorldBankData = {
   gdpPerCapita: number | null
@@ -53,7 +48,7 @@ export async function getWorldBankData(
   const cached = await getCached<WorldBankData>(cacheKey)
   if (cached) return cached
 
-  const wbCode = WB_COUNTRY_CODES[countryCode]
+  const wbCode = ISO3_CODES[countryCode]
   if (!wbCode) {
     return {
       gdpPerCapita: null, gdpPerCapitaYear: null,
@@ -96,18 +91,4 @@ export async function getWorldBankData(
       source: 'fallback'
     }
   }
-}
-
-export async function getAllWorldBankData():
-  Promise<Record<string, WorldBankData>> {
-  const codes = Object.keys(WB_COUNTRY_CODES)
-  const results = await Promise.all(
-    codes.map(async code => ({
-      code,
-      data: await getWorldBankData(code)
-    }))
-  )
-  return Object.fromEntries(
-    results.map(r => [r.code, r.data])
-  )
 }

@@ -1,0 +1,747 @@
+/* =========================
+   Shared UI building blocks
+   Used across tool pages instead of inline styles.
+   ========================= */
+
+/* ── Page shell ─────────────────────────────── */
+
+.page-container {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.page-container--wide {
+  max-width: 1200px;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header .section-title {
+  margin-bottom: 0.35rem;
+}
+
+/* Large tool-page heading (Cost Estimator, Compare) */
+.page-title {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.page-lead {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--color-text-body);
+  line-height: 1.65;
+}
+
+.page-intro {
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 580px;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+}
+
+/* ── Layout helpers ─────────────────────────── */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stack-xs { display: flex; flex-direction: column; gap: 0.25rem; }
+.stack-sm { display: flex; flex-direction: column; gap: 0.5rem; }
+.stack-md { display: flex; flex-direction: column; gap: 0.75rem; }
+.stack-lg { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-1-5 { margin-bottom: 1.5rem; }
+.flex-1 { flex: 1; min-width: 0; }
+
+/* ── Text ───────────────────────────────────── */
+
+.text-strong { color: var(--color-text); }
+.text-body { color: var(--color-text-body); }
+.text-muted { color: var(--color-text-muted); }
+.text-subtle { color: var(--color-text-subtle); }
+.text-primary { color: var(--color-primary); }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.8rem; }
+.text-center { text-align: center; }
+.no-margin { margin: 0; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Small uppercase label above a group of items */
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin: 0 0 0.65rem;
+}
+
+.fine-print {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Cards ──────────────────────────────────── */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+}
+
+.card--muted {
+  background: var(--color-surface-muted);
+}
+
+.card--accent {
+  border-left: 4px solid var(--color-primary);
+}
+
+.card-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+}
+
+/* Heading with a leading icon */
+.icon-heading {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-text);
+}
+
+.icon-heading svg {
+  color: var(--color-primary);
+}
+
+.empty-state {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state svg {
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.loading-card {
+  text-align: center;
+}
+
+.loading-card p {
+  color: var(--color-text-muted);
+}
+
+/* ── Callouts ───────────────────────────────── */
+
+.callout {
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+}
+
+.callout--success {
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+}
+
+.callout--warning {
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  color: var(--color-warning-dark);
+}
+
+.callout--danger {
+  background: var(--color-danger-bg);
+  border: 1px solid #fca5a5;
+  color: var(--color-danger);
+}
+
+.callout--error {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.callout--error p {
+  color: var(--color-warning);
+  font-weight: 600;
+  margin: 0;
+}
+
+.callout--error p + button {
+  margin-top: 0.75rem;
+}
+
+/* Scam warning box */
+.fraud-alert {
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  border-left: 4px solid var(--color-warning-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  color: var(--color-warning);
+}
+
+.fraud-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.fraud-alert p {
+  margin: 0 0 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.fraud-alert ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.fraud-alert li {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.2rem;
+}
+
+/* ── Lists ──────────────────────────────────── */
+
+/* List with small coloured dots instead of bullets */
+.dot-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dot-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  color: var(--color-text-body);
+  line-height: 1.5;
+}
+
+.dot-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 0.44rem;
+}
+
+.dot-list--warm li::before {
+  background: var(--color-warning-border);
+}
+
+/* List where each item starts with an icon */
+.icon-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.icon-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.icon-list li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Badges & dots ──────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge--sm {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+}
+
+.badge--outline {
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+}
+
+.badge--live {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge--estimated {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  background: var(--color-text-subtle);
+}
+
+.badge--live .dot {
+  background: #16a34a;
+}
+
+.tag {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ── Links & link-like buttons ─────────────── */
+
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
+}
+
+.external-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.external-link:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Button that looks like a text link */
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.link-button--underline {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* Small rounded external link */
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-border);
+}
+
+.pill-link--facebook {
+  background: rgba(24, 119, 242, 0.08);
+  color: #1877f2;
+  border-color: rgba(24, 119, 242, 0.25);
+}
+
+.pill-link--solid {
+  background: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.pill-link--lg {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+/* Outlined square-ish quick action (country resources) */
+.action-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.action-tile:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+  margin: 1.25rem 0;
+}
+
+/* ── Link card: name + description + action ─ */
+
+.link-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.625rem;
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.link-card-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.link-card-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.2rem;
+}
+
+.link-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Bordered row link with a teal left edge (documents, official links) */
+.row-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.row-link svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+/* ── Document cards ─────────────────────────── */
+
+.doc-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+
+.doc-card .badge {
+  margin-bottom: 0.4rem;
+}
+
+.doc-card-title {
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+
+.doc-card-desc {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem;
+}
+
+.doc-card-source-btn {
+  border: 1px solid var(--color-primary);
+  border-radius: 0.375rem;
+  padding: 0.3rem 0.65rem;
+}
+
+/* ── Stat tiles ─────────────────────────────── */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.6rem;
+}
+
+.stat-tile {
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+.stat-tile-label {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  margin-bottom: 0.25rem;
+}
+
+.stat-tile-value {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+/* ── Segmented tabs (Resources) ─────────────── */
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.segmented-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-strong);
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.segmented-btn.active {
+  border: 2px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ── Skeletons ──────────────────────────────── */
+
+.skeleton {
+  background: var(--color-border);
+  border-radius: 0.375rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton--light {
+  background: var(--color-surface-sunken);
+}
+
+.skeleton-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Back button ────────────────────────────── */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+  padding: 0.375rem 0.75rem;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ── Responsive ─────────────────────────────── */
+
+@media (max-width: 768px) {
+  .two-column {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.link-card-body {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Tool pages with a large hero heading (Cost Estimator) */
+.page-container--tool {
+  padding-top: 2.5rem;
+}
+
+.tool-header {
+  margin-bottom: 2.5rem;
+  max-width: 680px;
+}
+
+.stack-xl { display: flex; flex-direction: column; gap: 1.75rem; }
+
+.row-between--top {
+  align-items: flex-start;
+}
+
+.fine-print--note {
+  margin-top: 0.6rem;
+  font-style: italic;
+}
+
+.row--center {
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .page-title { font-size: 1.6rem; }
+}
