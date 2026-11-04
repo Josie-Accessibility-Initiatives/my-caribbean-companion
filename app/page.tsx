@@ -85,16 +85,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SECTION 6 — Mission / Vision ─────────────────────── */}
+      {/* ── SECTION 6 — CTA Card ─────────────────────────────── */}
+      <PlanCTACard />
+
+      {/* ── SECTION 7 — Mission / Vision ─────────────────────── */}
       <section className="section section-impact">
         <p className="impact-quote">
           We envision a future where Caribbean professionals can move freely,
           work confidently, and build their futures anywhere across the region.
         </p>
       </section>
-
-      {/* ── SECTION 7 — CTA Card ─────────────────────────────── */}
-      <PlanCTACard />
 
     </div>
   );

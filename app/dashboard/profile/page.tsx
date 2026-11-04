@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import BackButton from "@/components/ui/BackButton";
+import DeleteAccount from "@/components/dashboard/DeleteAccount";
 import { FormField } from "@/components/ui/FormField";
 import { LoadingCard } from "@/components/ui/LoadingCard";
 import { Select } from "@/components/ui/Select";
@@ -153,6 +154,8 @@ export default function EditProfilePage() {
             {status === "saving" ? "Saving…" : "Save profile"}
           </button>
         </form>
+
+        <DeleteAccount />
       </div>
     </div>
   );
