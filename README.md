@@ -20,7 +20,7 @@ housing resources, and AI-powered guidance.
 - **Move Planner Wizard** — personalized CSME relocation plan based on home country, destination, and profession
 - **Relocation Readiness Score** — weighted scoring across documentation, employment, financial, housing, and profile completeness
 - **Step-by-Step Checklist** — interactive checklist with Supabase persistence for logged-in users
-- **AI Companion** — Gemini-powered chatbot grounded in CSME policy, floating bubble on every page
+- **AI Companion** — Gemini-powered chatbot grounded in CSME policy, floating bubble on every page. Signed-in users only, 5 messages per day
 
 ### Research & Discovery
 - **Country Comparison Dashboard** — compare GDP, cost of living, safety, healthcare, and CSME complexity across all 12 CARICOM countries with live currency conversion
@@ -208,7 +208,8 @@ my-caribbean-companion/
         ├── 003_user_dashboard.sql
         ├── 004_signup_profession.sql
         ├── 005_cleanup_jobs.sql
-        └── 006_plan_limit.sql
+        ├── 006_plan_limit.sql
+        └── 007_chat_usage.sql
 ```
 
         
@@ -223,7 +224,8 @@ my-caribbean-companion/
 | `/api/plan` | POST | Generate CSME relocation plan |
 | `/api/countries` | GET | List of 12 CARICOM countries |
 | `/api/categories` | GET | CSME profession categories |
-| `/api/chat` | POST | Gemini AI chat with streaming |
+| `/api/chat` | POST | Gemini AI chat with streaming (signed-in, 5/day) |
+| `/api/chat` | GET | Signed-in user's AI messages used/remaining today |
 | `/api/cost-estimate` | POST | Full relocation cost breakdown |
 | `/api/compare` | GET | Country comparison data |
 | `/api/jobs` | GET | Job listings by country + profession |
@@ -293,11 +295,13 @@ rm -rf .next
 npm run dev
 ```
 
-**Gemini 429 (rate limit)**
-The free tier allows 15 requests/minute. 
-The in-memory rate limiter in `/api/chat` 
-caps at 20 requests/minute per IP — 
-reduce if hitting Gemini limits.
+**Gemini 402 / 429 (credits or rate limit)**
+A 402 means the Google AI Studio project's prepaid
+credits are used up; a 429 means a Gemini rate limit.
+Users see "The AI Companion is temporarily
+unavailable" and the message is not counted against
+their daily limit. Top up credits or switch
+`GOOGLE_AI_API_KEY` to a free-tier key.
 
 **Tavily returning null rent data**
 Expected behavior — Tavily domain filtering 
@@ -315,6 +319,15 @@ The UI falls back to static data from
 - [ ] Phase 14 — Application Status Tracker
 - [ ] Phase 15 — Multi-language Support (FR, ES, HT, NL)
 - [ ] Phase 16 — Production Readiness (Redis, Sentry, SEO)
+  - [ ] **Protect signups before public launch.** Supabase **Confirm email** is
+    currently **off**, so users are signed in immediately after signing up.
+    That's fine for development and early testing. Before launching publicly,
+    either turn **Confirm email** back on, or enable **CAPTCHA** under
+    **Authentication → Attack Protection** in Supabase. CAPTCHA blocks automated
+    account creation without adding a step for real users. (Without one of
+    these, anyone can register with an email they don't own, and new accounts
+    can be created to get around per-account limits like the 5 daily AI
+    Companion messages.)
 
 ---
 

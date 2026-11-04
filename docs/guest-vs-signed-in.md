@@ -21,7 +21,8 @@ their data lives, and how routing differs.
 | **Plan My Move pre-fill** | From last local plan | From profile, then last plan |
 | **Dashboard** | Single-plan workspace | Profile header + "My plans" + workspace |
 | **Delete data** | Clear site data in their browser (nothing is stored server-side) | "Delete account" on profile page |
-| **Research tools** (jobs, housing, compare, cost, resources, AI) | Full access | Full access |
+| **AI Companion** (`/companion`) | Sign-in prompt | **5** messages per day (resets midnight UTC) |
+| **Research tools** (jobs, housing, compare, cost, resources) | Full access | Full access |
 
 ---
 
@@ -63,7 +64,7 @@ never counts against either limit.
 ### Same for everyone
 
 `/`, `/about`, `/contact`, `/csme-basics`, `/resources`, `/resources/[code]`, `/jobs`,
-`/housing`, `/compare`, `/cost-estimate`, `/companion` and all `/api/*` data routes
+`/housing`, `/compare`, `/cost-estimate` and all `/api/*` data routes except `/api/chat`
 behave identically. Pages that personalise (jobs, housing, compare, cost estimate,
 AI companion) read the **current plan from `localStorage`** for both user types, so a
 signed-in user's open plan is mirrored there when they select it on the dashboard.
@@ -81,6 +82,8 @@ signed-in user's open plan is mirrored there when they select it on the dashboar
 | `/dashboard` | ✅ guest view (→ `/onboarding` if no plan) | ✅ personal view | `app/dashboard/page.tsx` |
 | `/reset-password` | Shows "Reset link expired" | ✅ choose new password | Page check (needs recovery session) |
 | `DELETE /api/account` | `401` | ✅ deletes own account | Route checks session cookie |
+| `/companion` | Sign-in card | ✅ chat (5 messages/day) | `app/companion/page.tsx` |
+| `GET`/`POST /api/chat` | `401` | ✅ (`429` once today's 5 are used) | Route checks session cookie + `claim_chat_message()` |
 | Everything else | ✅ | ✅ | — |
 
 `/dashboard` is intentionally **not** protected by middleware so the guest flow can land there.
@@ -95,8 +98,8 @@ flowchart TD
     C --> E[/dashboard - guest view/]
     E -->|Save My Plan| F[/signup/]
     D --> F
-    F -->|confirm email| G[/login/]
-    G -->|merge guest plan| H[(Supabase)]
+    F -->|signed in immediately, merge guest plan| H[(Supabase)]
+    G[/login/] -->|merge guest plan| H
     H --> I[/dashboard - personal view/]
     B -->|signed in, under 8 plans| H
     B -->|signed in, at 8 plans| J[Manage my plans notice]
@@ -105,8 +108,11 @@ flowchart TD
 
 ### Signing up and logging in
 
-1. **Sign up** (`/signup`) collects name, home country, date of birth and profession,
-   then shows "Check your email". No session is created until the email is confirmed.
+1. **Sign up** (`/signup?redirect=…`) collects name, home country, date of birth and
+   profession. With Supabase **Confirm email off** (current setting), the user is signed
+   in immediately: the guest plan is merged and they go to `redirect` (default
+   `/dashboard`). If Confirm email is turned back on, signup shows "Check your email"
+   instead and no session exists until the email is confirmed.
 2. **Log in** (`/login?redirect=…`, default `/dashboard`) calls `mergePlanToSupabase`,
    which copies the guest plan and checklist from `localStorage` into Supabase.
 3. The dashboard runs the merge again on load (it is idempotent). If the account
@@ -156,6 +162,7 @@ account is deleted.
 | Limit | Value | Defined in | Enforcement |
 |---|---|---|---|
 | Guest plans | 4 per browser | `GUEST_PLAN_LIMIT` in `lib/plan-limits.ts` | Soft: `localStorage` counter (resettable by clearing site data) |
+| AI Companion messages | 5 per day per account (UTC) | `CHAT_DAILY_LIMIT` in `lib/chat-limits.ts` | Hard: `/api/chat` claims a message via `claim_chat_message()` (migration 007); failed AI calls are refunded |
 | Account plans | 8 saved at once | `USER_PLAN_LIMIT` in `lib/plan-limits.ts` **and** `supabase/migrations/006_plan_limit.sql` | Hard: database trigger rejects a 9th insert |
 
 When changing the account limit, update **both** places so the UI and database agree.

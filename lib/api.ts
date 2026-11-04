@@ -101,9 +101,10 @@ export function handleRouteError(
   return apiError(fallbackMessage, 500);
 }
 
-export function apiError(message: string, status: number): NextResponse {
+/** JSON error body. `code` lets the client react to specific failures. */
+export function apiError(message: string, status: number, code?: string): NextResponse {
   return NextResponse.json(
-    { error: message },
+    { error: message, ...(code ? { code } : {}) },
     {
       status,
       headers: {

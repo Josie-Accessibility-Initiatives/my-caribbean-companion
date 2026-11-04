@@ -25,3 +25,12 @@ export async function createClient() {
     }
   );
 }
+
+/** Id of the user in the request's session cookie, or null for guests. */
+export async function getSignedInUserId(): Promise<string | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user?.id ?? null;
+}

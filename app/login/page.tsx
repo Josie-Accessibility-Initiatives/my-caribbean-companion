@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { mergePlanToSupabase } from '@/lib/persistence';
+import { safeRedirectPath } from '@/lib/redirect';
 import { errorMessage } from '@/lib/fetch-json';
 import { useFormState, validateEmail } from '@/lib/hooks/useFormState';
 import { FormField } from '@/components/ui/FormField';
@@ -22,7 +23,7 @@ function mapSupabaseError(message: string): string {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/dashboard';
+  const redirectTo = safeRedirectPath(searchParams.get('redirect'));
 
   const { form, fieldErrors, formError, setFormError, handleChange, runValidation } =
     useFormState({ email: '', password: '' });
