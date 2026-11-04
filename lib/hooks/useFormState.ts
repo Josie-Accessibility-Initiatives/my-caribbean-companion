@@ -61,6 +61,26 @@ export function useFormState<T extends Record<string, string>>(initial: T) {
   };
 }
 
+export const MIN_PASSWORD_LENGTH = 8;
+
+/** Rules for choosing a password (signup and password reset). */
+export function validateNewPassword(
+  password: string,
+  confirmPassword: string
+): { password?: string; confirmPassword?: string } {
+  let passwordError: string | undefined;
+  if (!password) passwordError = 'Password is required.';
+  else if (password.length < MIN_PASSWORD_LENGTH) {
+    passwordError = `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
+  }
+
+  let confirmError: string | undefined;
+  if (!confirmPassword) confirmError = 'Please confirm your password.';
+  else if (password && password !== confirmPassword) confirmError = 'Passwords do not match.';
+
+  return { password: passwordError, confirmPassword: confirmError };
+}
+
 /** Shared email validation used by login and signup. */
 export function validateEmail(email: string): string | undefined {
   if (!email.trim()) return 'Email is required.';

@@ -35,6 +35,7 @@ housing resources, and AI-powered guidance.
 
 ### User Features
 - **Auth** — Supabase Auth with email/magic link, guest mode with localStorage fallback
+- **Password Reset** — emailed reset link (/forgot-password → /auth/callback → /reset-password)
 - **Plan Persistence** — guest plans auto-merge to Supabase on login
 - **Personal Dashboard** — signed-in users get a profile header, multiple saved plans with progress, and checklist sync across devices
 - **PDF Roadmap Export** — downloadable personalized relocation plan

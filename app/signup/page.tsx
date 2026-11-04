@@ -4,7 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { errorMessage } from '@/lib/fetch-json';
-import { useFormState, validateEmail } from '@/lib/hooks/useFormState';
+import {
+  MIN_PASSWORD_LENGTH,
+  useFormState,
+  validateEmail,
+  validateNewPassword,
+} from '@/lib/hooks/useFormState';
 import { CATEGORY_OPTIONS, COUNTRY_OPTIONS } from '@/lib/options';
 import { FormField } from '@/components/ui/FormField';
 import { Select } from '@/components/ui/Select';
@@ -23,16 +28,6 @@ const INITIAL_FORM = {
 type SignupForm = typeof INITIAL_FORM;
 
 function validate(form: SignupForm) {
-  let password: string | undefined;
-  if (!form.password) password = 'Password is required.';
-  else if (form.password.length < 8) password = 'Password must be at least 8 characters.';
-
-  let confirmPassword: string | undefined;
-  if (!form.confirmPassword) confirmPassword = 'Please confirm your password.';
-  else if (form.password && form.password !== form.confirmPassword) {
-    confirmPassword = 'Passwords do not match.';
-  }
-
   return {
     firstName: form.firstName.trim() ? undefined : 'Full name is required.',
     surname: form.surname.trim() ? undefined : 'Surname is required.',
@@ -40,8 +35,7 @@ function validate(form: SignupForm) {
     dob: form.dob ? undefined : 'Date of birth is required.',
     profession: form.profession ? undefined : 'Profession is required.',
     email: validateEmail(form.email),
-    password,
-    confirmPassword,
+    ...validateNewPassword(form.password, form.confirmPassword),
   };
 }
 
@@ -195,7 +189,7 @@ export default function SignupPage() {
               value={form.password}
               onChange={handleChange}
               autoComplete="new-password"
-              minLength={8}
+              minLength={MIN_PASSWORD_LENGTH}
               error={fieldErrors.password}
               required
             />
