@@ -1,0 +1,12 @@
+/* =========================
+   Spacing utilities
+   Imported last (see app/layout.tsx) so they override component classes
+   such as .fine-print { margin: 0 } when both are on one element.
+   ========================= */
+
+.no-margin { margin: 0; }
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-1-5 { margin-bottom: 1.5rem; }

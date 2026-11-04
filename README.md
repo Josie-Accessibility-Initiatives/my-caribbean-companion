@@ -37,6 +37,7 @@ housing resources, and AI-powered guidance.
 - **Auth** — Supabase Auth with email/magic link, guest mode with localStorage fallback
 - **Account Deletion** — users can permanently delete their account and data from the profile page
 - **Password Reset** — emailed reset link (/forgot-password → /auth/callback → /reset-password)
+- **Plan Limits** — guests can create 4 plans per browser; free accounts can keep 8 saved plans at once (see [docs/guest-vs-signed-in.md](docs/guest-vs-signed-in.md))
 - **Plan Persistence** — guest plans auto-merge to Supabase on login
 - **Personal Dashboard** — signed-in users get a profile header, multiple saved plans with progress, and checklist sync across devices
 - **PDF Roadmap Export** — downloadable personalized relocation plan
@@ -206,7 +207,8 @@ my-caribbean-companion/
         ├── 002_api_cache.sql
         ├── 003_user_dashboard.sql
         ├── 004_signup_profession.sql
-        └── 005_cleanup_jobs.sql
+        ├── 005_cleanup_jobs.sql
+        └── 006_plan_limit.sql
 ```
 
         

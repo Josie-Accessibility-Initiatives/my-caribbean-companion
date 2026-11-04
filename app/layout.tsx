@@ -12,6 +12,7 @@ import "./styles/dashboard.css";
 import "./styles/chat.css";
 import "./styles/tools.css";
 import "./styles/compare.css";
+import "./styles/utilities.css";
 
 const inter = Inter({
   subsets: ["latin"],

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const baseNavLinks = [
@@ -14,16 +14,10 @@ const baseNavLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { user, loading, signOut } = useAuth();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push("/");
-  };
 
   const displayName =
     (user?.user_metadata?.full_name as string | undefined) ??
@@ -63,7 +57,7 @@ export default function Navbar() {
               </Link>
               <button
                 type="button"
-                onClick={handleSignOut}
+                onClick={() => void signOut() /* redirects to the home page */}
                 className="nav-primary-btn"
               >
                 Log out

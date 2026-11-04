@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Plus, Trash2 } from "lucide-react";
+import { USER_PLAN_LIMIT } from "@/lib/plan-limits";
 import type { SavedPlanSummary } from "@/lib/types/plan";
 
 type MyPlansProps = {
@@ -19,15 +20,26 @@ export default function MyPlans({
   onDelete,
   busyPlanId,
 }: MyPlansProps) {
+  const atLimit = plans.length >= USER_PLAN_LIMIT;
+
   return (
     <section className="my-plans" aria-labelledby="my-plans-title">
       <div className="my-plans-head">
-        <h2 id="my-plans-title" className="section-title no-margin">
-          My plans
-        </h2>
-        <Link href="/onboarding?new=1" className="btn-primary">
-          <Plus size={16} aria-hidden="true" /> New plan
-        </Link>
+        <div>
+          <h2 id="my-plans-title" className="section-title no-margin">
+            My plans
+          </h2>
+          <p className="my-plans-count text-xs text-muted">
+            {plans.length} of {USER_PLAN_LIMIT} plans
+          </p>
+        </div>
+        {atLimit ? (
+          <p className="my-plans-limit text-xs">Plan limit reached. Delete a plan to create a new one.</p>
+        ) : (
+          <Link href="/onboarding?new=1" className="btn-primary">
+            <Plus size={16} aria-hidden="true" /> New plan
+          </Link>
+        )}
       </div>
 
       <div className="my-plans-list">
