@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { errorMessage, fetchJson } from "@/lib/fetch-json";
 
@@ -9,7 +8,6 @@ const CONFIRM_WORD = "DELETE";
 
 /** "Danger zone" on the profile page: permanently delete the account. */
 export default function DeleteAccount() {
-  const router = useRouter();
   const { signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
@@ -27,9 +25,8 @@ export default function DeleteAccount() {
     try {
       setDeleting(true);
       await fetchJson("/api/account", { method: "DELETE" }, "Could not delete your account.");
-      // Clears the local session and any saved plan/checklist in this browser.
-      await signOut().catch(() => {});
-      router.replace("/");
+      // Clears the session and saved plan in this browser, then goes home.
+      await signOut();
     } catch (err) {
       setError(errorMessage(err, "Could not delete your account. Please try again."));
       setDeleting(false);

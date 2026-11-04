@@ -317,18 +317,15 @@
   color: var(--color-text);
 }
 
-.plan-cta-section {
-  padding-bottom: 3rem;
-}
-
 /* Home page: pull the CTA card and vision quote closer together */
 .page-home .plan-cta-section,
 .page-home .section-impact {
   margin-top: 1.5rem;
 }
 
-.page-home .plan-cta-section {
-  padding-bottom: 0;
+/* End-of-page breathing room before the footer (the card itself adds none) */
+.page-csme {
+  padding-bottom: 3rem;
 }
 
 .plan-cta-card {

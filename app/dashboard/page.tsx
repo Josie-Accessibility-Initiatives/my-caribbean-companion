@@ -9,6 +9,7 @@ import PlanWorkspace from "@/components/dashboard/PlanWorkspace";
 import ProfileHeader from "@/components/dashboard/ProfileHeader";
 import MyPlans from "@/components/dashboard/MyPlans";
 import { LoadingCard } from "@/components/ui/LoadingCard";
+import { USER_PLAN_LIMIT } from "@/lib/plan-limits";
 import {
   mergePlanToSupabase,
   readLocalChecklist,
@@ -87,6 +88,8 @@ function UserDashboard({ user }: { user: User }) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [busyPlanId, setBusyPlanId] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  // A guest plan that could not be saved because the account is at its limit.
+  const [mergeBlocked, setMergeBlocked] = useState(false);
   const checkedRef = useRef(checked);
   checkedRef.current = checked;
   const activePlanIdRef = useRef(activePlanId);
@@ -117,7 +120,8 @@ function UserDashboard({ user }: { user: User }) {
     let cancelled = false;
     (async () => {
       try {
-        await mergePlanToSupabase(user.id);
+        const merge = await mergePlanToSupabase(user.id);
+        if (!cancelled && merge === "limit_reached") setMergeBlocked(true);
         const [profileData, planList] = await Promise.all([
           fetchProfile(user.id),
           fetchPlans(user.id),
@@ -238,6 +242,17 @@ function UserDashboard({ user }: { user: User }) {
   const header = (
     <div className="dashboard-top">
       <ProfileHeader profile={profile} email={user.email ?? null} planCount={plans.length} />
+      {mergeBlocked && (
+        <div className="callout callout--warning row-between" role="status">
+          <span className="text-sm">
+            The plan you made before logging in wasn&apos;t saved because you already have{" "}
+            {USER_PLAN_LIMIT} plans. Delete one, then recreate it from Plan My Move.
+          </span>
+          <button type="button" className="link-button" onClick={() => setMergeBlocked(false)}>
+            Dismiss
+          </button>
+        </div>
+      )}
       {plans.length > 0 && (
         <MyPlans
           plans={plans}

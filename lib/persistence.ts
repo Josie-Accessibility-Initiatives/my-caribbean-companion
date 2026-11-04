@@ -1,11 +1,13 @@
 import { createClient } from './supabase/client';
 import { savePlan } from './userData';
+import { GUEST_PLAN_LIMIT, isPlanLimitError } from './plan-limits';
 import type { ChecklistState, PlanInput, StoredPlan } from './types/plan';
 
 const STORAGE_KEYS = {
   plan: 'mcc_plan',
   costViewed: 'mcc_cost_viewed',
   currency: 'mcc_preferred_currency',
+  guestPlans: 'mcc_guest_plans',
 } as const;
 
 const CHECKLIST_KEY_PREFIX = 'mcc_checklist_';
@@ -116,6 +118,31 @@ export function markCostViewed(): void {
   setItem(STORAGE_KEYS.costViewed, 'true');
 }
 
+// ── Guest plan allowance ──────────────────────────────────────────
+// A soft limit kept in this browser: it nudges guests to sign up, it is
+// not a security boundary (clearing site data resets it).
+
+function readGuestPlanKeys(): string[] {
+  return readJson<string[]>(STORAGE_KEYS.guestPlans) ?? [];
+}
+
+export function guestPlansUsed(): number {
+  return readGuestPlanKeys().length;
+}
+
+/** Whether a guest may generate this plan (regenerating a past route is always allowed). */
+export function canGuestCreatePlan(routeKey: string): boolean {
+  const keys = readGuestPlanKeys();
+  return keys.includes(routeKey) || keys.length < GUEST_PLAN_LIMIT;
+}
+
+export function recordGuestPlan(routeKey: string): void {
+  const keys = readGuestPlanKeys();
+  if (!keys.includes(routeKey)) {
+    setItem(STORAGE_KEYS.guestPlans, JSON.stringify([...keys, routeKey]));
+  }
+}
+
 // ── Local plan helpers ─────────────────────────────────────────────
 
 export function readLocalPlan(): StoredPlan | null {
@@ -144,18 +171,21 @@ export function writeLocalChecklist(planId: string, checklist: ChecklistState): 
   setItem(checklistKey(planId), JSON.stringify(checklist));
 }
 
+export type MergeResult = 'merged' | 'nothing' | 'limit_reached' | 'failed';
+
 /**
  * Copy the guest plan in localStorage into Supabase. Safe to call repeatedly:
  * the plan is upserted, and checklist rows already in Supabase are kept
  * (ignoreDuplicates) so stale local state never overwrites synced progress.
+ * Returns 'limit_reached' when the user already has the maximum saved plans.
  */
-export async function mergePlanToSupabase(userId: string): Promise<void> {
+export async function mergePlanToSupabase(userId: string): Promise<MergeResult> {
   try {
     const stored = readLocalPlan();
     const planId = stored?.plan?.planId;
-    if (!stored || !planId || !stored.input) return;
+    if (!stored || !planId || !stored.input) return 'nothing';
     // Already loaded from this user's account — nothing new to merge.
-    if (stored.syncedUserId === userId) return;
+    if (stored.syncedUserId === userId) return 'nothing';
 
     await savePlan(userId, stored);
 
@@ -178,7 +208,10 @@ export async function mergePlanToSupabase(userId: string): Promise<void> {
         });
       if (error) throw error;
     }
+    return 'merged';
   } catch (err) {
+    if (isPlanLimitError(err)) return 'limit_reached';
     console.error('mergePlanToSupabase failed:', err);
+    return 'failed';
   }
 }

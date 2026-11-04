@@ -43,11 +43,23 @@ export function AuthProvider({
     return () => subscription.unsubscribe();
   }, [supabase]);
 
+  /**
+   * Sign out and always land on the home page. A full page load (not a
+   * client-side push) wins over redirects that pages like /dashboard fire as
+   * soon as `user` becomes null, and drops any signed-in state held in memory.
+   */
   const signOut = async () => {
-    await supabase.auth.signOut();
-    clearLocalData();
-    setUser(null);
-    setSession(null);
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      // Still clear local state, e.g. when the account was just deleted.
+      console.error('signOut failed:', err);
+    } finally {
+      clearLocalData();
+      setUser(null);
+      setSession(null);
+      window.location.replace('/');
+    }
   };
 
   return (

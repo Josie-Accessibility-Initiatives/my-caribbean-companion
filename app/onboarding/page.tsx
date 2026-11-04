@@ -6,24 +6,34 @@ import Step1Country from "@/components/wizard/Step1Country";
 import Step2Destination from "@/components/wizard/Step2Destination";
 import Step3Category from "@/components/wizard/Step3Category";
 import ProcessSteps from "@/components/csme/ProcessSteps";
+import PlanLimitNotice from "@/components/wizard/PlanLimitNotice";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { fetchProfile } from "@/lib/userData";
-import { readLocalPlanInput, writeLocalPlan } from "@/lib/persistence";
+import { fetchProfile, savePlan } from "@/lib/userData";
+import {
+  canGuestCreatePlan,
+  guestPlansUsed,
+  readLocalPlanInput,
+  recordGuestPlan,
+  writeLocalPlan,
+} from "@/lib/persistence";
+import { GUEST_PLAN_LIMIT, isPlanLimitError, planRouteKey } from "@/lib/plan-limits";
 import { categoryLabel, countryName } from "@/lib/constants";
 import { errorMessage, postJson } from "@/lib/fetch-json";
-import type { Plan } from "@/lib/types/plan";
+import type { Plan, StoredPlan } from "@/lib/types/plan";
 
 const STEP_LABELS = ["Your Background", "Destination", "Your Profession"];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(1);
   const [homeCountry, setHomeCountry] = useState("");
   const [targetCountry, setTargetCountry] = useState("");
   const [category, setCategory] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [limitReached, setLimitReached] = useState<"guest" | "user" | null>(null);
+  const [guestUsed, setGuestUsed] = useState(0);
 
   // Signed-in users: pre-fill home country and profession from their profile
   useEffect(() => {
@@ -51,6 +61,7 @@ export default function OnboardingPage() {
     if (input?.fromCountry) setHomeCountry(input.fromCountry);
     if (input?.toCountry) setTargetCountry(input.toCountry);
     if (input?.category) setCategory(input.category);
+    setGuestUsed(guestPlansUsed());
   }, []);
 
   const canContinue =
@@ -59,6 +70,13 @@ export default function OnboardingPage() {
     (step === 3 && !!category);
 
   const generatePlan = async () => {
+    const routeKey = planRouteKey(homeCountry, targetCountry, category);
+    // Guests: soft limit of distinct plans per browser (regenerating is free).
+    if (!user && !canGuestCreatePlan(routeKey)) {
+      setLimitReached("guest");
+      return;
+    }
+
     try {
       setSubmitting(true);
       const plan = await postJson<Plan>(
@@ -66,7 +84,7 @@ export default function OnboardingPage() {
         { fromCountry: homeCountry, toCountry: targetCountry, category },
         "Failed to generate plan"
       );
-      writeLocalPlan({
+      const stored: StoredPlan = {
         input: {
           fromCountry: homeCountry,
           toCountry: targetCountry,
@@ -76,9 +94,23 @@ export default function OnboardingPage() {
           categoryLabel: categoryLabel(category),
         },
         plan,
-      });
+      };
+
+      if (user) {
+        // Save straight to the account so the 8-plan limit is checked here,
+        // not silently on the dashboard.
+        await savePlan(user.id, stored);
+        writeLocalPlan(stored, user.id);
+      } else {
+        recordGuestPlan(routeKey);
+        writeLocalPlan(stored);
+      }
       router.push("/dashboard");
     } catch (err) {
+      if (isPlanLimitError(err)) {
+        setLimitReached("user");
+        return;
+      }
       console.error(err);
       setError(errorMessage(err, "Something went wrong generating your plan."));
     } finally {
@@ -88,6 +120,7 @@ export default function OnboardingPage() {
 
   const handleContinue = () => {
     setError("");
+    setLimitReached(null);
     if (!canContinue) return;
     if (step < 3) setStep(step + 1);
     else void generatePlan();
@@ -139,17 +172,28 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={handleContinue}
-                disabled={!canContinue || submitting}
+                disabled={!canContinue || submitting || (step === 3 && authLoading)}
                 className="btn-primary"
               >
                 {step < 3 ? "Continue" : submitting ? "Generating Plan…" : "Generate My Plan"}
               </button>
             </div>
+
+            {!authLoading && !user && step === 3 && (
+              <p className="fine-print">
+                Guest plans used: {Math.min(guestUsed, GUEST_PLAN_LIMIT)} of {GUEST_PLAN_LIMIT}.
+                Sign up free to save more.
+              </p>
+            )}
           </div>
         </div>
       </section>
 
       <ProcessSteps />
+
+      {limitReached && (
+        <PlanLimitNotice variant={limitReached} onClose={() => setLimitReached(null)} />
+      )}
     </div>
   );
 }

@@ -158,7 +158,10 @@ export default function CsmeBasicsPage() {
         </section>
       )}
 
-      {/* ── SECTION 6 — FAQ ──────────────────────────────────── */}
+      {/* ── SECTION 6 — CTA ──────────────────────────────────── */}
+      <PlanCTACard />
+
+      {/* ── SECTION 7 — FAQ ──────────────────────────────────── */}
       <section className="section">
         <SectionHeader title="Frequently Asked Questions" />
 
@@ -182,9 +185,6 @@ export default function CsmeBasicsPage() {
           })}
         </div>
       </section>
-
-      {/* ── SECTION 8 — CTA ──────────────────────────────────── */}
-      <PlanCTACard />
 
     </div>
   );

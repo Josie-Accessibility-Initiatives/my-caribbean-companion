@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { ArrowRight, FileText } from "lucide-react";
 import SavePlanBanner from "@/components/dashboard/SavePlanBanner";
 import CostEstimator from "@/components/cost/CostEstimator";
 import PlanSidebar, { type PlanTab } from "@/components/dashboard/PlanSidebar";
@@ -90,6 +91,16 @@ export default function PlanWorkspace({
             <h2 className="section-title">Overview</h2>
             <p className="section-body">{plan.summary}</p>
             <p className="section-notes">{plan.notes}</p>
+            <div className="row mt-1">
+              <Link href={`/resources/${input.toCountry}`} className="btn-primary">
+                Explore {input.targetCountryName}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link href="/resources" className="btn-secondary">
+                <FileText size={15} aria-hidden="true" />
+                Document Hub
+              </Link>
+            </div>
           </section>
 
           <section id="checklist" className="dashboard-section">
