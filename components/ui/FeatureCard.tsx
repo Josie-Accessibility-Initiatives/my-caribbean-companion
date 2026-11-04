@@ -7,13 +7,9 @@ interface FeatureCardProps {
 export function FeatureCard({ icon, title, body }: FeatureCardProps) {
   return (
     <div className="feature-card">
-      {icon && (
-        <p style={{ fontSize: "1.6rem", margin: "0 0 0.5rem", lineHeight: 1 }}>
-          {icon}
-        </p>
-      )}
+      {icon && <p className="feature-card-icon">{icon}</p>}
       <h3 className="card-title">{title}</h3>
-      <p style={{ margin: 0, color: "#4b5563", fontSize: "0.9rem" }}>{body}</p>
+      <p className="feature-card-body">{body}</p>
     </div>
   );
 }

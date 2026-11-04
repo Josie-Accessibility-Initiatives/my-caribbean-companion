@@ -3,81 +3,71 @@
 import { useEffect, useState } from "react";
 import ChatWidget from "@/components/companion/ChatWidget";
 import BackButton from "@/components/ui/BackButton";
-import { type OnboardingContext } from "@/lib/persistence";
+import { Select } from "@/components/ui/Select";
+import { categoryLabel, countryName } from "@/lib/constants";
+import { CATEGORY_OPTIONS, COUNTRY_OPTIONS } from "@/lib/options";
+import {
+  getOnboarding,
+  readLocalPlanInput,
+  updateLocalPlanInput,
+  type OnboardingContext,
+} from "@/lib/persistence";
 
-type Country = { code: string; name: string };
-type Category = { code: string; label: string };
+const HELP_TOPICS = [
+  "CSME eligibility questions",
+  "Required documents by profession",
+  "Skills Certificate guidance",
+  "Country-specific requirements",
+  "Cost and timeline estimates",
+  "Next steps in your relocation",
+];
 
-function getRawPlan() {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem("mcc_plan");
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
-}
+type MoveSelection = { fromCode: string; toCode: string; categoryCode: string };
 
 export default function CompanionPage() {
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [fromCode, setFromCode] = useState("");
-  const [toCode, setToCode] = useState("");
-  const [categoryCode, setCategoryCode] = useState("");
+  const [selection, setSelection] = useState<MoveSelection>({
+    fromCode: "",
+    toCode: "",
+    categoryCode: "",
+  });
   const [context, setContext] = useState<OnboardingContext | null>(null);
   const [loaded, setLoaded] = useState(false);
 
+  // localStorage is only available after mount.
   useEffect(() => {
-    async function load() {
-      const [countriesRes, categoriesRes] = await Promise.all([
-        fetch("/api/countries"),
-        fetch("/api/categories"),
-      ]);
-      const [c, k] = await Promise.all([countriesRes.json(), categoriesRes.json()]);
-      setCountries(c);
-      setCategories(k);
-
-      const plan = getRawPlan();
-      const input = plan?.input;
-      if (input) {
-        setFromCode(input.fromCountry ?? "");
-        setToCode(input.toCountry ?? "");
-        setCategoryCode(input.category ?? "");
-        setContext({
-          homeCountry: input.homeCountryName ?? input.fromCountry ?? "",
-          targetCountry: input.targetCountryName ?? input.toCountry ?? "",
-          category: input.categoryLabel ?? input.category ?? "",
-        });
-      }
-      setLoaded(true);
-    }
-    load();
+    const input = readLocalPlanInput();
+    setSelection({
+      fromCode: input?.fromCountry ?? "",
+      toCode: input?.toCountry ?? "",
+      categoryCode: input?.category ?? "",
+    });
+    setContext(getOnboarding());
+    setLoaded(true);
   }, []);
 
-  function saveContext(newFrom: string, newTo: string, newCategory: string, allCountries: Country[], allCategories: Category[]) {
-    const homeCountryName = allCountries.find((c) => c.code === newFrom)?.name ?? newFrom;
-    const targetCountryName = allCountries.find((c) => c.code === newTo)?.name ?? newTo;
-    const categoryLabel = allCategories.find((c) => c.code === newCategory)?.label ?? newCategory;
+  function update(field: keyof MoveSelection, value: string) {
+    const next = { ...selection, [field]: value };
+    setSelection(next);
 
-    const plan = getRawPlan() ?? {};
-    localStorage.setItem(
-      "mcc_plan",
-      JSON.stringify({
-        ...plan,
-        input: {
-          ...(plan.input ?? {}),
-          fromCountry: newFrom,
-          toCountry: newTo,
-          category: newCategory,
-          homeCountryName,
-          targetCountryName,
-          categoryLabel,
-        },
-      })
+    const input = {
+      fromCountry: next.fromCode,
+      toCountry: next.toCode,
+      category: next.categoryCode,
+      homeCountryName: countryName(next.fromCode),
+      targetCountryName: countryName(next.toCode),
+      categoryLabel: categoryLabel(next.categoryCode),
+    };
+    updateLocalPlanInput(input);
+
+    setContext(
+      next.fromCode && next.toCode && next.categoryCode
+        ? {
+            homeCountry: input.homeCountryName,
+            targetCountry: input.targetCountryName,
+            category: input.categoryLabel,
+          }
+        : null
     );
-
-    if (newFrom && newTo && newCategory) {
-      setContext({ homeCountry: homeCountryName, targetCountry: targetCountryName, category: categoryLabel });
-    } else {
-      setContext(null);
-    }
   }
 
   return (
@@ -94,10 +84,7 @@ export default function CompanionPage() {
 
         <div className="companion-grid">
           <div className="companion-chat-col">
-            <ChatWidget
-              userContext={context ?? undefined}
-              className="chat-widget-embedded"
-            />
+            <ChatWidget userContext={context ?? undefined} className="chat-widget-embedded" />
           </div>
 
           <aside className="companion-sidebar">
@@ -107,64 +94,30 @@ export default function CompanionPage() {
               {!loaded ? (
                 <p className="companion-muted">Loading…</p>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                  <label className="form-label">
-                    From
-                    <select
-                      className="form-select"
-                      value={fromCode}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setFromCode(val);
-                        saveContext(val, toCode, categoryCode, countries, categories);
-                      }}
-                    >
-                      <option value="">Select country</option>
-                      {countries
-                        .filter((c) => c.code !== toCode)
-                        .map((c) => (
-                          <option key={c.code} value={c.code}>{c.name}</option>
-                        ))}
-                    </select>
-                  </label>
-
-                  <label className="form-label">
-                    To
-                    <select
-                      className="form-select"
-                      value={toCode}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setToCode(val);
-                        saveContext(fromCode, val, categoryCode, countries, categories);
-                      }}
-                    >
-                      <option value="">Select country</option>
-                      {countries
-                        .filter((c) => c.code !== fromCode)
-                        .map((c) => (
-                          <option key={c.code} value={c.code}>{c.name}</option>
-                        ))}
-                    </select>
-                  </label>
-
-                  <label className="form-label">
-                    Category
-                    <select
-                      className="form-select"
-                      value={categoryCode}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setCategoryCode(val);
-                        saveContext(fromCode, toCode, val, countries, categories);
-                      }}
-                    >
-                      <option value="">Select profession</option>
-                      {categories.map((c) => (
-                        <option key={c.code} value={c.code}>{c.label}</option>
-                      ))}
-                    </select>
-                  </label>
+                <div className="stack-md">
+                  <Select
+                    label="From"
+                    value={selection.fromCode}
+                    onChange={(v) => update("fromCode", v)}
+                    options={COUNTRY_OPTIONS}
+                    exclude={[selection.toCode]}
+                    placeholder="Select country"
+                  />
+                  <Select
+                    label="To"
+                    value={selection.toCode}
+                    onChange={(v) => update("toCode", v)}
+                    options={COUNTRY_OPTIONS}
+                    exclude={[selection.fromCode]}
+                    placeholder="Select country"
+                  />
+                  <Select
+                    label="Category"
+                    value={selection.categoryCode}
+                    onChange={(v) => update("categoryCode", v)}
+                    options={CATEGORY_OPTIONS}
+                    placeholder="Select profession"
+                  />
                 </div>
               )}
             </div>
@@ -172,12 +125,9 @@ export default function CompanionPage() {
             <div className="planner-card">
               <h3 className="companion-card-title">What I can help with</h3>
               <ul className="companion-bullet-list">
-                <li>CSME eligibility questions</li>
-                <li>Required documents by profession</li>
-                <li>Skills Certificate guidance</li>
-                <li>Country-specific requirements</li>
-                <li>Cost and timeline estimates</li>
-                <li>Next steps in your relocation</li>
+                {HELP_TOPICS.map((topic) => (
+                  <li key={topic}>{topic}</li>
+                ))}
               </ul>
             </div>
 

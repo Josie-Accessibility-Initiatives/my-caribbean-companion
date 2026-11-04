@@ -35,7 +35,9 @@ housing resources, and AI-powered guidance.
 
 ### User Features
 - **Auth** — Supabase Auth with email/magic link, guest mode with localStorage fallback
-- **Plan Persistence** — guest plans auto-merge to Supabase on signup/login
+- **Password Reset** — emailed reset link (/forgot-password → /auth/callback → /reset-password)
+- **Plan Persistence** — guest plans auto-merge to Supabase on login
+- **Personal Dashboard** — signed-in users get a profile header, multiple saved plans with progress, and checklist sync across devices
 - **PDF Roadmap Export** — downloadable personalized relocation plan
 - **Community Stories** — anonymous peer migration stories *(coming soon)*
 - **Application Status Tracker** — user-driven CSME application tracking *(Phase 14)*
@@ -80,12 +82,15 @@ housing resources, and AI-powered guidance.
 my-caribbean-companion/
 │
 ├── app/
-│   ├── layout.tsx                 # Global layout, Navbar, Footer, AI bubble
+│   ├── layout.tsx                 # Global layout, Navbar, Footer, AI bubble, CSS imports
+│   ├── globals.css                # Design tokens, base styles, buttons, forms
+│   ├── styles/                    # ui, layout, dashboard, chat, tools, compare CSS
 │   ├── page.tsx                   # Home / landing page
 │   ├── not-found.tsx              # Custom 404 page
 │   │
 │   ├── onboarding/               # CSME move planner wizard
-│   ├── dashboard/                # Checklist, cost estimate, job/housing preview
+│   ├── dashboard/                # Personal dashboard: profile, saved plans, checklist
+│   │   └── profile/              # Edit profile (signed-in only)
 │   ├── compare/                  # Country comparison dashboard
 │   ├── companion/                # AI chatbot (Gemini)
 │   ├── jobs/                     # Caribbean job board
@@ -122,34 +127,46 @@ my-caribbean-companion/
 │   │
 │   ├── ui/                       # Shared UI primitives
 │   │   ├── BackButton.tsx
+│   │   ├── Badge.tsx             # Badge + Live/Estimated SourceBadge
 │   │   ├── ErrorCard.tsx
 │   │   ├── FeatureCard.tsx
+│   │   ├── FormField.tsx
+│   │   ├── LinkCard.tsx          # LinkCard + PillLink
+│   │   ├── LoadingCard.tsx
 │   │   ├── PlanCTACard.tsx
 │   │   ├── SectionHeader.tsx
+│   │   ├── Select.tsx            # Labelled dropdown used by every picker
 │   │   └── Skeleton.tsx
 │   │
 │   ├── wizard/                   # Onboarding wizard steps
-│   ├── dashboard/                # Dashboard widgets
+│   ├── dashboard/                # Plan workspace, sidebar, tab teasers, profile header
+│   ├── cost/                     # Cost estimator + line items, chart, skeleton
 │   ├── compare/                  # Tables, charts, heatmaps
 │   ├── jobs/                     # Job cards + curated links
 │   ├── housing/                  # Rent overview + neighborhoods
-│   ├── resources/                # Fraud alerts
+│   ├── resources/                # Document cards + fraud alerts
 │   └── companion/                # ChatWidget
 │
 ├── lib/
 │   ├── ai.ts                     # Gemini client + prompt handling
-│   ├── api.ts                    # Typed fetch helpers
+│   ├── api.ts                    # API route helpers (errors, validation)
 │   ├── badge.ts                  # Document badge config
 │   ├── cache.ts                  # Supabase API cache utilities
-│   ├── constants.ts
+│   ├── constants.ts              # Countries, categories, lookups, API country codes
 │   ├── country-utils.ts
 │   ├── currency.ts
 │   ├── cost-search.ts
 │   ├── exchange-rates.ts
+│   ├── fetch-json.ts             # Client fetch helpers for our API routes
 │   ├── format.ts
+│   ├── options.ts                # Country / category dropdown options
 │   ├── pdfExport.ts              # PDF roadmap generation
-│   ├── persistence.ts            # localStorage + Supabase layer
+│   ├── persistence.ts            # localStorage helpers + guest plan merge
+│   ├── userData.ts               # Supabase profile / plans / checklist
 │   ├── tavily.ts
+│   │
+│   ├── hooks/
+│   │   └── useFormState.ts       # Form values + field errors (auth, profile)
 │   │
 │   ├── supabase/
 │   │   ├── client.ts
@@ -166,10 +183,12 @@ my-caribbean-companion/
 │   │
 │   └── types/
 │       ├── comparison.ts
-│       ├── csme.ts
+│       ├── cost.ts
+│       ├── csme.ts               # Country, Category, CSME complexity
 │       ├── documents.ts
 │       ├── housing.ts
-│       └── jobs.ts
+│       ├── jobs.ts
+│       └── plan.ts               # Plan, checklist, profile types
 │
 ├── data/
 │   ├── countries.json            # 12 CARICOM countries
@@ -183,7 +202,9 @@ my-caribbean-companion/
 └── supabase/
     └── migrations/
         ├── 001_initial_schema.sql
-        └── 002_api_cache.sql
+        ├── 002_api_cache.sql
+        ├── 003_user_dashboard.sql
+        └── 004_signup_profession.sql
 ```
 
         

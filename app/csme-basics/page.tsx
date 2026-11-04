@@ -16,44 +16,10 @@ import {
   Leaf,
   Shield,
   ChevronDown,
-  ExternalLink,
 } from "lucide-react";
-import type { CSMEDocument, DocumentType } from "@/lib/types/documents";
-
-const BADGE: Record<DocumentType, { label: string; bg: string; color: string }> = {
-  guide:               { label: "Guide",     bg: "#d1fae5", color: "#065f46" },
-  form:                { label: "Form",      bg: "#dbeafe", color: "#1e40af" },
-  reference:           { label: "Reference", bg: "#f3f4f6", color: "#374151" },
-  authority:           { label: "Authority", bg: "#e0e7ff", color: "#1e3a8a" },
-  competent_authority: { label: "Authority", bg: "#e0e7ff", color: "#1e3a8a" },
-};
-
-function TypeBadge({ type }: { type: DocumentType }) {
-  const b = BADGE[type] ?? BADGE.reference;
-  return (
-    <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: "999px", fontSize: "0.75rem", fontWeight: 600, background: b.bg, color: b.color, marginBottom: "0.4rem" }}>
-      {b.label}
-    </span>
-  );
-}
-
-function DocCard({ doc }: { doc: CSMEDocument }) {
-  return (
-    <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderLeft: "3px solid var(--color-primary)", borderRadius: "0.5rem", padding: "1rem" }}>
-      <TypeBadge type={doc.type} />
-      <div style={{ fontWeight: 700, color: "#111827", marginBottom: "0.25rem" }}>{doc.title}</div>
-      <p style={{ color: "#6b7280", fontSize: "0.875rem", margin: "0 0 0.5rem" }}>{doc.description}</p>
-      <a
-        href={doc.url}
-        target="_blank"
-        rel="noreferrer"
-        style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", fontSize: "0.85rem", fontWeight: 600, color: "var(--color-primary)", textDecoration: "none" }}
-      >
-        View Official Source <ExternalLink size={13} />
-      </a>
-    </div>
-  );
-}
+import { DocCard } from "@/components/resources/DocCard";
+import { fetchJson } from "@/lib/fetch-json";
+import type { CSMEDocument } from "@/lib/types/documents";
 
 const CATEGORIES = [
   { label: "University Graduates",        Icon: GraduationCap },
@@ -120,8 +86,7 @@ export default function CsmeBasicsPage() {
   const [globalDocs, setGlobalDocs] = useState<CSMEDocument[]>([]);
 
   useEffect(() => {
-    fetch("/api/documents?global=true")
-      .then((r) => r.json())
+    fetchJson<{ global?: CSMEDocument[] }>("/api/documents?global=true")
       .then((d) => setGlobalDocs(d.global ?? []))
       .catch(() => {});
   }, []);
@@ -145,28 +110,28 @@ export default function CsmeBasicsPage() {
         <div className="about-two-column">
           <div>
             <h2 className="section-title">What is CSME?</h2>
-            <p style={{ marginBottom: "1.25rem" }}>
+            <p className="mb-1">
               The CARICOM Single Market and Economy (CSME) is an arrangement
               among Caribbean Member States allowing the free movement of goods,
               services, people, and capital across participating countries.
             </p>
 
-            <div className="dashboard-section" style={{ marginBottom: "1rem" }}>
-              <p style={{ fontWeight: 600, marginBottom: "0.35rem", margin: "0 0 0.35rem" }}>
+            <div className="dashboard-section">
+              <p className="dashboard-section-title">
                 Free Movement of Skills
               </p>
-              <p style={{ margin: 0, color: "#4b5563" }}>
+              <p className="no-margin text-body">
                 Eligible CARICOM nationals can live and work in another
                 participating country with a Skills Certificate and without a
                 traditional work permit.
               </p>
             </div>
 
-            <div className="dashboard-section" style={{ marginBottom: "1.25rem" }}>
-              <p style={{ fontWeight: 600, margin: "0 0 0.35rem" }}>
+            <div className="dashboard-section">
+              <p className="dashboard-section-title">
                 Not Citizenship or Residency
               </p>
-              <p style={{ margin: 0, color: "#4b5563" }}>
+              <p className="no-margin text-body">
                 Free movement gives you the right to seek and take up employment
                 only. It does not grant permanent residency or citizenship.
               </p>
@@ -177,7 +142,6 @@ export default function CsmeBasicsPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="external-link"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem" }}
             >
               Visit the official CSME website ↗
             </a>
@@ -196,9 +160,7 @@ export default function CsmeBasicsPage() {
           {CATEGORIES.map(({ label, Icon }) => (
             <div key={label} className="csme-category-card">
               <Icon size={24} color="var(--color-primary)" />
-              <p style={{ margin: 0, fontWeight: 600, fontSize: "0.9rem" }}>
-                {label}
-              </p>
+              <p>{label}</p>
             </div>
           ))}
         </div>
@@ -211,56 +173,21 @@ export default function CsmeBasicsPage() {
           subtitle="A simplified overview of the CSME application process."
         />
 
-        {/* Circle row with connecting lines (desktop) */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "1rem",
-          }}
-        >
+        {/* Circle row with connecting lines */}
+        <div className="process-track">
           {STEPS.map((step, i) => (
             <Fragment key={step.n}>
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  background: "var(--color-primary)",
-                  color: "#ffffff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  flexShrink: 0,
-                }}
-              >
-                {step.n}
-              </div>
-              {i < STEPS.length - 1 && (
-                <div style={{ flex: 1, height: 2, background: "#e5e7eb" }} />
-              )}
+              <div className="process-step-number">{step.n}</div>
+              {i < STEPS.length - 1 && <div className="process-step-line" />}
             </Fragment>
           ))}
         </div>
 
-        {/* Step text grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "1rem",
-          }}
-        >
+        <div className="process-steps">
           {STEPS.map((step) => (
-            <div key={step.n} className="feature-card" style={{ padding: "1rem" }}>
-              <h3 style={{ margin: "0 0 0.4rem", fontWeight: 600, fontSize: "0.95rem" }}>
-                {step.title}
-              </h3>
-              <p style={{ margin: 0, color: "#4b5563", fontSize: "0.875rem" }}>
-                {step.body}
-              </p>
+            <div key={step.n} className="feature-card">
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
             </div>
           ))}
         </div>
@@ -273,7 +200,7 @@ export default function CsmeBasicsPage() {
             title="Official CSME Documents"
             subtitle="Verified resources from the CARICOM Secretariat to help you start your application."
           />
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}>
+          <div className="stack-md mt-1">
             {globalDocs.map((doc) => (
               <DocCard key={doc.id} doc={doc} />
             ))}
@@ -285,57 +212,21 @@ export default function CsmeBasicsPage() {
       <section className="section">
         <SectionHeader title="Frequently Asked Questions" />
 
-        <div style={{ marginTop: "1rem" }}>
+        <div className="mt-1">
           {FAQS.map((faq, i) => {
             const isOpen = openFaq === i;
             return (
-              <div
-                key={i}
-                style={{ borderBottom: "1px solid #e5e7eb", padding: "1rem 0" }}
-              >
+              <div key={faq.q} className="faq-item">
                 <button
                   type="button"
+                  className="faq-question"
                   onClick={() => setOpenFaq(isOpen ? null : i)}
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    fontFamily: "inherit",
-                    fontSize: "0.95rem",
-                    fontWeight: 600,
-                    color: "#111827",
-                    padding: 0,
-                  }}
+                  aria-expanded={isOpen}
                 >
                   {faq.q}
-                  <ChevronDown
-                    size={18}
-                    style={{
-                      flexShrink: 0,
-                      marginLeft: "1rem",
-                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                      transition: "transform 0.2s ease",
-                      color: "#6b7280",
-                    }}
-                  />
+                  <ChevronDown size={18} className={`faq-chevron${isOpen ? " open" : ""}`} />
                 </button>
-                {isOpen && (
-                  <p
-                    style={{
-                      margin: "0.75rem 0 0",
-                      color: "#4b5563",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {faq.a}
-                  </p>
-                )}
+                {isOpen && <p className="faq-answer">{faq.a}</p>}
               </div>
             );
           })}

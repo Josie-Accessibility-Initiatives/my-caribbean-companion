@@ -2,12 +2,10 @@ import Link from "next/link";
 
 export function PlanCTACard() {
   return (
-    <section className="section" style={{ paddingBottom: "3rem" }}>
-      <div className="step-card" style={{ maxWidth: 680, margin: "0 auto" }}>
-        <h3 style={{ margin: "0 0 0.75rem", fontSize: "1.2rem", fontWeight: 600 }}>
-          Ready to plan your CSME move?
-        </h3>
-        <p style={{ margin: "0 0 1.25rem", color: "#4b5563" }}>
+    <section className="section plan-cta-section">
+      <div className="step-card plan-cta-card">
+        <h3>Ready to plan your CSME move?</h3>
+        <p>
           Use My Caribbean Companion to get a personalized checklist, cost
           estimate, and step-by-step guidance based on your specific
           profession and destination.

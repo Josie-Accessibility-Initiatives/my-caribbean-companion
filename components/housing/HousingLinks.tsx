@@ -1,92 +1,30 @@
 'use client'
 
-import { Home, Building, ExternalLink, Users } from 'lucide-react'
-import type { FacebookGroup, RealEstateLink, RegionalLink } from '@/lib/types/housing'
-
-interface TemporaryOption {
-  name: string
-  pricePerNight: number | null
-  url: string
-  type: string
-}
+import type { ReactNode } from 'react'
+import { Home, Building, Users } from 'lucide-react'
+import { Badge } from '@/components/ui/Badge'
+import { LinkCard, PillLink } from '@/components/ui/LinkCard'
+import { capitalize } from '@/lib/format'
+import type {
+  FacebookGroup,
+  RealEstateLink,
+  RegionalLink,
+  TemporaryOption,
+} from '@/lib/types/housing'
 
 interface HousingLinksProps {
   facebookGroups: FacebookGroup[]
   realEstateLinks: RealEstateLink[]
   bookingComUrl: string | null
   regional: RegionalLink[]
-  countryName: string
   temporaryOptions: TemporaryOption[]
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function LinkGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <h3
-      style={{
-        fontSize: '0.78rem',
-        fontWeight: 700,
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.08em',
-        color: '#6b7280',
-        margin: '0 0 0.65rem',
-      }}
-    >
-      {children}
-    </h3>
-  )
-}
-
-function LinkRow({
-  href,
-  label,
-  style: btnStyle,
-}: {
-  href: string
-  label: string
-  style?: React.CSSProperties
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '0.25rem',
-        borderRadius: '999px',
-        padding: '0.35rem 0.85rem',
-        fontSize: '0.8rem',
-        fontWeight: 600,
-        textDecoration: 'none',
-        whiteSpace: 'nowrap' as const,
-        flexShrink: 0,
-        background: 'var(--color-primary-soft)',
-        color: 'var(--color-primary)',
-        border: '1px solid var(--color-primary-border)',
-        ...btnStyle,
-      }}
-    >
-      {label} <ExternalLink size={11} />
-    </a>
-  )
-}
-
-function Card({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        background: '#ffffff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '0.625rem',
-        padding: '0.9rem 1rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-      }}
-    >
-      {children}
+    <div>
+      <h3 className="section-label">{title}</h3>
+      <div className="stack-sm">{children}</div>
     </div>
   )
 }
@@ -96,218 +34,84 @@ export default function HousingLinks({
   realEstateLinks,
   bookingComUrl,
   regional,
-  countryName: _countryName,
   temporaryOptions,
 }: HousingLinksProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-
-      {/* ── 1. Temporary Accommodation ── */}
-      <div>
-        <SectionHeading>Temporary Accommodation</SectionHeading>
-
+    <div className="stack-xl">
+      <LinkGroup title="Temporary Accommodation">
         {bookingComUrl && (
-          <a
-            href={bookingComUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              background: 'var(--color-primary)',
-              color: '#ffffff',
-              borderRadius: '999px',
-              padding: '0.55rem 1.25rem',
-              fontSize: '0.9rem',
-              fontWeight: 600,
-              textDecoration: 'none',
-              marginBottom: temporaryOptions.length > 0 ? '0.85rem' : 0,
-            }}
-          >
-            Browse on Booking.com →
-          </a>
-        )}
-
-        {temporaryOptions.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {temporaryOptions.map((opt) => (
-              <Card key={opt.url}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#111827' }}>
-                    {opt.name}
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem' }}>
-                    {opt.type.charAt(0).toUpperCase() + opt.type.slice(1)}
-                    {opt.pricePerNight != null && (
-                      <span style={{ marginLeft: '0.4rem', color: 'var(--color-primary)', fontWeight: 600 }}>
-                        · ${opt.pricePerNight}/night
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <LinkRow href={opt.url} label="View" />
-              </Card>
-            ))}
+          <div>
+            <PillLink href={bookingComUrl} variant="solid" icon={false} className="pill-link--lg">
+              Browse on Booking.com →
+            </PillLink>
           </div>
         )}
-      </div>
+        {temporaryOptions.map((opt) => (
+          <LinkCard
+            key={opt.url}
+            title={opt.name}
+            href={opt.url}
+            actionLabel="View"
+            description={
+              <>
+                {capitalize(opt.type)}
+                {opt.pricePerNight != null && (
+                  <span className="text-primary"> · ${opt.pricePerNight}/night</span>
+                )}
+              </>
+            }
+          />
+        ))}
+      </LinkGroup>
 
-      {/* ── 2. Facebook Housing Groups ── */}
       {facebookGroups.length > 0 && (
-        <div>
-          <SectionHeading>Facebook Housing Groups</SectionHeading>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {facebookGroups.map((g) => (
-              <Card key={g.url}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#111827' }}>
-                      {g.name}
-                    </span>
-                    <span
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.2rem',
-                        fontSize: '0.7rem',
-                        fontWeight: 600,
-                        padding: '0.15rem 0.5rem',
-                        borderRadius: '999px',
-                        background: '#dbeafe',
-                        color: '#1e40af',
-                        whiteSpace: 'nowrap' as const,
-                      }}
-                    >
-                      <Users size={10} />
-                      {g.members}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: '#6b7280',
-                      marginTop: '0.2rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap' as const,
-                    }}
-                  >
-                    {g.description}
-                  </div>
-                </div>
-                <LinkRow
-                  href={g.url}
-                  label="Join Group"
-                  style={{
-                    background: 'rgba(24,119,242,0.08)',
-                    color: '#1877f2',
-                    border: '1px solid rgba(24,119,242,0.25)',
-                  }}
-                />
-              </Card>
-            ))}
-          </div>
-        </div>
+        <LinkGroup title="Facebook Housing Groups">
+          {facebookGroups.map((g) => (
+            <LinkCard
+              key={g.url}
+              title={g.name}
+              description={g.description}
+              href={g.url}
+              actionLabel="Join Group"
+              variant="facebook"
+              meta={
+                <Badge size="sm" colors={{ bg: '#dbeafe', color: '#1e40af' }}>
+                  <Users size={10} />
+                  {g.members}
+                </Badge>
+              }
+            />
+          ))}
+        </LinkGroup>
       )}
 
-      {/* ── 3. Real Estate Agencies ── */}
       {realEstateLinks.length > 0 && (
-        <div>
-          <SectionHeading>Real Estate Agencies</SectionHeading>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {realEstateLinks.map((r) => (
-              <Card key={r.url}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#111827' }}>
-                    {r.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: '#6b7280',
-                      marginTop: '0.2rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap' as const,
-                    }}
-                  >
-                    {r.description}
-                  </div>
-                </div>
-                <LinkRow href={r.url} label="Browse Listings" />
-              </Card>
-            ))}
-          </div>
-        </div>
+        <LinkGroup title="Real Estate Agencies">
+          {realEstateLinks.map((r) => (
+            <LinkCard
+              key={r.url}
+              title={r.name}
+              description={r.description}
+              href={r.url}
+              actionLabel="Browse Listings"
+            />
+          ))}
+        </LinkGroup>
       )}
 
-      {/* ── 4. Caribbean-Wide Resources ── */}
       {regional.length > 0 && (
-        <div>
-          <SectionHeading>Caribbean-Wide Resources</SectionHeading>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {regional.map((res) => (
-              <Card key={res.url}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    flex: 1,
-                    minWidth: 0,
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: '0.5rem',
-                      background: '#f3f4f6',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {res.icon === 'building' ? (
-                      <Building size={15} color="#6b7280" />
-                    ) : (
-                      <Home size={15} color="#6b7280" />
-                    )}
-                  </span>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#111827' }}>
-                      {res.name}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '0.8rem',
-                        color: '#6b7280',
-                        marginTop: '0.15rem',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap' as const,
-                      }}
-                    >
-                      {res.description}
-                    </div>
-                  </div>
-                </div>
-                <LinkRow href={res.url} label="Visit" />
-              </Card>
-            ))}
-          </div>
-        </div>
+        <LinkGroup title="Caribbean-Wide Resources">
+          {regional.map((res) => (
+            <LinkCard
+              key={res.url}
+              title={res.name}
+              description={res.description}
+              href={res.url}
+              leading={res.icon === 'building' ? <Building size={15} /> : <Home size={15} />}
+            />
+          ))}
+        </LinkGroup>
       )}
-
     </div>
   )
 }

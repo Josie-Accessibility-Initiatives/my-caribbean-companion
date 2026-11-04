@@ -1,12 +1,7 @@
 import { getCached, setCached } from '@/lib/cache'
+import { ISO3_CODES } from '@/lib/constants'
 
 const CACHE_TTL_HOURS = 24 * 30 // 30 days
-
-const REST_COUNTRY_CODES: Record<string, string> = {
-  TT: 'TTO', BB: 'BRB', JM: 'JAM', GY: 'GUY',
-  LC: 'LCA', GD: 'GRD', DM: 'DMA', VC: 'VCT',
-  KN: 'KNA', AG: 'ATG', SR: 'SUR', BZ: 'BLZ'
-}
 
 export type RestCountryData = {
   flag: string
@@ -30,7 +25,7 @@ export async function getRestCountryData(
   )
   if (cached) return cached
 
-  const alpha3 = REST_COUNTRY_CODES[countryCode]
+  const alpha3 = ISO3_CODES[countryCode]
   if (!alpha3) {
     return getFallbackData(countryCode)
   }
@@ -131,18 +126,4 @@ function getFallbackData(
     timezones: [],
     source: 'fallback'
   }
-}
-
-export async function getAllRestCountryData():
-  Promise<Record<string, RestCountryData>> {
-  const codes = Object.keys(REST_COUNTRY_CODES)
-  const results = await Promise.all(
-    codes.map(async code => ({
-      code,
-      data: await getRestCountryData(code)
-    }))
-  )
-  return Object.fromEntries(
-    results.map(r => [r.code, r.data])
-  )
 }

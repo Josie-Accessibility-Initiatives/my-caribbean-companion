@@ -29,7 +29,8 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(initialUser);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(!initialUser);
-  const supabase = createClient();
+  // One browser client for the provider's lifetime.
+  const [supabase] = useState(createClient);
 
   useEffect(() => {
     const {
@@ -40,7 +41,7 @@ export function AuthProvider({
       setLoading(false);
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   const signOut = async () => {
     await supabase.auth.signOut();

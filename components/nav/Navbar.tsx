@@ -6,9 +6,9 @@ import { useAuth } from "@/components/auth/AuthProvider";
 
 const baseNavLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/onboarding", label: "Plan My Move" },
   { href: "/resources", label: "Resources" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -35,7 +35,7 @@ export default function Navbar() {
       <nav className="nav">
         <Link href="/" className="nav-logo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" style={{ height: 35, width: "auto", display: "block" }} />
+          <img src="/assets/Logo-simple.png" alt="Caribbean Companion" />
         </Link>
 
         <div className="nav-links">
@@ -58,7 +58,9 @@ export default function Navbar() {
             </>
           ) : user ? (
             <>
-              <span style={{ color: "#6b7280" }}>Hi, {displayName}</span>
+              <Link href="/dashboard" title="My dashboard" className="nav-greeting">
+                Hi, {displayName}
+              </Link>
               <button
                 type="button"
                 onClick={handleSignOut}

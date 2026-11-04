@@ -4,7 +4,7 @@
 // See Phase 3 roadmap.
 
 import { searchWeb, QUALITY_OF_LIFE_DOMAINS } from '@/lib/tavily'
-import { extractJSON } from '@/lib/ai'
+import { extractJSONObject } from '@/lib/ai'
 import { getCached, setCached } from '@/lib/cache'
 import { COUNTRY_META } from '@/data/countryMeta'
 
@@ -75,8 +75,7 @@ export async function getQualityOfLife(
       `safetyScore: higher = safer\n` +
       `qualityOfLifeScore: higher = better quality`
 
-    const raw = await extractJSON(prompt)
-    const extracted = JSON.parse(raw)
+    const extracted = await extractJSONObject<Partial<QualityOfLifeData>>(prompt)
 
     const data: QualityOfLifeData = {
       qualityOfLifeScore:
@@ -119,18 +118,4 @@ function getFallbackQoL(): QualityOfLifeData {
     source: 'fallback',
     searchedAt: new Date().toISOString()
   }
-}
-
-export async function getAllQualityOfLife():
-  Promise<Record<string, QualityOfLifeData>> {
-  const codes = Object.keys(COUNTRY_META)
-  const results = await Promise.all(
-    codes.map(async code => ({
-      code,
-      data: await getQualityOfLife(code)
-    }))
-  )
-  return Object.fromEntries(
-    results.map(r => [r.code, r.data])
-  )
 }
