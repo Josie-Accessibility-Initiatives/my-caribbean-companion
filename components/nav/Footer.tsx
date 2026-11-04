@@ -17,9 +17,9 @@ export default function Footer() {
           <div className="footer-column">
             <h4>Use cases</h4>
             <ul>
-              <li><Link href="/onboarding">Students &amp; Graduates</Link></li>
-              <li><Link href="/onboarding">Skilled Professionals</Link></li>
               <li><Link href="/jobs">Regional Job Seekers</Link></li>
+              <li><Link href="/housing">Housing Search</Link></li>
+              <li><Link href="/compare">Country Comparison</Link></li>
             </ul>
           </div>
           <div className="footer-column">

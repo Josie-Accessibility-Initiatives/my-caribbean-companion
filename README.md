@@ -35,6 +35,7 @@ housing resources, and AI-powered guidance.
 
 ### User Features
 - **Auth** — Supabase Auth with email/magic link, guest mode with localStorage fallback
+- **Account Deletion** — users can permanently delete their account and data from the profile page
 - **Password Reset** — emailed reset link (/forgot-password → /auth/callback → /reset-password)
 - **Plan Persistence** — guest plans auto-merge to Supabase on login
 - **Personal Dashboard** — signed-in users get a profile header, multiple saved plans with progress, and checklist sync across devices
@@ -204,7 +205,8 @@ my-caribbean-companion/
         ├── 001_initial_schema.sql
         ├── 002_api_cache.sql
         ├── 003_user_dashboard.sql
-        └── 004_signup_profession.sql
+        ├── 004_signup_profession.sql
+        └── 005_cleanup_jobs.sql
 ```
 
         
@@ -226,6 +228,7 @@ my-caribbean-companion/
 | `/api/housing` | GET | Housing data by country |
 | `/api/documents` | GET | CSME documents by country/category |
 | `/api/exchange-rates` | GET | Live Caribbean currency rates |
+| `/api/account` | DELETE | Delete the signed-in user and all their data |
 
 ---
 

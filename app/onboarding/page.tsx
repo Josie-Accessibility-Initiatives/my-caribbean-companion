@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Step1Country from "@/components/wizard/Step1Country";
 import Step2Destination from "@/components/wizard/Step2Destination";
 import Step3Category from "@/components/wizard/Step3Category";
+import ProcessSteps from "@/components/csme/ProcessSteps";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { fetchProfile } from "@/lib/userData";
 import { readLocalPlanInput, writeLocalPlan } from "@/lib/persistence";
@@ -145,15 +145,11 @@ export default function OnboardingPage() {
                 {step < 3 ? "Continue" : submitting ? "Generating Plan…" : "Generate My Plan"}
               </button>
             </div>
-
-            {step === 1 && !user && (
-              <Link href="/dashboard" className="guest-link">
-                Continue as guest
-              </Link>
-            )}
           </div>
         </div>
       </section>
+
+      <ProcessSteps />
     </div>
   );
 }
