@@ -9,3 +9,10 @@ export function toCountryCode(nameOrCode: string): string | null {
   )
   return entry?.[0] ?? null
 }
+
+/** Loose match between a profession name and a user's category label. */
+export function professionMatches(profession: string, category: string): boolean {
+  const p = profession.toLowerCase()
+  const c = category.toLowerCase()
+  return p.includes(c) || c.includes(p)
+}

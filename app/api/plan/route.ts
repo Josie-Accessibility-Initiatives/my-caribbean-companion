@@ -3,18 +3,13 @@ import { createHash } from "crypto";
 import {
   apiError,
   apiSuccess,
-  ApiError,
+  handleRouteError,
   readDataFile,
   validatePlanRequest,
   type Country,
   type Category,
 } from "@/lib/api";
-
-type ChecklistItem = {
-  id: string;
-  label: string;
-  description: string;
-};
+import type { ChecklistItem } from "@/lib/types/plan";
 
 function buildChecklist(categoryLabel: string): ChecklistItem[] {
   return [
@@ -147,10 +142,6 @@ export async function POST(request: Request) {
 
     return apiSuccess(planData);
   } catch (err) {
-    if (err instanceof ApiError) {
-      return apiError(err.message, err.status);
-    }
-    console.error("POST /api/plan:", err);
-    return apiError("Failed to generate plan.", 500);
+    return handleRouteError(err, "POST /api/plan", "Failed to generate plan.");
   }
 }

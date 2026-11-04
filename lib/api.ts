@@ -1,23 +1,10 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { COUNTRY_META } from "@/data/countryMeta";
+import type { Country, Category } from "@/lib/types/csme";
 
-export type Country = {
-  id: number;
-  code: string;
-  name: string;
-  immigrationUrl: string | null;
-  competentAuthorityUrl: string | null;
-  formsUrl: string | null;
-  notes: string | null;
-};
-
-export type Category = {
-  id: number;
-  code: string;
-  label: string;
-  description: string | null;
-};
+export type { Country, Category };
 
 export type PlanRequest = {
   fromCountry: string;
@@ -85,6 +72,33 @@ export function validatePlanRequest(body: unknown): PlanRequest {
     toCountry: toCode,
     category: typeof category === "string" ? category.trim() : category,
   };
+}
+
+/** Read a required `country` query param and check it is a CARICOM code. */
+export function requireCountryParam(
+  searchParams: URLSearchParams,
+  missingMessage = "country parameter required"
+): string {
+  const country = searchParams.get("country");
+  if (!country) throw new ApiError(missingMessage, 400);
+  if (!COUNTRY_META[country]) throw new ApiError("Invalid country code", 400);
+  return country;
+}
+
+/**
+ * Convert a thrown error into a JSON error response: ApiErrors keep their
+ * message and status, anything else is logged and becomes a 500.
+ */
+export function handleRouteError(
+  err: unknown,
+  route: string,
+  fallbackMessage: string
+): NextResponse {
+  if (err instanceof ApiError) {
+    return apiError(err.message, err.status);
+  }
+  console.error(`${route}:`, err);
+  return apiError(fallbackMessage, 500);
 }
 
 export function apiError(message: string, status: number): NextResponse {

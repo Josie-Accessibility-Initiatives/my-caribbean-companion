@@ -1,21 +1,10 @@
 import { NextRequest } from "next/server";
-import { getChatStream } from "@/lib/ai";
+import { getChatStream, type ChatMessage, type ChatUserContext } from "@/lib/ai";
 
 const MAX_MESSAGES = 50;
 const MAX_MESSAGE_LENGTH = 2000;
 const RATE_LIMIT = 20;
 const RATE_WINDOW_MS = 60_000;
-
-type ChatMessage = {
-  role: "user" | "assistant";
-  content: string;
-};
-
-type ChatUserContext = {
-  homeCountry: string;
-  targetCountry: string;
-  category: string;
-};
 
 // NOTE: In-memory rate limiting works for single-instance deploys (local dev,
 // Railway, single Render instance). On Vercel serverless or multi-instance
@@ -100,7 +89,7 @@ function sanitizeForGemini(messages: ChatMessage[]): ChatMessage[] {
   return [...collapsed, current];
 }
 
-function parseUserContext(value: unknown): ChatUserContext | undefined {
+function parseUserContext(value: unknown): Required<ChatUserContext> | undefined {
   if (!value || typeof value !== "object") return undefined;
   const c = value as Record<string, unknown>;
   if (

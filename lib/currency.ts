@@ -54,14 +54,6 @@ export function convertAmount(
   }
 }
 
-export function formatCurrency(
-  amount: number,
-  symbol: string,
-  code: string
-): string {
-  return `${symbol}${amount.toLocaleString()} ${code}`
-}
-
 export function getCurrencyMeta(code: string) {
   return (
     SUPPORTED_CURRENCIES.find((c) => c.code === code) ??

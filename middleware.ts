@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
 
   // /dashboard intentionally omitted — guest wizard flow lands there.
   // Add it back in Task 4.6 once the authed guest flow is tested end-to-end.
-  const protectedRoutes = ['/community'];
+  const protectedRoutes = ['/community', '/dashboard/profile'];
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );

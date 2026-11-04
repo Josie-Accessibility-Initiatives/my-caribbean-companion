@@ -1,3 +1,5 @@
+import type { JobListing } from '@/lib/external/jsearch'
+
 export type JobLink = {
   name: string
   url: string
@@ -11,14 +13,32 @@ export type JobLinksData = {
   by_profession: Record<string, Omit<JobLink, 'categories'>[]>
 }
 
-export function getJobLinksForContext(
-  countryCode: string,
-  profession: string
-): {
+export type CuratedJobLinks = {
   countryLinks: JobLink[]
   professionLinks: Omit<JobLink, 'categories'>[]
   caribbeanWideLinks: JobLink[]
-} {
+}
+
+/** Response body of GET /api/jobs */
+export type JobsApiResponse = {
+  country: { code: string; name: string }
+  profession: string
+  page: number
+  listings: {
+    jobs: JobListing[]
+    total: number
+    source: 'jsearch' | 'cache' | 'empty'
+    searchedAt: string
+  }
+  curatedLinks: CuratedJobLinks
+  hasLiveListings: boolean
+  message: string | null
+}
+
+export function getJobLinksForContext(
+  countryCode: string,
+  profession: string
+): CuratedJobLinks {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const data = require('@/data/job-links.json') as JobLinksData
 

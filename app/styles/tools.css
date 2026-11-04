@@ -1,0 +1,516 @@
+/* =========================
+   Cost estimator (page + component)
+   ========================= */
+
+.ce-page-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.ce-selector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ce-selector-grid .form-label {
+  margin-bottom: 0;
+}
+
+.ce-selector-grid .form-label > span {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.ce-heading {
+  margin: 0 0 0.2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.ce-budget-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ce-budget-btn {
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-strong);
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ce-budget-btn.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.ce-budget-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.ce-total {
+  background: var(--color-primary);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.ce-total-label {
+  margin: 0 0 0.3rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.ce-total-amount {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.ce-total-local {
+  margin: 0.35rem 0 0;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.ce-total-sources {
+  margin: 0.85rem 0 0;
+  font-size: 0.71rem;
+  opacity: 0.65;
+  line-height: 1.5;
+}
+
+.ce-line-items {
+  margin-bottom: 1.75rem;
+}
+
+.ce-line {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--color-surface-sunken);
+  align-items: flex-start;
+}
+
+.ce-line:last-child {
+  border-bottom: none;
+}
+
+.ce-line-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ce-line-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.ce-line-desc {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.ce-line-desc:last-child {
+  margin-bottom: 0;
+}
+
+.ce-line-amount {
+  text-align: right;
+  flex-shrink: 0;
+  padding-left: 0.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+}
+
+.ce-living-breakdown {
+  margin-top: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  font-size: 0.8rem;
+  color: var(--color-text-body);
+}
+
+.ce-chart {
+  margin-bottom: 1.75rem;
+}
+
+.ce-chart-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.ce-tip {
+  margin-bottom: 1.25rem;
+}
+
+.ce-tip p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.ce-tip .ce-tip-title {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.ce-error {
+  padding: 1.75rem;
+  text-align: center;
+}
+
+.ce-error p {
+  margin: 0 0 1rem;
+  font-weight: 500;
+}
+
+.ce-sidebar-cta {
+  background: #f0fdf8;
+  border-color: var(--color-success-border);
+}
+
+.ce-sidebar-cta h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.ce-sidebar-cta p {
+  margin: 0 0 1.1rem;
+  font-size: 0.85rem;
+  color: var(--color-text-body);
+  line-height: 1.6;
+}
+
+/* =========================
+   Job board
+   ========================= */
+
+.job-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.job-logo,
+.job-logo-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.375rem;
+  flex-shrink: 0;
+}
+
+.job-logo {
+  object-fit: contain;
+}
+
+.job-logo-fallback {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.job-match-star {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.job-company {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-top: 0.1rem;
+}
+
+.job-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.job-salary {
+  font-size: 0.9rem;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.job-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-body);
+  line-height: 1.55;
+}
+
+.job-desc-preview {
+  overflow: hidden;
+  max-height: 3.6rem;
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.job-footer {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-surface-sunken);
+}
+
+.job-results-heading {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* =========================
+   Housing
+   ========================= */
+
+.housing-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.housing-search .form-label {
+  flex: 1 1 240px;
+  margin: 0;
+}
+
+.housing-context {
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.housing-context p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-strong);
+}
+
+.housing-cta {
+  background: linear-gradient(135deg, var(--color-success-bg) 0%, #ffffff 100%);
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+
+.housing-cta h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.4rem;
+}
+
+.housing-cta p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0 0 1.25rem;
+}
+
+.rent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+}
+
+.rent-row-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-body);
+}
+
+.rent-row-label svg {
+  color: var(--color-text-subtle);
+}
+
+.rent-row-value {
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.rent-row--featured {
+  padding: 0.6rem 0.75rem;
+  background: rgba(var(--color-primary-rgb), 0.06);
+  border-color: rgba(var(--color-primary-rgb), 0.15);
+}
+
+.rent-row--featured .rent-row-label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.rent-row--featured .rent-row-label svg {
+  color: var(--color-primary);
+}
+
+.rent-row--featured .rent-row-value {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.neighborhood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.neighborhood-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.neighborhood-card-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.neighborhood-card p {
+  margin: 0;
+  font-size: 0.83rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+/* =========================
+   Resources
+   ========================= */
+
+.contact-card {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.contact-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+.contact-card-ministry {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.contact-card-officer {
+  font-size: 0.85rem;
+  color: var(--color-text-strong);
+  margin-bottom: 0.3rem;
+}
+
+.country-card {
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.country-card h2 {
+  margin-top: 0;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 768px) {
+  .ce-page-grid,
+  .ce-selector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ce-line-head {
+  margin-bottom: 0.2rem;
+}
+
+.ce-route {
+  margin: 0 0 1.25rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.ce-route-eyebrow {
+  margin: 0 0 0.4rem;
+}
+
+.ce-route-summary {
+  margin: 0 0 0.75rem;
+  color: var(--color-text);
+}
+
+.job-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}

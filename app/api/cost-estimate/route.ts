@@ -1,10 +1,21 @@
-import { ApiError, apiError, apiSuccess, readDataFile } from '@/lib/api'
+import { ApiError, apiSuccess, handleRouteError, readDataFile } from '@/lib/api'
 import { COUNTRY_META } from '@/data/countryMeta'
 import { getFlightEstimate, getCostOfLiving } from '@/lib/cost-search'
 import { convertUSDToLocal } from '@/lib/exchange-rates'
-import { extractJSON } from '@/lib/ai'
+import { extractJSONObject } from '@/lib/ai'
+import {
+  BUDGET_LEVELS,
+  type BudgetLevel,
+  type CostEstimateResponse,
+} from '@/lib/types/cost'
 
-type BudgetLevel = 'budget' | 'mid' | 'comfortable'
+/** Pick the value matching the user's budget level. */
+function pickByBudget<T>(
+  level: BudgetLevel,
+  options: Record<BudgetLevel, T>
+): T {
+  return options[level]
+}
 
 type CostEstimatesData = {
   defaults: {
@@ -84,10 +95,9 @@ function validateRequest(body: unknown): {
   }
 
   const rawBudget = b.budgetLevel
-  const validLevels: BudgetLevel[] = ['budget', 'mid', 'comfortable']
   const budgetLevel: BudgetLevel =
     typeof rawBudget === 'string' &&
-    validLevels.includes(rawBudget as BudgetLevel)
+    BUDGET_LEVELS.includes(rawBudget as BudgetLevel)
       ? (rawBudget as BudgetLevel)
       : 'mid'
 
@@ -114,8 +124,7 @@ async function getSavingsTip(
       `${budgetLevel} budget. Be specific to the Caribbean context. ` +
       `JSON only: { "tip": "..." }`
 
-    const raw = await extractJSON(prompt)
-    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim())
+    const parsed = await extractJSONObject<{ tip?: unknown }>(prompt)
 
     if (typeof parsed?.tip === 'string' && parsed.tip.trim()) {
       return parsed.tip.trim()
@@ -158,21 +167,17 @@ export async function POST(request: Request) {
 
     const rentMin = costOfLiving.rentOneBed.min
     const rentMax = costOfLiving.rentOneBed.max
-    const rent =
-      budgetLevel === 'budget'
-        ? rentMin
-        : budgetLevel === 'comfortable'
-        ? rentMax
-        : Math.round((rentMin + rentMax) / 2)
+    const rent = pickByBudget(budgetLevel, {
+      budget: rentMin,
+      mid: Math.round((rentMin + rentMax) / 2),
+      comfortable: rentMax,
+    })
 
-    const flightCost =
-      budgetLevel === 'budget'
-        ? flightEstimate.minPrice
-        : budgetLevel === 'comfortable'
-        ? flightEstimate.maxPrice
-        : Math.round(
-            (flightEstimate.minPrice + flightEstimate.maxPrice) / 2
-          )
+    const flightCost = pickByBudget(budgetLevel, {
+      budget: flightEstimate.minPrice,
+      mid: Math.round((flightEstimate.minPrice + flightEstimate.maxPrice) / 2),
+      comfortable: flightEstimate.maxPrice,
+    })
 
     const tempAccommodation =
       countryData.temporaryAccommodationPerNight *
@@ -182,12 +187,11 @@ export async function POST(request: Request) {
 
     const documentFees = defaults.documents.total
 
-    const shipping =
-      budgetLevel === 'budget'
-        ? defaults.shipping.extraBaggage
-        : budgetLevel === 'comfortable'
-        ? defaults.shipping.mediumLoad
-        : defaults.shipping.smallLoad
+    const shipping = pickByBudget(budgetLevel, {
+      budget: defaults.shipping.extraBaggage,
+      mid: defaults.shipping.smallLoad,
+      comfortable: defaults.shipping.mediumLoad,
+    })
 
     const firstMonthLiving = costOfLiving.monthlyTotal
 
@@ -223,14 +227,13 @@ export async function POST(request: Request) {
         }
       : null
 
-    const shippingNote =
-      budgetLevel === 'budget'
-        ? 'Extra baggage only'
-        : budgetLevel === 'comfortable'
-        ? 'Medium shipping load (furniture and boxes)'
-        : 'Small load (boxes only)'
+    const shippingNote = pickByBudget(budgetLevel, {
+      budget: 'Extra baggage only',
+      mid: 'Small load (boxes only)',
+      comfortable: 'Medium shipping load (furniture and boxes)',
+    })
 
-    return apiSuccess({
+    const response: CostEstimateResponse = {
       fromCountry: {
         code: fromCountry,
         name: fromMeta.name,
@@ -300,12 +303,9 @@ export async function POST(request: Request) {
         'Actual costs will vary. Verify current fees with official sources ' +
         'before making financial decisions.',
       generatedAt: new Date().toISOString(),
-    })
-  } catch (err) {
-    if (err instanceof ApiError) {
-      return apiError(err.message, err.status)
     }
-    console.error('POST /api/cost-estimate:', err)
-    return apiError('Failed to generate cost estimate.', 500)
+    return apiSuccess(response)
+  } catch (err) {
+    return handleRouteError(err, 'POST /api/cost-estimate', 'Failed to generate cost estimate.')
   }
 }

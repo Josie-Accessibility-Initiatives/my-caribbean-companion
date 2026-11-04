@@ -42,54 +42,19 @@ const CONTENT: Record<
   },
 }
 
-const AMBER = {
-  bg: '#fef3c7',
-  border: '#f59e0b',
-  text: '#92400e',
-}
-
 export default function FraudAlert({ context = 'general' }: FraudAlertProps) {
   const { body, flags } = CONTENT[context]
 
   return (
-    <div
-      style={{
-        background: AMBER.bg,
-        border: `1px solid ${AMBER.border}`,
-        borderLeft: `4px solid ${AMBER.border}`,
-        borderRadius: '0.5rem',
-        padding: '1rem 1.25rem',
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          marginBottom: '0.5rem',
-        }}
-      >
-        <AlertTriangle size={18} color={AMBER.text} style={{ flexShrink: 0 }} />
-        <span style={{ fontWeight: 700, color: AMBER.text, fontSize: '0.95rem' }}>
-          Protect yourself from scams
-        </span>
+    <div className="fraud-alert">
+      <div className="fraud-alert-title">
+        <AlertTriangle size={18} />
+        Protect yourself from scams
       </div>
-
-      {/* Body */}
-      <p style={{ color: AMBER.text, margin: '0 0 0.625rem', fontSize: '0.875rem', lineHeight: 1.55 }}>
-        {body}
-      </p>
-
-      {/* Red flags */}
-      <ul style={{ margin: '0 0 0.75rem', paddingLeft: '1.25rem' }}>
+      <p>{body}</p>
+      <ul>
         {flags.map((flag) => (
-          <li
-            key={flag}
-            style={{ color: AMBER.text, fontSize: '0.85rem', lineHeight: 1.5, marginBottom: '0.2rem' }}
-          >
-            {flag}
-          </li>
+          <li key={flag}>{flag}</li>
         ))}
       </ul>
     </div>
