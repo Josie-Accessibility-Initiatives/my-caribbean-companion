@@ -1,39 +1,23 @@
 import { NextRequest } from "next/server";
 import { getChatStream, type ChatMessage, type ChatUserContext } from "@/lib/ai";
+import { getSignedInUserId } from "@/lib/supabase/server";
+import { adminClient } from "@/lib/supabase/admin";
+import {
+  CHAT_DAILY_LIMIT,
+  CHAT_REMAINING_HEADER,
+  MAX_MESSAGE_LENGTH,
+  remainingToday,
+  type ChatUsage,
+} from "@/lib/chat-limits";
+import { apiError } from "@/lib/api";
 
 const MAX_MESSAGES = 50;
-const MAX_MESSAGE_LENGTH = 2000;
-const RATE_LIMIT = 20;
-const RATE_WINDOW_MS = 60_000;
+/** Earlier turns (often long AI answers) are clipped to this, not rejected. */
+const MAX_HISTORY_MESSAGE_LENGTH = 4000;
 
-// NOTE: In-memory rate limiting works for single-instance deploys (local dev,
-// Railway, single Render instance). On Vercel serverless or multi-instance
-// hosting, each instance has its own counter so effective limit is
-// 20 × instances. Upgrade to Upstash Redis when moving to production
-// multi-instance hosting. See Task 6 for the upgrade path.
-const requestCounts = new Map<string, number>();
-const rateLimitTimer = setInterval(
-  () => requestCounts.clear(),
-  RATE_WINDOW_MS,
-);
-if (typeof rateLimitTimer.unref === "function") {
-  rateLimitTimer.unref();
-}
-
-function jsonError(message: string, status: number) {
-  return new Response(JSON.stringify({ error: message }), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-function getClientIp(req: NextRequest): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) {
-    const first = fwd.split(",")[0]?.trim();
-    if (first) return first;
-  }
-  return req.headers.get("x-real-ip") ?? "unknown";
+/** 401 for guests — the widget shows a sign-in prompt for code "auth_required". */
+function authRequired() {
+  return apiError("Sign in to use the AI Companion.", 401, "auth_required");
 }
 
 function isChatMessage(v: unknown): v is ChatMessage {
@@ -109,71 +93,117 @@ function parseUserContext(value: unknown): Required<ChatUserContext> | undefined
   return undefined;
 }
 
-export async function POST(req: NextRequest) {
-  // Rate limit first — fail fast on abusive clients before any parsing work.
-  const ip = getClientIp(req);
-  const next = (requestCounts.get(ip) ?? 0) + 1;
-  requestCounts.set(ip, next);
-  if (next > RATE_LIMIT) {
-    return jsonError(
-      "Too many requests. Please wait a moment before asking again.",
-      429,
+/** Map a Gemini failure to a user-facing message (credits, rate limits, region). */
+function geminiErrorResponse(error: unknown): Response {
+  const status =
+    error && typeof error === "object" && "status" in error ? Number(error.status) : 0;
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (message.includes("User location is not supported")) {
+    return apiError("AI service is not available in this region. Please contact support.", 503);
+  }
+  if (status === 402 || status === 429) {
+    // 402: prepaid credits depleted · 429: Gemini quota/rate limit
+    return apiError(
+      "The AI Companion is temporarily unavailable. Please try again later.",
+      503,
+      "ai_unavailable"
     );
   }
+  return apiError("AI service unavailable. Please try again.", 500);
+}
 
-  // Parse body.
+/** GET /api/chat — today's usage for the signed-in user. */
+export async function GET() {
+  const userId = await getSignedInUserId();
+  if (!userId) return authRequired();
+
+  const today = new Date().toISOString().slice(0, 10); // UTC, matches the database
+  const { data, error } = await adminClient
+    .from("chat_usage")
+    .select("message_count")
+    .eq("user_id", userId)
+    .eq("day", today)
+    .maybeSingle();
+  if (error) {
+    console.error("[/api/chat] usage lookup failed:", error);
+    return apiError("Could not load your chat usage.", 500);
+  }
+
+  const usage: ChatUsage = { remaining: remainingToday(data?.message_count ?? 0) };
+  return Response.json(usage);
+}
+
+/** POST /api/chat — stream a Gemini reply. Signed-in users only, capped per day. */
+export async function POST(req: NextRequest) {
+  const userId = await getSignedInUserId();
+  if (!userId) return authRequired();
+
+  // Validate the request before using up one of the user's daily messages.
   let body: unknown;
   try {
     body = await req.json();
   } catch {
-    return jsonError("Messages are required", 400);
+    return apiError("Messages are required", 400);
   }
   const { messages, userContext } = (body ?? {}) as {
     messages?: unknown;
     userContext?: unknown;
   };
 
-  // Validate messages shape.
   if (
     !Array.isArray(messages) ||
     messages.length === 0 ||
     !messages.every(isChatMessage)
   ) {
-    return jsonError("Messages are required", 400);
+    return apiError("Messages are required", 400);
   }
   const typed = messages as ChatMessage[];
+  const current = typed[typed.length - 1];
 
-  // Validate per-message length.
-  for (const m of typed) {
-    if (m.content.length > MAX_MESSAGE_LENGTH) {
-      return jsonError("Message too long", 400);
-    }
+  if (current.role !== "user") {
+    return apiError("Last message must be from user", 400);
+  }
+  // Only the new question is limited; history includes long AI replies.
+  if (current.content.length > MAX_MESSAGE_LENGTH) {
+    return apiError(
+      `Please keep your message under ${MAX_MESSAGE_LENGTH} characters.`,
+      400
+    );
+  }
+  const history = typed.slice(0, -1).map((m) => ({
+    ...m,
+    content: m.content.slice(0, MAX_HISTORY_MESSAGE_LENGTH),
+  }));
+
+  // Claim one of today's messages (atomic; null means the cap is reached).
+  const { data: usedToday, error: claimError } = await adminClient.rpc("claim_chat_message", {
+    p_user_id: userId,
+    p_limit: CHAT_DAILY_LIMIT,
+  });
+  if (claimError) {
+    console.error("[/api/chat] usage claim failed:", claimError);
+    return apiError("AI service unavailable. Please try again.", 500);
+  }
+  if (usedToday === null) {
+    return apiError(
+      `You've used all ${CHAT_DAILY_LIMIT} AI Companion messages for today. Your limit resets at midnight UTC.`,
+      429,
+      "daily_limit_reached"
+    );
   }
 
-  // Last message must be from the user.
-  if (typed[typed.length - 1].role !== "user") {
-    return jsonError("Last message must be from user", 400);
-  }
-
-  // Trim oldest pairs if over the cap, then sanitize alternation.
-  const trimmed = trimOldestPairs(typed, MAX_MESSAGES);
-  const sanitized = sanitizeForGemini(trimmed);
+  const sanitized = sanitizeForGemini(trimOldestPairs([...history, current], MAX_MESSAGES));
   const context = parseUserContext(userContext);
 
-  // Call Gemini with streaming.
   let streamResult: Awaited<ReturnType<typeof getChatStream>>;
   try {
     streamResult = await getChatStream(sanitized, context);
   } catch (error) {
     console.error("[/api/chat] Gemini request failed:", error);
-    const message = error instanceof Error ? error.message : String(error);
-    if (message.includes("User location is not supported")) {
-      return jsonError(
-        "AI service is not available in this region. Please contact support.",
-        503,
-      );
-    }
-    return jsonError("AI service unavailable. Please try again.", 500);
+    // The user got no answer, so don't count this message against them.
+    await adminClient.rpc("refund_chat_message", { p_user_id: userId });
+    return geminiErrorResponse(error);
   }
 
   const readableStream = new ReadableStream({
@@ -199,6 +229,7 @@ export async function POST(req: NextRequest) {
       "Content-Type": "text/plain; charset=utf-8",
       "Transfer-Encoding": "chunked",
       "X-Content-Type-Options": "nosniff",
+      [CHAT_REMAINING_HEADER]: String(remainingToday(usedToday as number)),
     },
   });
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getSignedInUserId } from '@/lib/supabase/server'
 import { adminClient } from '@/lib/supabase/admin'
 import { apiError } from '@/lib/api'
 
@@ -10,17 +10,13 @@ import { apiError } from '@/lib/api'
  * rows are removed by ON DELETE CASCADE on auth.users.
  */
 export async function DELETE() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
+  const userId = await getSignedInUserId()
+  if (!userId) {
     return apiError('You need to be signed in to delete your account.', 401)
   }
 
   // Deleting an auth user needs the service role key, so it happens server-side.
-  const { error } = await adminClient.auth.admin.deleteUser(user.id)
+  const { error } = await adminClient.auth.admin.deleteUser(userId)
   if (error) {
     console.error('DELETE /api/account:', error)
     return apiError('Could not delete your account. Please try again.', 500)

@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { mergePlanToSupabase } from '@/lib/persistence';
+import { safeRedirectPath } from '@/lib/redirect';
 import { errorMessage } from '@/lib/fetch-json';
 import {
   MIN_PASSWORD_LENGTH,
@@ -49,7 +52,9 @@ function mapSupabaseError(message: string): string {
   return message;
 }
 
-export default function SignupPage() {
+function SignupForm() {
+  const router = useRouter();
+  const redirectTo = safeRedirectPath(useSearchParams().get('redirect'));
   const { form, fieldErrors, formError, setFormError, handleChange, bindValue, runValidation } =
     useFormState(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
@@ -62,7 +67,7 @@ export default function SignupPage() {
 
     try {
       setLoading(true);
-      const { error } = await createClient().auth.signUp({
+      const { data, error } = await createClient().auth.signUp({
         email: form.email.trim(),
         password: form.password,
         options: {
@@ -81,6 +86,15 @@ export default function SignupPage() {
         return;
       }
 
+      // With "Confirm email" off, Supabase signs the user in straight away:
+      // save any guest plan to the new account and continue where they were.
+      if (data.session && data.user) {
+        await mergePlanToSupabase(data.user.id);
+        router.replace(redirectTo);
+        return;
+      }
+
+      // Email confirmation is on: they must confirm before logging in.
       setSuccess(true);
     } catch (err) {
       setFormError(errorMessage(err, 'Something went wrong while signing up.'));
@@ -218,5 +232,13 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
   );
 }

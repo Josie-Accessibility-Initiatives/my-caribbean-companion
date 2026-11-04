@@ -1,11 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import type { EmailOtpType } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
-
-/** Only allow same-site relative redirects (prevents open redirects). */
-function safeNext(value: string | null): string {
-  return value && value.startsWith('/') && !value.startsWith('//') ? value : '/dashboard'
-}
+import { safeRedirectPath } from '@/lib/redirect'
 
 /**
  * Landing route for Supabase email links (password reset, email confirmation).
@@ -14,7 +10,7 @@ function safeNext(value: string | null): string {
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl
-  const next = safeNext(searchParams.get('next'))
+  const next = safeRedirectPath(searchParams.get('next'))
   const code = searchParams.get('code')
   const tokenHash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null

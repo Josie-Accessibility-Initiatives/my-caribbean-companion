@@ -148,6 +148,8 @@
   border: 1px solid var(--color-border);
   color: var(--color-text);
   border-radius: 1rem 1rem 1rem 0;
+  /* Markdown supplies its own structure, so drop pre-wrap's extra blank lines */
+  white-space: normal;
 }
 
 .chat-timestamp {
@@ -373,4 +375,66 @@
 
 .ai-companion-bubble:hover .ai-companion-bubble-tooltip {
   opacity: 1;
+}
+
+/* Guest sign-in prompt in place of the chat */
+.companion-signin {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 2rem 1.75rem;
+  text-align: center;
+}
+
+/* =========================
+   AI reply formatting (Markdown rendered by ChatMarkdown)
+   ========================= */
+
+.chat-markdown {
+  line-height: 1.55;
+}
+
+.chat-markdown > * + * {
+  margin-top: 0.6rem;
+}
+
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.chat-markdown ul,
+.chat-markdown ol {
+  padding-left: 1.2rem;
+}
+
+.chat-markdown ul {
+  list-style: disc;
+}
+
+.chat-markdown ol {
+  list-style: decimal;
+}
+
+.chat-markdown li + li {
+  margin-top: 0.3rem;
+}
+
+.chat-markdown strong {
+  font-weight: 600;
+}
+
+.chat-markdown a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.chat-markdown code {
+  font-size: 0.85em;
+  background: var(--color-surface-sunken);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
 }
